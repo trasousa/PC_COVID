@@ -1,6 +1,6 @@
 package COVID.src.Coronita;
 
-public class Acount {
+public class Account {
     String id;
     String passwd;
     int cases;

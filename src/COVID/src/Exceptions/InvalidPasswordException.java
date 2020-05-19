@@ -1,13 +1,11 @@
 package COVID.src.Exceptions;
 
-public class InvalidPasswordException extends Throwable {
-
-    int passwordConditionViolated = 0;
-
+public class InvalidPasswordException extends Exception {
     public InvalidPasswordException(String error)
     {
-        super("Invalid Password: ");
+        super(error);
     }
+
     public static class PasswordvVlidator {
 
         // A utility function to check
