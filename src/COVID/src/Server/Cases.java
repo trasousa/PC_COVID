@@ -27,13 +27,12 @@ public class Cases {
         return casesNow;
     }
 
-
-
-    public void addCases(int newCases){
+    public void updateCases(int newCases){
         lockCasos.lock();
-        cases += newCases;
+        cases = newCases; //substituir pela forma de calcular casos
         updated.clear();
         update.signalAll();
         lockCasos.unlock();
     }
+    //private int calcCases(Array)
 }
