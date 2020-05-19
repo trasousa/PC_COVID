@@ -75,7 +75,9 @@ public class SignIn extends JFrame {
                 char[] pass2 = PassText2.getPassword();
 
                 if(pass1.equals(pass2)){
+                    frame.dispose();
                     System.out.println("nice");
+                    App app = (new App());
                 }
 
                 else{
