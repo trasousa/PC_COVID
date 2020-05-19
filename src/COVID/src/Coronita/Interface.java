@@ -8,9 +8,8 @@ import COVID.src.Exceptions.InvalidPasswordException;
 
 public interface Interface {
 
-        double CreateAcount(String Username, String pass){
+        double CreateAcount(String Username, String pass)
 
-        }
 
         public void registarCliente(String id, String passwd);
         public void removerCliente(String id) throws InvalidAcount;
