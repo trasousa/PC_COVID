@@ -1,4 +1,5 @@
 package COVID.src.Coronita;
 
-public class CoronitaServer {
+public class CoronitaServer{
+
 }

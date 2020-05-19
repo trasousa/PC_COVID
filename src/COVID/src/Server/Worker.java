@@ -43,6 +43,7 @@ public class Worker implements Runnable, Interface {
                     args = readParts[1].split("//s+");
                     try {
                         authenticate(args[0],args[1]);
+                        writer.start();
                     } catch (InvalidAcount InvalidAccount) {
                         out.println("Account exists");
                         out.flush();
@@ -72,17 +73,12 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public double CreateAcount(String Username, String pass) {
+    public void registerClient(String id, String passwd) throws InvalidAcount{
 
     }
 
     @Override
-    public void registerClient(String id, String passwd) {
-
-    }
-
-    @Override
-    public void removeClient(String id) throws InvalidAcount {
+    public void removeClient(String id) throws InvalidAcount{
 
     }
 

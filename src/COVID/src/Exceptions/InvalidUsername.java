@@ -1,6 +1,6 @@
 package COVID.src.Exceptions;
 
-public class InvalidUsername extends Throwable {
+public class InvalidUsername extends Exception {
     public InvalidUsername(String error) {
         super(error);
     }
