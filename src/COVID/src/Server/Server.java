@@ -25,7 +25,7 @@ public class Server {
         while(true){
         try {
             Socket cliente = sSock.accept();
-            Worker worker = new Worker(cliente);
+            Thread worker = new Thread(new Worker(cliente));
         } catch (IOException e) {
             e.printStackTrace();
         }
