@@ -7,7 +7,8 @@ public class CoronitaServer {
     String id;
 
     public void registerClient(String Username, String pass1, String pass2) {
-        if(pass1.equals(pass2)){
-            COVID.src.Server.Server.registerClient(S);
+        if(pass1.equals(pass2) && COVID.src.Server.Worker.registerClient(Username,pass1);){
+
+
         }
     }

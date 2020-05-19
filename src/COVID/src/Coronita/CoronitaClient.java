@@ -13,13 +13,12 @@ public class CoronitaClient {
     private BufferedReader inServer;
     private PrintWriter outServer;
 
-    public  CoronitaClient(String host, int port){
+    public  CoronitaClient(String host, int port)
         throws IOException{
             this.socket = new Socket(host, port);
             this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.outServer = new PrintWriter(socket.getOutputStream());
         }
-    }
     public void close()
             throws IOException {
         socket.shutdownOutput();
@@ -46,6 +45,7 @@ public class CoronitaClient {
         } catch (MismatchPassException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
@@ -69,19 +69,22 @@ public class CoronitaClient {
 
     @Override
 
-    public double removeClient(String Username, String pass)
-            throws InvalidAcount, CoronitaRemotException, InvalidUsername{
+    public Double removeClient(String Username, String pass)
+            throws InvalidUsername, CoronitaRemotException {
         outServer.println("rm");
         outServer.flush();
         try {
+            PasswordvVlidator.isValid(pass);
+            //UserValidator.isValid(Username);
             return Double.parseDouble(inServer.readLine());
-        }
-        catch (IOException ignored) {
+        } catch (IOException ignored) {
             throw new CoronitaRemotException("Could not connect to server");
-        }
-        catch (NumberFormatException ignored){
+        } catch (NumberFormatException ignored) {
             throw new CoronitaRemotException("Response format mismatch");
+        } catch (InvalidPasswordException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     @Override

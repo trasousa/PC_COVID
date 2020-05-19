@@ -73,7 +73,7 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void registerClient(String id, String passwd) throws InvalidAcount{
+    public static void registerClient(String id, String passwd) throws InvalidAcount{
 
     }
 
