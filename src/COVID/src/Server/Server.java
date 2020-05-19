@@ -10,12 +10,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
-import COVID.src.Coronita.Account;
+import COVID.src.Server.Account;
 
 public class Server {
 
     public static void main(String[] args) {
-        ConcurrentHashMap<String,Account> accounts;
+        ConcurrentHashMap<String,Account> accounts = new ConcurrentHashMap<String, Account>();
+        Estimate estimate = new Estimate(accounts);
         ServerSocket sSock = null;
         try {
             sSock = new ServerSocket( 	60833);
@@ -23,12 +24,12 @@ public class Server {
             e.printStackTrace();
         }
         while(true){
-        try {
-            Socket cliente = sSock.accept();
-            Thread worker = new Thread(new Worker(cliente));
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                Socket cliente = sSock.accept();
+                Thread worker = new Thread(new Worker(cliente,estimate,accounts));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-    }
     }
 }
