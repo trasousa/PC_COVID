@@ -1,6 +1,6 @@
 package COVID.src.Exceptions;
 
-public class InvalidNumCases extends Throwable {
+public class InvalidNumCases extends Exception {
     public InvalidNumCases(String error) {
     }
 }

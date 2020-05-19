@@ -2,37 +2,37 @@ package COVID.src.Server;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Cases {
-    int cases;
+public class Estimate {
+    float estimate;
     HashSet<String> updated;
     ReentrantLock lockCasos;
     Condition update;
-    public Cases(){
-        cases = 0;
+    public Estimate(){
+        estimate = 0;
         updated = new HashSet<String>();
         lockCasos = new ReentrantLock();
         update = lockCasos.newCondition();
     }
-    public int getCases(String id) throws InterruptedException {
-        int casesNow;
+    public float getEstimate(String id) throws InterruptedException {
+        float estimateNow;
         lockCasos.lock();
         while(updated.contains(id)){
             update.await();
         }
-        casesNow = cases;
+        estimateNow = estimate;
         lockCasos.unlock();
-        return casesNow;
+        return estimateNow;
     }
 
-    public void updateCases(int newCases){
+    public void updateEstimate(float newEstimate){
         lockCasos.lock();
-        cases = newCases; //substituir pela forma de calcular casos
+        estimate = newEstimate; //substituir pela forma de calcular casos
         updated.clear();
         update.signalAll();
         lockCasos.unlock();
     }
-    //private int calcCases(Array)
 }
