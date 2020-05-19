@@ -22,7 +22,7 @@ public class CoronitaClient {
     private PrintWriter outServer;
 
     public  CoronitaClient(String host, int port){
-        throws IOException {
+        throws IOException{
             this.socket = new Socket(host, port);
             this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.outServer = new PrintWriter(socket.getOutputStream());
@@ -38,24 +38,22 @@ public class CoronitaClient {
     @Override
     public double CreateAcount(String Username, String pass)
             throws InvalidUsername, CoronitaRemotException, InvalidPasswordException {
-        outServer.println("cr");
-        outServer.flush();
-        try {
-            return Integer.parseInt(inServer.readLine());
+            outServer.println("cr");
+            outServer.flush();
+            try {
+                return Integer.parseInt(inServer.readLine());
+
+            } catch (IOException ignored) {
+                throw new CoronitaRemotException("Could not connect to server");
+            } catch (NumberFormatException ignored) {
+                throw new CoronitaRemotException("Response format mismatch");
+            } catch (InvalidUsername e) {
+                //Username ...
+            } catch (InvalidPasswordExecption e) {
+            }
 
         }
-        catch (IOException ignored) {
-            throw new CoronitaRemotException("Could not connect to server");
-        }
-        catch (NumberFormatException ignored){
-            throw new CoronitaRemotException("Response format mismatch");
-        }
-        catch (InvalidUsername e){
-            //Username ...
-        }
-        catch (InvalidPasswordExecption)
 
-    }
 
         try {
         System.out.println("Is Password "

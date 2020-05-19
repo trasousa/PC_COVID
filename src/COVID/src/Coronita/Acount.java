@@ -5,6 +5,10 @@ public class Acount {
     String passwd;
     int cases;
 
+    public double CreateAcount(String Username, String pass){
+
+    }
+
     public String getId() {
         return id;
     }
