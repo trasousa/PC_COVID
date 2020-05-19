@@ -1,19 +1,25 @@
 package COVID.src.Server;
 
+import COVID.src.Server.Account;
 import COVID.src.Coronita.Interface;
-import COVID.src.Exceptions.InvalidAcount;
+import COVID.src.Exceptions.*;
+import COVID.src.Server.Exceptions.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Worker implements Runnable, Interface {
     Socket client;
     BufferedReader in;
     PrintWriter out;
-    public Worker(Socket client){
+    String idCliente;
+    Estimate estimate;
+    Accounts accounts;
+    public Worker(Socket client, Estimate estimate, Accounts accounts){
         try {
             client = client;
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -21,7 +27,10 @@ public class Worker implements Runnable, Interface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.estimate = estimate;
+        this.accounts = accounts;
     }
+
     @Override
     public void run() {
         Writer writer = new Writer(out,estimate,idCliente);
@@ -38,32 +47,55 @@ public class Worker implements Runnable, Interface {
             switch (commmand){
                 case "cr":
                     args = readParts[1].split("//s+");
-                    CreateAcount(args[1],args[2]);
+                    try {
+                        registerClient(args[0],args[1],args[1]);
+                    } catch (InvalidUsername invalidUsername) {
+                        out.println(invalidUsername);
+                        out.flush();
+                    } catch (PasswordException e) {
+                        out.println("Erro password");
+                        out.flush();
+                    } catch (CoronitaRemotException e) {
+                    }
                 case "lg":
                     args = readParts[1].split("//s+");
                     try {
                         authenticate(args[0],args[1]);
                         writer.start();
-                    } catch (InvalidAcount InvalidAccount) {
-                        out.println("Account exists");
+                    } catch (InvalidUsername invalidUsername) {
+                        out.println(invalidUsername);
                         out.flush();
+                    } catch (PasswordException e) {
+                        out.println("Erro password");
+                        out.flush();
+                    } catch (CoronitaRemotException e) {
                     }
                 case "up":
                     args = readParts[1].split("//s+");
-                    updateEstimate(Integer.parseInt(args[0]));
+                    try {
+                        updateEstimate(Integer.parseInt(args[0]));
+                    } catch (InvalidNumCases invalidNumCases) {
+                        invalidNumCases.printStackTrace();
+                    }
                 case "rm":
                     args = readParts[1].split("//s+");
                     try {
-                        removeClient(args[0]);//,args[1]);
+                        removeClient(args[0],args[1]);
                     } catch (InvalidAcount invalidAcount) {
                         out.println("Account exists");
+                        out.flush();
+                    } catch (PasswordException e) {
+                        out.println("Erro Password");
+                        out.flush();
+                    } catch (InvalidUsername invalidUsername) {
+                        out.println(invalidUsername);
                         out.flush();
                     }
             }
         }
 
         try {
-            (writer.stop()).join(); //devolve thread
+            (writer.stop()).join(); //writer.stop() devolve a thread
             client.shutdownInput();
             client.shutdownOutput();
             client.close();
@@ -73,22 +105,22 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void registerClient(String id, String passwd) throws InvalidAcount{
-
+    public void registerClient(String id, String pass1, String pass2) throws InvalidUsernameServer, PasswordException, CoronitaRemotException {
+        accounts.addAccount(id,pass1);
     }
 
     @Override
-    public void removeClient(String id) throws InvalidAcount{
-
+    public void authenticate(String id, String passwd) throws InvalidUsername, PasswordException, CoronitaRemotException {
+        accounts.checkPasswd(id,passwd);
     }
 
     @Override
-    public void authenticate(String id, String passwd) throws InvalidAcount {
-
+    public void removeClient(String id, String passwd) throws InvalidUsername, InvalidAcount, PasswordException {
+        accounts.removeClient(id,passwd);
     }
 
     @Override
-    public void updateEstimate(int cases) {
-
+    public void updateEstimate(int cases) throws InvalidNumCases {
+        Estimate.updateEstimate(idCliente,cases);
     }
 }

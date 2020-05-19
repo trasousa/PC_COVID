@@ -1,5 +1,7 @@
 package COVID.src.Server;
 
+import COVID.src.Server.Account;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,7 +13,8 @@ public class Estimate {
     HashSet<String> updated;
     ReentrantLock lockCasos;
     Condition update;
-    public Estimate(){
+    Accounts accounts;
+    public Estimate(ConcurrentHashMap<String, Account> accounts){
         estimate = 0;
         updated = new HashSet<String>();
         lockCasos = new ReentrantLock();
@@ -28,9 +31,10 @@ public class Estimate {
         return estimateNow;
     }
 
-    public void updateEstimate(float newEstimate){
+    public void updateEstimate(String id, int newCases){
+        float newEstimate = 0;
         lockCasos.lock();
-        estimate = newEstimate; //substituir pela forma de calcular casos
+        accounts.updateCases(id,newCases);
         updated.clear();
         update.signalAll();
         lockCasos.unlock();
