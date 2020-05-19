@@ -1,6 +1,10 @@
 package COVID.src.Coronita;
 
 import COVID.src.Exceptions.*;
+import COVID.src.Exceptions.AccountExceptions.InvalidAcount;
+import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
+import COVID.src.Exceptions.PasswordExceptions.InvalidPasswordException;
+import COVID.src.Exceptions.PasswordExceptions.MismatchPassException;
 
 import java.io.BufferedReader;
 import java.io.IOException;

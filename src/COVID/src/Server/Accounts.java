@@ -1,10 +1,9 @@
 package COVID.src.Server;
 
-import COVID.src.Exceptions.MismatchPassException;
+import COVID.src.Exceptions.PasswordExceptions.MismatchPassException;
 import COVID.src.Server.Exceptions.InvalidUsernameServer;
 
 import java.util.HashMap;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Accounts {
