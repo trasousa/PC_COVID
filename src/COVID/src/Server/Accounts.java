@@ -1,5 +1,6 @@
 package COVID.src.Server;
 
+import COVID.src.Exceptions.AccountExceptions.InvalidAcount;
 import COVID.src.Exceptions.PasswordExceptions.MismatchPassException;
 import COVID.src.Server.Exceptions.InvalidUsernameServer;
 
@@ -27,11 +28,14 @@ public class Accounts {
     public void checkPasswd(String id, String passwd) throws InvalidUsernameServer, MismatchPassException {
         lockAccounts.lock();
         if (accounts.containsKey(id)){
-            if(accounts.get(id).getPasswd().equals(passwd)){
-                lockAccounts.unlock();
+            Account account = accounts.get(id);
+            account.lockAccount();
+            lockAccounts.unlock();
+            if(account.getPasswd().equals(passwd)){
+                account.unlockAccount();
             }
             else {
-                lockAccounts.unlock();
+                account.unlockAccount();
                 throw new MismatchPassException("Wrong password");
             }
         }
@@ -57,5 +61,8 @@ public class Accounts {
             lockAccounts.unlock();
             throw new InvalidUsernameServer(id);
         }
+    }
+    public float updateCases(String id, int cases) throws InvalidAcount {
+        return 0;
     }
 }

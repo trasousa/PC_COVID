@@ -1,5 +1,6 @@
 package COVID.src.Server;
 
+import COVID.src.Exceptions.AccountExceptions.InvalidAcount;
 import COVID.src.Server.Account;
 
 import java.util.HashSet;
@@ -31,7 +32,7 @@ public class Estimate {
         return estimateNow;
     }
 
-    public void updateEstimate(String id, int newCases){
+    public void updateEstimate(String id, int newCases) throws InvalidAcount {
         float newEstimate = 0;
         lockCasos.lock();
         accounts.updateCases(id,newCases);
