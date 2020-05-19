@@ -24,7 +24,7 @@ public class Worker implements Runnable, Interface {
     }
     @Override
     public void run() {
-        Writer writer = new Writer(out);
+        Writer writer = new Writer(out,estimate,idCliente);
         String read = null;
         try {
             read = in.readLine();
@@ -60,12 +60,13 @@ public class Worker implements Runnable, Interface {
                     }
             }
         }
-        (writer.stop()).join(); //devolve thread
+
         try {
+            (writer.stop()).join(); //devolve thread
             client.shutdownInput();
             client.shutdownOutput();
             client.close();
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
