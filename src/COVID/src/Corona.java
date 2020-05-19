@@ -1,4 +1,4 @@
-package Server;
+package COVID.src;
 
 public interface Corona {
 
