@@ -1,5 +1,9 @@
 package COVID.src.Server;
 
-public class Writer{
+import java.io.PrintWriter;
 
+public class Writer{
+    public Writer(PrintWriter out){
+
+    }
 }

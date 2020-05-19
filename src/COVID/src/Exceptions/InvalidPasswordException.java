@@ -1,12 +1,9 @@
 package COVID.src.Exceptions;
 
-class InvalidPasswordException extends Exception {
-
-    int passwordConditionViolated = 0;
-
-    public InvalidPasswordException(int conditionViolated)
+public class InvalidPasswordException extends Exception {
+    public InvalidPasswordException(String error)
     {
-        super("Invalid Password: ");
+        super(error);
         passwordConditionViolated = conditionViolated;
     }
 
@@ -57,7 +54,7 @@ class InvalidPasswordException extends Exception {
             // is between 8 and 15
             if (!((password.length() >= 8)
                     && (password.length() <= 15))) {
-                throw new InvalidPasswordException(1);
+                throw new InvalidPasswordException();
             }
 
             // to check space
