@@ -1,4 +1,5 @@
 package COVID.src.Server;
 
-public class Writer {
+public class Writer{
+
 }

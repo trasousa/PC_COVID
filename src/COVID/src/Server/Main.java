@@ -10,12 +10,18 @@ import java.net.Socket;
 public class Main {
 
     public static void main(String[] args) {
-	ServerSocket sSock = new ServerSocket( 	60833);
-	while(true){
-        Socket cliente = sSock.accept();
+        ServerSocket sSock = null;
         try {
+            sSock = new ServerSocket( 	60833);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while(true){
+        try {
+            Socket cliente = sSock.accept();
             BufferedReader in = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
             PrintWriter out = new PrintWriter(cliente.getOutputStream());
+            Writer writer = new Writer(out);
         } catch (IOException e) {
             e.printStackTrace();
         }

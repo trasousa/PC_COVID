@@ -1,4 +1,4 @@
 package COVID.src.Server;
 
-public class Worker {
+public class Worker{
 }
