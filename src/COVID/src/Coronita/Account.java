@@ -5,8 +5,12 @@ public class Account {
     String passwd;
     int cases;
 
-    public double CreateAcount(String Username, String pass){
 
+    public void registerClient(String Username, String pass1, String pass2) {
+        id = Username;
+        if(pass1.equals(pass2)){
+            passwd = pass1;
+        }
     }
 
     public String getId() {
