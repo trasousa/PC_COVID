@@ -19,9 +19,10 @@ public class Worker implements Runnable, Interface {
     String idCliente;
     Estimate estimate;
     Accounts accounts;
+    Writer writer;
     public Worker(Socket client, Estimate estimate, Accounts accounts){
         try {
-            client = client;
+            this.client = client;
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream());
         } catch (IOException e) {
@@ -29,20 +30,19 @@ public class Worker implements Runnable, Interface {
         }
         this.estimate = estimate;
         this.accounts = accounts;
+        writer = new Writer(out,estimate);
     }
 
     @Override
     public void run() {
         System.out.println("Começou");
-        Writer writer = new Writer(out,estimate,idCliente);
         String read = null;
         try {
             read = in.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Vrmmmmm!");
-        while(!(read.equals("quit")) || read != null){
+        while(!(read.equals("quit")) && read != null){
             String[] readParts = read.split("\\s+",2);
             String command = readParts[0];
             System.out.println(command);
@@ -66,7 +66,6 @@ public class Worker implements Runnable, Interface {
                     args = readParts[1].split("\\s+");
                     try {
                         authenticate(args[0],args[1]);
-                        writer.start();
                     } catch (InvalidUsername invalidUsername) {
                         out.println(invalidUsername);
                         out.flush();
@@ -75,6 +74,10 @@ public class Worker implements Runnable, Interface {
                         out.flush();
                     } catch (CoronitaRemotException e) {
                     }
+                    idCliente = args[0];
+                    out.println("ack lg");
+                    out.flush();
+                    writer.start(idCliente);
                     break;
                 case "up":
                     args = readParts[1].split("\\s+");
@@ -115,11 +118,11 @@ public class Worker implements Runnable, Interface {
         }
 
         try {
-            (writer.stop()).join(); //writer.stop() devolve a thread
+            writer.stop();
             client.shutdownInput();
             client.shutdownOutput();
             client.close();
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
