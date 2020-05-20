@@ -15,7 +15,7 @@ public interface Interface {
         public void removeAccount(String id, String password)
                 throws InvalidUsername, InvalidAcount, PasswordException, CoronitaRemotException, IOException;
         public void updateEstimate(int cases)
-                throws InvalidNumCases;
+                throws InvalidNumCases, AccountException;
 
 
 }

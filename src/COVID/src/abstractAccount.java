@@ -1,5 +1,7 @@
 package COVID.src;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public abstract class abstractAccount {
 
     String passwd;

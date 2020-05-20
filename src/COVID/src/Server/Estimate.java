@@ -1,5 +1,6 @@
 package COVID.src.Server;
 
+import COVID.src.Exceptions.AccountExceptions.InvalidAcount;
 import COVID.src.Server.Account;
 
 import java.util.HashSet;
@@ -14,7 +15,7 @@ public class Estimate {
     ReentrantLock lockCasos;
     Condition update;
     Accounts accounts;
-    public Estimate(ConcurrentHashMap<String, Account> accounts){
+    public Estimate(Accounts accounts){
         estimate = 0;
         updated = new HashSet<String>();
         lockCasos = new ReentrantLock();
@@ -26,12 +27,13 @@ public class Estimate {
         while(updated.contains(id)){
             update.await();
         }
+        updated.add(id);
         estimateNow = estimate;
         lockCasos.unlock();
         return estimateNow;
     }
 
-    public void updateEstimate(String id, int newCases){
+    public void update(String id, int newCases) throws InvalidAcount {
         float newEstimate = 0;
         lockCasos.lock();
         accounts.updateCases(id,newCases);
