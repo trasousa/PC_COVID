@@ -4,6 +4,7 @@ import COVID.src.Exceptions.AccountExceptions.InvalidAcount;
 import COVID.src.Coronita.Interface;
 import COVID.src.Exceptions.*;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
+import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.PasswordExceptions.MismatchPassException;
 import COVID.src.Server.Exceptions.*;
 
@@ -20,7 +21,8 @@ public class Worker implements Runnable, Interface {
     String idCliente;
     Estimate estimate;
     Accounts accounts;
-    public Worker(Socket client, Estimate estimate, Accounts accounts){
+
+    public Worker(Socket client, Estimate estimate, Accounts accounts) {
         try {
             client = client;
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -35,7 +37,7 @@ public class Worker implements Runnable, Interface {
     @Override
     public void run() {
         System.out.println("Começou");
-        Writer writer = new Writer(out,estimate,idCliente);
+        Writer writer = new Writer(out, estimate, idCliente);
         String read = null;
         try {
             read = in.readLine();
@@ -43,17 +45,17 @@ public class Worker implements Runnable, Interface {
             e.printStackTrace();
         }
         System.out.println("Vrmmmmm!");
-        while(!(read.equals("quit")) || read != null){
-            String[] readParts = read.split("\\s+",2);
+        while (!(read.equals("quit")) || read != null) {
+            String[] readParts = read.split("\\s+", 2);
             String command = readParts[0];
             System.out.println(command);
             String[] args;
-            switch (command){
+            switch (command) {
                 case "cr":
                     System.out.println("Reconheceu!");
                     args = readParts[1].split("\\s+");
                     try {
-                        registerAccount(args[0],args[1],args[1]);
+                        registerAccount(args[0], args[1]);
                     } catch (InvalidUsername invalidUsername) {
                         out.println(invalidUsername);
                         out.flush();
@@ -65,7 +67,7 @@ public class Worker implements Runnable, Interface {
                 case "lg":
                     args = readParts[1].split("\\s+");
                     try {
-                        authenticate(args[0],args[1]);
+                        authenticate(args[0], args[1]);
                         writer.start();
                     } catch (InvalidUsername invalidUsername) {
                         out.println(invalidUsername);
@@ -87,7 +89,7 @@ public class Worker implements Runnable, Interface {
                 case "rm":
                     args = readParts[1].split("\\s+");
                     try {
-                        removeAccount(args[0],args[1]);
+                        removeAccount(args[0], args[1]);
                     } catch (InvalidAcount invalidAcount) {
                         out.println("Account exists");
                         out.flush();
@@ -125,18 +127,20 @@ public class Worker implements Runnable, Interface {
     public void registerAccount(String id, String passwd) throws InvalidAcount, MismatchPassException, InvalidUsernameServer {
 
 
-    @Override
-    public void authenticate(String id, String passwd) throws InvalidUsername, PasswordException, CoronitaRemotException {
-        accounts.checkPasswd(id,passwd);
-    }
+        @Override
+        public void authenticate (String id, String passwd) throws
+        InvalidUsername, PasswordException, CoronitaRemotException {
+            accounts.checkPasswd(id, passwd);
+        }
 
-    @Override
-    public void removeAccount(String id, String passwd) throws InvalidUsername, InvalidAcount, PasswordException {
-        accounts.removeAccount(id,passwd);
-    }
+        @Override
+        public void removeAccount (String id, String passwd) throws InvalidUsername, InvalidAcount, PasswordException {
+            accounts.removeAccount(id, passwd);
+        }
 
-    @Override
-    public void updateEstimate(int cases) throws InvalidNumCases, InvalidAcount {
-        estimate.update(idCliente,cases);
+        @Override
+        public void updateEstimate ( int cases) throws InvalidNumCases, InvalidAcount {
+            estimate.update(idCliente, cases);
+        }
     }
 }
