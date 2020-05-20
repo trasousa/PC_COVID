@@ -53,8 +53,8 @@ public class CoronitaServer implements Interface {
     }
 
     @Override
-    public void updateEstimate(String Username, String password){
-        outServer.println("up " + Username+ " " + password);
+    public void updateEstimate(int cases){
+        outServer.println("up " + cases);
         outServer.flush();
     }
     @Override

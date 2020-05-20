@@ -26,7 +26,7 @@ public class CoronitaClientAccount {
         this.coronita.checkUsername(Username);
     }
 
-    public void registerAccount(String Username, String pass1, String pass2) throws MismatchPassException, InvalidUsername, InvalidPasswordException {
+    public void registerAccount(String Username, String pass1, String pass2) throws AccountException, PasswordException, IOException{
         PasswordVlidator.isValid(pass1);
         if (pass1.equals(pass2)) {
                 this.coronita.registerAccount(Username, pass1);
@@ -39,16 +39,17 @@ public class CoronitaClientAccount {
      public  void removeAccount (String Username, String password) throws InvalidAcount {
          this.coronita.removeAccount(Username,password);
      }
-     public void updateEstimate (String Username, String cases) throws InvalidNumCases {
-        this.isValidNum(cases);
-         this.coronita.updateEstimate(Username,cases);
+     public void updateEstimate (String cases) throws InvalidNumCases, AccountException{
+         int number = this.isValidNum(cases);
+         this.coronita.updateEstimate(number);
      }
 
 
-    public Void isValidNum(String cases) throws  InvalidNumCases{
+    public int isValidNum(String cases) throws  InvalidNumCases{
         int number = Integer.parseInt(cases);
-        if(!(number >=0 && number <100));
+        if(!(number >=0 && number <100))
             throw new InvalidNumCases("Number of cases is not valid");
+        else {return number;}
     }
 
     public void close() throws IOException {
