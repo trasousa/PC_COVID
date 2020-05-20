@@ -7,13 +7,13 @@ import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 public interface Interface {
 
         public void registerClient(String id, String pass1,String pass2)
-                throws InvalidUsername, PasswordException, CoronitaRemotException;
+                throws AccountException, PasswordException, CoronitaRemotException;
         public void authenticate(String id,String password)
-                throws InvalidUsername, PasswordException, CoronitaRemotException;
+                throws AccountException, PasswordException, CoronitaRemotException;
         public void removeClient(String id, String password)
-                throws InvalidUsername, InvalidAcount, PasswordException;
+                throws AccountException, PasswordException;
         public void updateEstimate(int cases)
-                throws InvalidNumCases;
+                throws InvalidNumCases, AccountException;
 
 
 }

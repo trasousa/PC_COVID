@@ -15,7 +15,7 @@ import COVID.src.Server.Account;
 public class Server {
 
     public static void main(String[] args) {
-        ConcurrentHashMap<String,Account> accounts = new ConcurrentHashMap<String, Account>();
+        Accounts accounts = new Accounts();
         Estimate estimate = new Estimate(accounts);
         ServerSocket sSock = null;
         try {
@@ -27,6 +27,8 @@ public class Server {
             try {
                 Socket cliente = sSock.accept();
                 Thread worker = new Thread(new Worker(cliente,estimate,accounts));
+                worker.start();
+                System.out.println("Chegou!");
             } catch (IOException e) {
                 e.printStackTrace();
             }

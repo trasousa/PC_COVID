@@ -33,6 +33,7 @@ public class Worker implements Runnable, Interface {
 
     @Override
     public void run() {
+        System.out.println("Começou");
         Writer writer = new Writer(out,estimate,idCliente);
         String read = null;
         try {
@@ -40,13 +41,16 @@ public class Worker implements Runnable, Interface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("Vrmmmmm!");
         while(!(read.equals("quit")) || read != null){
-            String[] readParts = read.split("//s+",2);
-            String commmand = readParts[0];
+            String[] readParts = read.split("\\s+",2);
+            String command = readParts[0];
+            System.out.println(command);
             String[] args;
-            switch (commmand){
+            switch (command){
                 case "cr":
-                    args = readParts[1].split("//s+");
+                    System.out.println("Reconheceu!");
+                    args = readParts[1].split("\\s+");
                     try {
                         registerClient(args[0],args[1],args[1]);
                     } catch (InvalidUsername invalidUsername) {
@@ -58,7 +62,7 @@ public class Worker implements Runnable, Interface {
                     } catch (CoronitaRemotException e) {
                     }
                 case "lg":
-                    args = readParts[1].split("//s+");
+                    args = readParts[1].split("\\s+");
                     try {
                         authenticate(args[0],args[1]);
                         writer.start();
@@ -71,14 +75,16 @@ public class Worker implements Runnable, Interface {
                     } catch (CoronitaRemotException e) {
                     }
                 case "up":
-                    args = readParts[1].split("//s+");
+                    args = readParts[1].split("\\s+");
                     try {
                         updateEstimate(Integer.parseInt(args[0]));
                     } catch (InvalidNumCases invalidNumCases) {
                         invalidNumCases.printStackTrace();
+                    } catch (InvalidAcount invalidAcount) {
+                        invalidAcount.printStackTrace();
                     }
                 case "rm":
-                    args = readParts[1].split("//s+");
+                    args = readParts[1].split("\\s+");
                     try {
                         removeClient(args[0],args[1]);
                     } catch (InvalidAcount invalidAcount) {
@@ -91,6 +97,15 @@ public class Worker implements Runnable, Interface {
                         out.println(invalidUsername);
                         out.flush();
                     }
+                default:
+                    System.out.println("E?");
+                    out.println("És psycho!");
+                    out.flush();
+            }
+            try {
+                read = in.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
@@ -120,7 +135,7 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void updateEstimate(int cases) throws InvalidNumCases {
-        Estimate.updateEstimate(idCliente,cases);
+    public void updateEstimate(int cases) throws InvalidNumCases, InvalidAcount {
+        estimate.update(idCliente,cases);
     }
 }
