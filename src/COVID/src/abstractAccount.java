@@ -13,9 +13,7 @@ public abstract class abstractAccount {
 
     }
 
-    public String getPasswd() {
-        return passwd;
-    }
+    public String getPasswd() { return passwd; }
 
     public int getCases() {
         return cases;

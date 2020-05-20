@@ -1,10 +1,17 @@
 package COVID.src.Coronita;
 
-public class Account {
-    String id;
-    String passwd;
-    int cases;
+import java.util.concurrent.locks.ReentrantLock;
 
+public class Account {
+    private String id;
+    private String passwd;
+    private int cases;
+    private ReentrantLock lockAccount;
+
+    public Account(String id, String passwd) {
+        this.passwd = passwd;
+        this.id = id;
+    }
 
     public String getId() {
         return id;
@@ -29,4 +36,13 @@ public class Account {
     public void setCases(int cases) {
         this.cases = cases;
     }
+
+    public void lock(){
+        this.lockAccount.lock();
+    }
+
+    public void unlock(){
+        this.lockAccount.unlock();
+    }
+
 }

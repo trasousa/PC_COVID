@@ -4,6 +4,7 @@ import COVID.src.Exceptions.AccountExceptions.InvalidAcount;
 import COVID.src.Coronita.Interface;
 import COVID.src.Exceptions.*;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
+import COVID.src.Exceptions.PasswordExceptions.MismatchPassException;
 import COVID.src.Server.Exceptions.*;
 
 import java.io.BufferedReader;
@@ -48,7 +49,7 @@ public class Worker implements Runnable, Interface {
                 case "cr":
                     args = readParts[1].split("//s+");
                     try {
-                        registerClient(args[0],args[1],args[1]);
+                        registerAccount(args[0],args[1],args[1]);
                     } catch (InvalidUsername invalidUsername) {
                         out.println(invalidUsername);
                         out.flush();
@@ -80,7 +81,7 @@ public class Worker implements Runnable, Interface {
                 case "rm":
                     args = readParts[1].split("//s+");
                     try {
-                        removeClient(args[0],args[1]);
+                        removeAccount(args[0],args[1]);
                     } catch (InvalidAcount invalidAcount) {
                         out.println("Account exists");
                         out.flush();
@@ -106,7 +107,7 @@ public class Worker implements Runnable, Interface {
 
     @Override
 
-    public  void registerClient(String id, String passwd) throws InvalidAcount{
+    public void registerAccount(String id, String passwd) throws InvalidAcount, MismatchPassException, InvalidUsernameServer {
 
 
     @Override
@@ -115,8 +116,8 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void removeClient(String id, String passwd) throws InvalidUsername, InvalidAcount, PasswordException {
-        accounts.removeClient(id,passwd);
+    public void removeAccount(String id, String passwd) throws InvalidUsername, InvalidAcount, PasswordException {
+        accounts.removeAccount(id,passwd);
     }
 
     @Override

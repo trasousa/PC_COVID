@@ -41,7 +41,7 @@ public class Accounts {
         }
     }
 
-    public void removeClient(String id, String passwd) throws MismatchPassException, InvalidUsernameServer {
+    public void removeAccount(String id, String passwd) throws MismatchPassException, InvalidUsernameServer {
         lockAccounts.lock();
         if(accounts.containsKey(id)){
             if(accounts.get(id).getPasswd().equals(passwd)){

@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class CoronitaClient {
+public class CoronitaClient implements Interface {
     private Socket socket;
     private BufferedReader inServer;
     private PrintWriter outServer;
@@ -31,17 +31,15 @@ public class CoronitaClient {
     }
 
     @Override
-    public Double registerClient(String Username, String pass1, String pass2)
-            throws InvalidUsername, CoronitaRemotException{
+    public void registerAccount(String Username, String pass1, String pass2)
+            throws InvalidUsername, CoronitaRemotException, IOException{
         outServer.println("cr");
         outServer.flush();
         try {
             PasswordvVlidator.isValid(pass1);
             EqualPass.areEqual(pass1,pass2);
             //UserValidator.isValid(Username);
-            return Double.parseDouble(inServer.readLine());
-        } catch (IOException ignored) {
-            throw new CoronitaRemotException("Could not connect to server");
+            //return Double.parseDouble(inServer.readLine());
         } catch (NumberFormatException ignored) {
             throw new CoronitaRemotException("Response format mismatch");
         } catch (InvalidPasswordException e) {
@@ -49,46 +47,39 @@ public class CoronitaClient {
         } catch (MismatchPassException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     @Override
-    public Double authenticate(String Username, String password)
-            throws InvalidUsername, CoronitaRemotException {
+    public void authenticate(String Username, String password)
+            throws InvalidUsername, CoronitaRemotException,IOException{
         outServer.println("lg");
         outServer.flush();
         try {
             PasswordvVlidator.isValid(password);
             //UserValidator.isValid(Username);
-            return Double.parseDouble(inServer.readLine());
-        } catch (IOException ignored) {
-            throw new CoronitaRemotException("Could not connect to server");
+            //return Double.parseDouble(inServer.readLine());
         } catch (NumberFormatException ignored) {
             throw new CoronitaRemotException("Response format mismatch");
         } catch (InvalidPasswordException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     @Override
 
-    public Double removeClient(String Username, String pass)
-            throws InvalidUsername, CoronitaRemotException {
+    public void removeAccount(String Username, String pass)
+            throws InvalidUsername, CoronitaRemotException, IOException {
         outServer.println("rm");
         outServer.flush();
         try {
             PasswordvVlidator.isValid(pass);
             //UserValidator.isValid(Username);
-            return Double.parseDouble(inServer.readLine());
-        } catch (IOException ignored) {
-            throw new CoronitaRemotException("Could not connect to server");
+            //return Double.parseDouble(inServer.readLine());
         } catch (NumberFormatException ignored) {
             throw new CoronitaRemotException("Response format mismatch");
         } catch (InvalidPasswordException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     @Override
