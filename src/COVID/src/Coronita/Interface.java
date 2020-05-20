@@ -16,5 +16,6 @@ public interface Interface {
                 throws AccountException, PasswordException, IOException;
         public void updateEstimate(int cases)
                 throws InvalidNumCases, AccountException;
+        public void checkUsername(String Username) throws InvalidUsername;
 }
 

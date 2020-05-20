@@ -51,6 +51,7 @@ public class CoronitaServer implements Interface {
         outServer.println("rm " + Username+ " " + password);
         outServer.flush();
     }
+
     @Override
     public void updateEstimate(String Username, String password){
         outServer.println("up " + Username+ " " + password);
