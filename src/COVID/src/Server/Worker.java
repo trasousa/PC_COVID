@@ -61,6 +61,7 @@ public class Worker implements Runnable, Interface {
                         out.flush();
                     } catch (CoronitaRemotException e) {
                     }
+                    break;
                 case "lg":
                     args = readParts[1].split("\\s+");
                     try {
@@ -74,6 +75,7 @@ public class Worker implements Runnable, Interface {
                         out.flush();
                     } catch (CoronitaRemotException e) {
                     }
+                    break;
                 case "up":
                     args = readParts[1].split("\\s+");
                     try {
@@ -83,6 +85,7 @@ public class Worker implements Runnable, Interface {
                     } catch (InvalidAcount invalidAcount) {
                         invalidAcount.printStackTrace();
                     }
+                    break;
                 case "rm":
                     args = readParts[1].split("\\s+");
                     try {
@@ -97,10 +100,12 @@ public class Worker implements Runnable, Interface {
                         out.println(invalidUsername);
                         out.flush();
                     }
+                    break;
                 default:
                     System.out.println("E?");
                     out.println("És psycho!");
                     out.flush();
+                    break;
             }
             try {
                 read = in.readLine();
