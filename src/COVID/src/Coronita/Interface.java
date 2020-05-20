@@ -9,11 +9,11 @@ import java.io.IOException;
 public interface Interface {
 
         public void registerAccount(String id, String pass1,String pass2)
-                throws AccountException, PasswordException, CoronitaRemotException, IOException;
+                throws AccountException, PasswordException, IOException;
         public void authenticate(String id,String password)
-                throws AccountException, PasswordException, CoronitaRemotException, IOException;
+                throws AccountException, PasswordException, IOException;
         public void removeAccount(String id, String password)
-                throws AccountException, PasswordException, CoronitaRemotException, IOException;
+                throws AccountException, PasswordException, IOException;
         public void updateEstimate(int cases)
                 throws InvalidNumCases, AccountException;
 }
