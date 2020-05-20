@@ -1,57 +1,68 @@
 package COVID.src.Coronita;
 
-
 import COVID.src.Exceptions.*;
 import COVID.src.Exceptions.AccountExceptions.InvalidAcount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
+import COVID.src.Exceptions.PasswordExceptions.InvalidPasswordException;
 import COVID.src.Exceptions.PasswordExceptions.MismatchPassException;
 
-import java.util.HashMap;
-import java.util.concurrent.locks.ReentrantLock;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class CoronitaServer implements Interface {
+    private Socket socket;
+    private Saco saco;
+    private BufferedReader inServer;
+    private PrintWriter outServer;
 
 
-public class CoronitaServer implements  Interface{
-
-    private HashMap<String,Account> Accounts;
-    private ReentrantLock lockCoronita;
-
-    public CoronitaServer(){
-        this.lockCoronita = new ReentrantLock();
-        this.Accounts = new HashMap<>();
-}
-    public void registerAccount(String Username, String pass1, String pass2)
-            throws InvalidUsername, PasswordException{
-        if(pass1.equals(pass2)){
-            this.lockCoronita.lock();
-            this.Accounts.put(Username,new Account(Username,pass1));
-            this.lockCoronita.unlock();
+    public  CoronitaServer(String host, int port)
+        throws IOException{
+            this.socket = new Socket(host, port);
+            this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.outServer = new PrintWriter(socket.getOutputStream());
         }
-        else throw new MismatchPassException("Password do not match");
+
+    public void close()
+            throws IOException {
+        socket.shutdownOutput();
+        socket.shutdownInput();
+        socket.close();
     }
 
-    public void authenticate(String Username, String password) throws InvalidAcount{
-            this.lockCoronita.lock();
-            if(!this.Accounts.containsKey(Username) || !this.Accounts.get(Username).equals(password)){
-                this.lockCoronita.unlock();
-                throw new InvalidAcount("Username or Password are incorrect");
-            }
-            this.lockCoronita.unlock();
+    @Override
+    public void registerAccount(String Username, String password){
+        outServer.println("cr " + Username + " " + password);
+        outServer.flush();
+            //espera por saco
     }
 
-    public void removeAccount(String Username, String password) throws InvalidAcount{
-        this.lockCoronita.lock();
-        if(!this.Accounts.containsKey(Username) || !this.Accounts.get(Username).equals(password)){
-            this.lockCoronita.unlock();
-            throw new InvalidAcount("Username or Password are incorrect");
-        }
-        this.Accounts.remove(Username);
-        this.lockCoronita.unlock();
+    @Override
+    public void authenticate(String Username, String password) {
+        outServer.println("lg " + Username+ " " + password);
+        outServer.flush();
     }
 
-    public void updateEstimate(int cases) throws InvalidNumCases{
-        this.lockCoronita.lock();
-
+    @Override
+    public void removeAccount(String Username, String password) {
+        outServer.println("rm " + Username+ " " + password);
+        outServer.flush();
+    }
+    @Override
+    public void updateEstimate(String Username, String password){
+        outServer.println("up " + Username+ " " + password);
+        outServer.flush();
+    }
+    @Override
+    public void checkUsername(String Username) {
+        outServer.println("ck " + Username);
+        outServer.flush();
     }
 }
 
+    public saco .....{
+        }
 

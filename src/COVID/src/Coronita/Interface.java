@@ -16,7 +16,5 @@ public interface Interface {
                 throws InvalidUsername, InvalidAcount, PasswordException, CoronitaRemotException, IOException;
         public void updateEstimate(int cases)
                 throws InvalidNumCases, AccountException;
-
-
 }
 
