@@ -1,6 +1,5 @@
 package COVID.src.Server;
 
-import COVID.src.Exceptions.AccountExceptions.InvalidAcount;
 import COVID.src.Exceptions.PasswordExceptions.MismatchPassException;
 import COVID.src.Server.Exceptions.InvalidUsernameServer;
 

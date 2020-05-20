@@ -1,6 +1,6 @@
 package COVID.src.Server;
 
-import COVID.src.Exceptions.AccountExceptions.InvalidAcount;
+import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Coronita.Interface;
 import COVID.src.Exceptions.*;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
@@ -85,15 +85,15 @@ public class Worker implements Runnable, Interface {
                         updateEstimate(Integer.parseInt(args[0]));
                     } catch (InvalidNumCases invalidNumCases) {
                         invalidNumCases.printStackTrace();
-                    } catch (InvalidAcount invalidAcount) {
-                        invalidAcount.printStackTrace();
+                    } catch (InvalidAccount invalidAccount) {
+                        invalidAccount.printStackTrace();
                     }
                     break;
                 case "rm":
                     args = readParts[1].split("\\s+");
                     try {
                         removeAccount(args[0],args[1]);
-                    } catch (InvalidAcount invalidAcount) {
+                    } catch (InvalidAccount invalidAccount) {
                         out.println("Account exists");
                         out.flush();
                     } catch (PasswordException e) {
@@ -138,12 +138,12 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void removeAccount(String id, String passwd) throws InvalidUsername, InvalidAcount, PasswordException {
+    public void removeAccount(String id, String passwd) throws InvalidUsername, InvalidAccount, PasswordException {
         accounts.removeAccount(id,passwd);
     }
 
     @Override
-    public void updateEstimate(int cases) throws InvalidNumCases, InvalidAcount {
+    public void updateEstimate(int cases) throws InvalidNumCases, InvalidAccount {
         estimate.update(idCliente,cases);
     }
 }

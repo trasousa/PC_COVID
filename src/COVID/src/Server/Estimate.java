@@ -1,11 +1,8 @@
 package COVID.src.Server;
 
-import COVID.src.Exceptions.AccountExceptions.InvalidAcount;
-import COVID.src.Server.Account;
+import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 
 import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -34,7 +31,7 @@ public class Estimate {
         return estimateNow;
     }
 
-    public void update(String id, int newCases) throws InvalidAcount {
+    public void update(String id, int newCases) throws InvalidAccount {
         lockCasos.lock();
         accounts.updateCases(id,newCases);
         updated.clear();
