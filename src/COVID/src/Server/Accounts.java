@@ -19,11 +19,13 @@ public class Accounts {
     public void addAccount(String id, String passwd) throws InvalidUsernameServer {
         lockAccounts.lock();
         if(accounts.containsKey(id)){
+            lockAccounts.unlock();
             throw new InvalidUsernameServer(id);
         }
         else{
             accounts.put(id,new Account(passwd ,0));
         }
+        lockAccounts.unlock();
     }
 
     public void checkPasswd(String id, String passwd) throws InvalidUsernameServer, MismatchPassException {
@@ -63,20 +65,25 @@ public class Accounts {
             throw new InvalidUsernameServer(id);
         }
     }
-    public float updateCases(String id, int cases) throws InvalidAcount {
+    public float updateCases(String id, int cases){
+        System.out.println("Entra aqui!");
         lockAccounts.lock();
+        Account updater = accounts.get(id);
+        updater.lockAccount();
+        updater.setCases(cases);
+        updater.unlockAccount();
         accounts.forEach(
-                (s,account) -> {
-                    account.lockAccount();
+                (s,a) -> {
+                    a.lockAccount();
                 });
         lockAccounts.unlock();
         float newEstimate = 0;
         for (Map.Entry<String, Account> entry : accounts.entrySet()) {
             Account account = entry.getValue();
-            newEstimate += account.getCases()/150;
-            account.unlockAccount();
+            newEstimate += ((float) account.getCases())/150.0;
+            //account.unlockAccount();
         }
-        newEstimate = newEstimate/(accounts.size());
+        newEstimate /= (accounts.size());
         return newEstimate;
     }
 }

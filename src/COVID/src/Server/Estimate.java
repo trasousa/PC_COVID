@@ -20,6 +20,7 @@ public class Estimate {
         updated = new HashSet<String>();
         lockCasos = new ReentrantLock();
         update = lockCasos.newCondition();
+        this.accounts = accounts;
     }
     public float getEstimate(String id) throws InterruptedException {
         float estimateNow;
@@ -34,7 +35,6 @@ public class Estimate {
     }
 
     public void update(String id, int newCases) throws InvalidAcount {
-        float newEstimate = 0;
         lockCasos.lock();
         accounts.updateCases(id,newCases);
         updated.clear();
