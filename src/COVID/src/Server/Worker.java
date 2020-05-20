@@ -59,7 +59,6 @@ public class Worker implements Runnable, Interface {
                     } catch (PasswordException e) {
                         out.println("Erro password");
                         out.flush();
-                    } catch (CoronitaRemotException e) {
                     }
                     break;
                 case "lg":
@@ -72,7 +71,6 @@ public class Worker implements Runnable, Interface {
                     } catch (PasswordException e) {
                         out.println("Erro password");
                         out.flush();
-                    } catch (CoronitaRemotException e) {
                     }
                     idCliente = args[0];
                     out.println("ack lg");
@@ -128,12 +126,12 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void registerAccount(String id, String pass1, String pass2) throws InvalidUsernameServer, PasswordException, CoronitaRemotException {
+    public void registerAccount(String id, String pass1, String pass2) throws InvalidUsernameServer, PasswordException{
         accounts.addAccount(id,pass1);
     }
 
     @Override
-    public void authenticate(String id, String passwd) throws InvalidUsername, PasswordException, CoronitaRemotException {
+    public void authenticate(String id, String passwd) throws InvalidUsername, PasswordException{
         accounts.checkPasswd(id,passwd);
     }
 
@@ -145,5 +143,9 @@ public class Worker implements Runnable, Interface {
     @Override
     public void updateEstimate(int cases) throws InvalidNumCases, InvalidAcount {
         estimate.update(idCliente,cases);
+    }
+
+    @Override
+    public void checkUsername(String Username) throws InvalidUsername{
     }
 }
