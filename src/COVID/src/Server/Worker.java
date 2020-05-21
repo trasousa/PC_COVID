@@ -60,10 +60,10 @@ public class Worker implements Runnable, Interface {
                     args = readParts[1].split("\\s+");
                     try {
                         authenticate(args[0],args[1]);
-                    } catch (InvalidUsername invalidUsername) {
-                        out.println("err invalidUsername");
-                    } catch (PasswordException e) {
-                        out.println("err password");
+                    } catch (InvalidUsername invalidAccount) {
+                        out.println("err invalidAccount");
+                    } catch (AccountException e) {
+                        e.printStackTrace();
                     }
                     idCliente = args[0];
                     out.println("ack lg");
@@ -117,18 +117,20 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void authenticate(String id, String passwd) throws InvalidAccount{
+    public void authenticate(String id, String passwd) throws AccountException {
         accounts.checkPasswd(id,passwd);
     }
 
     @Override
-    public void removeAccount(String id, String passwd) throws InvalidAccount{
+    public void removeAccount(String id, String passwd) throws AccountException {
         accounts.removeAccount(id,passwd);
     }
 
     @Override
     public void updateEstimate(int cases){
-        estimate.update(idCliente,cases);
+        float newEstimate;
+        newEstimate = accounts.updateCases(idCliente,cases);
+        estimate.update(newEstimate);
     }
 
     @Override

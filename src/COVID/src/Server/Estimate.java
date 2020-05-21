@@ -12,6 +12,7 @@ public class Estimate {
     ReentrantLock lockCasos;
     Condition update;
     Accounts accounts;
+
     public Estimate(Accounts accounts){
         estimate = 0;
         updated = new HashSet<String>();
@@ -32,9 +33,9 @@ public class Estimate {
         return estimateNow;
     }
 
-    public void update(String id, int newCases) throws InvalidAccount {
+    public void update(float newEstimate){
         lockCasos.lock();
-        accounts.updateCases(id,newCases);
+        estimate = newEstimate;
         updated.clear();
         update.signalAll();
         lockCasos.unlock();
