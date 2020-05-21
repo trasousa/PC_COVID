@@ -15,7 +15,7 @@ import java.net.Socket;
 public class Worker implements Runnable, Interface {
     Socket client;
     BufferedReader in;
-    PrintWriter out;
+    SafePrint out;
     String idCliente;
     Estimate estimate;
     Accounts accounts;
@@ -24,8 +24,8 @@ public class Worker implements Runnable, Interface {
         try {
             this.client = client;
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            out = new PrintWriter(client.getOutputStream());
-        } catch (IOException e) {
+            out = new SafePrint(new PrintWriter(client.getOutputStream()));
+        } catch (IOException e){
             e.printStackTrace();
         }
         this.estimate = estimate;
@@ -54,7 +54,6 @@ public class Worker implements Runnable, Interface {
                         registerAccount(args[0],args[1]);
                     } catch (InvalidAccount invalidAccount) {
                         out.println("err invalidAccount");
-                        out.flush();
                     }
                     break;
                 case "lg":
@@ -63,14 +62,11 @@ public class Worker implements Runnable, Interface {
                         authenticate(args[0],args[1]);
                     } catch (InvalidUsername invalidUsername) {
                         out.println("err invalidUsername");
-                        out.flush();
                     } catch (PasswordException e) {
                         out.println("err password");
-                        out.flush();
                     }
                     idCliente = args[0];
                     out.println("ack lg");
-                    out.flush();
                     writer.start(idCliente);
                     break;
                 case "up":
@@ -86,20 +82,16 @@ public class Worker implements Runnable, Interface {
                     try {
                         removeAccount(args[0],args[1]);
                     } catch (InvalidAccount invalidAccount) {
-                        out.println("Account exists");
-                        out.flush();
+                        out.println("err invalidAccount");
                     } catch (PasswordException e) {
-                        out.println("Erro Password");
-                        out.flush();
+                        out.println("err password");
                     } catch (InvalidUsername invalidUsername) {
                         out.println(invalidUsername);
-                        out.flush();
                     }
                     break;
                 default:
                     System.out.println("E?");
                     out.println("És psycho!");
-                    out.flush();
                     break;
             }
             try {
