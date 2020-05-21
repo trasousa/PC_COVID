@@ -7,8 +7,7 @@ import java.io.IOException;
 
 public interface Interface {
 
-        public void registerAccount(String id, String password)
-                throws AccountException;
+        public void registerAccount(String id, String password);
         public void authenticate(String id,String password)
                 throws AccountException;
         public void removeAccount(String id, String password)
