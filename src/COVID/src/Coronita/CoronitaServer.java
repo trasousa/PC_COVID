@@ -31,14 +31,22 @@ public class CoronitaServer implements Interface {
     }
 
     @Override
-    public void registerAccount(String Username, String password) throws InvalidUsername {
+    public void checkUsername(String Username) throws InvalidUsername{
+        outServer.println("ck " + Username);
+        outServer.flush();
+        answer = this.bag.getLetter();
+        if(answer[0].equals("err")){
+            if(answer[1].equals("InvalidUsername")) throw new InvalidUsername("InvalidUsername");
+        }
+    }
+
+    @Override
+    public void registerAccount(String Username, String password){
         outServer.println("cr " + Username + " " + password);
         outServer.flush();
-        try {
-            answer = this.bag.getLetter();
-        }
-        catch (InvalidUsername e){
-
+        answer = this.bag.getLetter();
+        if(answer[0].equals("ack")){
+            //if(answer[1].equals("Sucsses")) ;
         }
     }
 
@@ -47,7 +55,8 @@ public class CoronitaServer implements Interface {
         outServer.println("lg " + Username+ " " + password);
         outServer.flush();
         answer = this.bag.getLetter();
-        //ver se é preciso atirar
+        if(answer[0].equals("err")){
+            if(answer[1].equals("InvalidAccount")) throw new InvalidAccount("InvalidAccount");
     }
 
     @Override
@@ -67,12 +76,7 @@ public class CoronitaServer implements Interface {
         answer = this.bag.getLetter();
     }
 
-    @Override
-    public void checkUsername(String Username) throws InvalidUsername{
-        outServer.println("ck " + Username);
-        outServer.flush();
-        answer = this.bag.getLetter();
-    }
+
 }
 
 
