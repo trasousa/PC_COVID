@@ -55,16 +55,17 @@ public class Worker implements Runnable, Interface {
                     out.println("ack cr");
                     break;
                 case "lg":
+                    int cases = 0;
                     args = readParts[1].split("\\s+");
                     try {
-                        authenticate(args[0],args[1]);
+                        cases = authenticate(args[0],args[1]);
                     } catch (InvalidAccount e) {
-                        out.println("err invalidAccount");
+                        out.println("err InvalidAccount");
                     } catch (MismatchPassException e) {
                         out.println("err password");
                     }
                     idCliente = args[0];
-                    out.println("ack lg");
+                    out.println("ack " + cases);
                     writer.start(idCliente);
                     break;
                 case "up":
@@ -76,14 +77,23 @@ public class Worker implements Runnable, Interface {
                     try {
                         removeAccount(args[0],args[1]);
                     } catch (InvalidAccount invalidAccount) {
-                        out.println("err invalidAccount");
+                        out.println("err InvalidAccount");
                     } catch (MismatchPassException mismatchPass){
                         out.println(("err password"));
                     }
                     break;
+                case "ck":
+                    String username = readParts[1];
+                    try {
+                        checkUsername(username);
+                        out.println("ck " + username);
+                        System.out.println(username);
+                    } catch (InvalidUsername invalidUsername) {
+                        out.println("err InvalidUsername");
+                    }
+                    break;
                 default:
                     System.out.println("E?");
-                    out.println("És psycho!");
                     break;
             }
             try {
@@ -128,6 +138,7 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void checkUsername(String Username) throws InvalidUsername{
+    public void checkUsername(String id) throws InvalidUsername{
+        accounts.checkUsername(id);
     }
 }

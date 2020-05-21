@@ -18,6 +18,14 @@ public class Accounts {
         lockAccounts = new ReentrantLock();
     }
 
+    public void checkUsername(String id) throws InvalidUsernameServer{
+        lockAccounts.lock();
+        if(accounts.containsKey(id)){
+            ;
+        }
+        else
+            throw new InvalidUsernameServer(id);
+    }
     public void addAccount(String id, String passwd){
         lockAccounts.lock();
         accounts.put(id,new Account(passwd ,0));

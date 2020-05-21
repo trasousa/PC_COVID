@@ -22,6 +22,11 @@ public class LogIn extends JFrame {
         private CoronitaClientAccount coronita;
 
     public LogIn(){
+        try {
+            this.coronita = new CoronitaClientAccount();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
@@ -55,35 +60,34 @@ public class LogIn extends JFrame {
         button = new JButton("Login");
         button.setBounds(10, 80 ,80, 25);
         button.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String user = UserText.getText();
+                System.out.println(user);
                 try {
                     coronita.chekUsername(user);
                 } catch (InvalidUsername invalidUsername) {
                     invalidUsername.printStackTrace();
                 }
                 char[] pass = PassText.getPassword();
+                System.out.println(pass);
                 String password = String.valueOf(pass);
 
                 try {
                     int a = coronita.authenticate(user,password);
-                    if(a >= 0){
-                        frame.dispose();
-                        System.out.println(coronita.authenticate(user,password));
-                        App app = (new App());
-                    }
-                    else{
-                        frame.dispose();
-                        SignIn sign = (new SignIn());
-                    }
+                    frame.dispose();
+                    System.out.println(a);
+                    App app = (new App());
+                   // else{
+                   //
+                    //    SignIn sign = (new SignIn());
+                  //  }
                 } catch (InvalidAccount invalidAccount) {
-                    invalidAccount.printStackTrace();
+                    System.out.println("Fodeu!");
+                    frame.dispose();
                 }
             }
         });
-
         panel.add(button);
         frame.setVisible(true);
     }

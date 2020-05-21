@@ -14,11 +14,11 @@ public class App extends JFrame {
     private static JButton button2;
 
 
-    public App(){
+    public App() {
 
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
-        frame.setSize(350,200);
+        frame.setSize(350, 200);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("NICE_COVID_SERVER");
         frame.add(panel);
@@ -28,16 +28,16 @@ public class App extends JFrame {
         Casos.setBounds(10, 20, 80, 25);
         panel.add(Casos);
 
-        CasosText = new JTextField ();
-        CasosText.setBounds(100, 20 ,165,25);
+        CasosText = new JTextField();
+        CasosText.setBounds(100, 20, 165, 25);
         panel.add(CasosText);
 
         success = new JLabel("");
-        success.setBounds(10,110,300,25);
+        success.setBounds(10, 110, 300, 25);
         panel.add(success);
 
         button1 = new JButton("Atualizar");
-        button1.setBounds(10, 60 ,80, 25);
+        button1.setBounds(10, 60, 80, 25);
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -46,17 +46,17 @@ public class App extends JFrame {
         panel.add(button1);
 
         button2 = new JButton("Consultar total de casos reportados");
-        button2.setBounds(10, 100 ,80, 25);
+        button2.setBounds(10, 100, 80, 25);
         button2.addActionListener(new ActionListener() {
             @Override
+
             public void actionPerformed(ActionEvent actionEvent) {
 
+                panel.add(button2);
+
+                frame.setVisible(true);
             }
         });
-        panel.add(button2);
 
-        frame.setVisible(true);
     }
-
-
 }
