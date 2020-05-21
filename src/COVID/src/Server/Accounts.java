@@ -18,39 +18,36 @@ public class Accounts {
         lockAccounts = new ReentrantLock();
     }
 
-    public void addAccount(String id, String passwd) throws InvalidAccount{
+    public void addAccount(String id, String passwd){
         lockAccounts.lock();
-        if(accounts.containsKey(id)){
-            lockAccounts.unlock();
-            throw new InvalidAccountServer(id);
-        }
-        else{
-            accounts.put(id,new Account(passwd ,0));
-        }
+        accounts.put(id,new Account(passwd ,0));
         lockAccounts.unlock();
     }
 
-    public void checkPasswd(String id, String passwd) throws AccountException {
+    public int checkPasswd(String id, String passwd) throws InvalidAccount,MismatchPassException {
+        int cases;
         lockAccounts.lock();
         if (accounts.containsKey(id)){
             Account account = accounts.get(id);
             account.lockAccount();
             lockAccounts.unlock();
             if(account.getPasswd().equals(passwd)){
+                cases = account.getCases();
                 account.unlockAccount();
             }
             else {
                 account.unlockAccount();
                 throw new MismatchPassException("Wrong password");
             }
+            return cases;
         }
         else {
             lockAccounts.unlock();
-            throw new InvalidUsernameServer(id);
+            throw new InvalidAccountServer(id);
         }
     }
 
-    public void removeAccount(String id, String passwd) throws AccountException{
+    public void removeAccount(String id, String passwd) throws MismatchPassException,InvalidAccountServer{
         lockAccounts.lock();
         if(accounts.containsKey(id)){
             if(accounts.get(id).getPasswd().equals(passwd)){

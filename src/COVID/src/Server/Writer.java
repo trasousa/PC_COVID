@@ -5,10 +5,10 @@ import java.io.PrintWriter;
 public class Writer implements Runnable{
     Thread writer;
     boolean flag;
-    PrintWriter out;
+    SafePrint out;
     Estimate estimate;
     String idCliente;
-    public Writer(PrintWriter out, Estimate estimate){
+    public Writer(SafePrint out, Estimate estimate){
         this.out= out;
         this.estimate = estimate;
         flag = true;
@@ -38,7 +38,6 @@ public class Writer implements Runnable{
             try {
                 float newEstimate = estimate.getEstimate(idCliente);
                 out.println("est " + newEstimate);
-                out.flush();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
