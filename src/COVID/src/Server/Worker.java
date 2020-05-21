@@ -4,6 +4,7 @@ import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Coronita.Interface;
 import COVID.src.Exceptions.*;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
+import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 import COVID.src.Server.Exceptions.*;
 
 import java.io.BufferedReader;
@@ -50,20 +51,17 @@ public class Worker implements Runnable, Interface {
             switch (command){
                 case "cr":
                     args = readParts[1].split("\\s+");
-                    try {
-                        registerAccount(args[0],args[1]);
-                    } catch (InvalidAccount invalidAccount) {
-                        out.println("err invalidAccount");
-                    }
+                    registerAccount(args[0],args[1]);
+                    out.println("ack cr");
                     break;
                 case "lg":
                     args = readParts[1].split("\\s+");
                     try {
                         authenticate(args[0],args[1]);
-                    } catch (InvalidUsername invalidAccount) {
+                    } catch (InvalidAccount e) {
                         out.println("err invalidAccount");
-                    } catch (AccountException e) {
-                        e.printStackTrace();
+                    } catch (MismatchPassException e) {
+                        out.println("err password");
                     }
                     idCliente = args[0];
                     out.println("ack lg");
@@ -71,11 +69,7 @@ public class Worker implements Runnable, Interface {
                     break;
                 case "up":
                     args = readParts[1].split("\\s+");
-                    try {
-                        updateEstimate(Integer.parseInt(args[0]));
-                    } catch (InvalidAccount invalidAccount) {
-                        out.println();
-                    }
+                    updateEstimate(Integer.parseInt(args[0]));
                     break;
                 case "rm":
                     args = readParts[1].split("\\s+");
@@ -83,10 +77,8 @@ public class Worker implements Runnable, Interface {
                         removeAccount(args[0],args[1]);
                     } catch (InvalidAccount invalidAccount) {
                         out.println("err invalidAccount");
-                    } catch (PasswordException e) {
-                        out.println("err password");
-                    } catch (InvalidUsername invalidUsername) {
-                        out.println(invalidUsername);
+                    } catch (MismatchPassException mismatchPass){
+                        out.println(("err password"));
                     }
                     break;
                 default:
@@ -112,17 +104,19 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void registerAccount(String id, String passwd) throws InvalidAccount {
+    public void registerAccount(String id, String passwd){
         accounts.addAccount(id,passwd);
     }
 
     @Override
-    public void authenticate(String id, String passwd) throws AccountException {
-        accounts.checkPasswd(id,passwd);
+    public int authenticate(String id, String passwd) throws InvalidAccount,MismatchPassException{
+        int cases;
+        cases = accounts.checkPasswd(id,passwd);
+        return cases;
     }
 
     @Override
-    public void removeAccount(String id, String passwd) throws AccountException {
+    public void removeAccount(String id, String passwd) throws InvalidAccount,MismatchPassException {
         accounts.removeAccount(id,passwd);
     }
 
