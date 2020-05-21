@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class CoronitaServer implements Interface {
+
     private Socket socket;
     private Middleman dealer;
     private PrintWriter outServer;
@@ -14,6 +15,7 @@ public class CoronitaServer implements Interface {
         throws IOException{
             this.socket = new Socket(host, port);
             this.outServer = new PrintWriter(socket.getOutputStream());
+            this.dealer = new Middleman(host ,port, socket);
         }
 
     public void close()
@@ -27,7 +29,7 @@ public class CoronitaServer implements Interface {
     public void registerAccount(String Username, String password){
         outServer.println("cr " + Username + " " + password);
         outServer.flush();
-            //espera por saco
+
     }
 
     @Override
@@ -52,8 +54,11 @@ public class CoronitaServer implements Interface {
         outServer.println("ck " + Username);
         outServer.flush();
     }
+
+    public void dealCases(){
+        this.dealer();
+    }
+
 }
 
-    public saco .....{
-        }
 

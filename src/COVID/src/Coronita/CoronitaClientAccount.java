@@ -10,7 +10,7 @@ import java.io.IOException;
 
 
 public class CoronitaClientAccount {
-    //carterio
+
     CoronitaServer coronita;
     String host;
     int port;

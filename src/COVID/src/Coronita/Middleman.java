@@ -6,20 +6,42 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class Middleman {
+public class Middleman implements Runnable{
 
-    private Socket socket;
     private BufferedReader inServer;
 
-    public Middleman(String host, int port) throws IOException {
-        this.socket = new Socket(host, port);
+
+    public Middleman(String host, int port, Socket socket) throws IOException {
         this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
     }
-    public void close()
-            throws IOException {
-        socket.shutdownOutput();
-        socket.shutdownInput();
-        socket.close();
+    public int dealCases(String cenas){
+        int number;
+        String[] readParts = cenas.split("\\s+");
+        if(readParts[0].equals("est")){
+            number = Integer.parseInt(readParts[1]);
+        }
+        else
     }
 }
+
+    public void run(){
+        while(true) {
+            try {
+                // read the message form the input datastream
+                String msg = (String) inServer.readObject();
+                // print the message
+                System.out.println(msg);
+                System.out.print("> ");
+            }
+            catch(IOException e) {
+                display(notif + "Server has closed the connection: " + e + notif);
+                break;
+            }
+            catch(ClassNotFoundException e2) {
+            }
+        }
+    }
+}
+
+
