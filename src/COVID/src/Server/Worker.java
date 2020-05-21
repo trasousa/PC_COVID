@@ -49,15 +49,11 @@ public class Worker implements Runnable, Interface {
             String[] args;
             switch (command){
                 case "cr":
-                    System.out.println("Reconheceu!");
                     args = readParts[1].split("\\s+");
                     try {
-                        registerAccount(args[0],args[1],args[1]);
-                    } catch (InvalidUsername invalidUsername) {
-                        out.println(invalidUsername);
-                        out.flush();
-                    } catch (PasswordException e) {
-                        out.println("Erro password");
+                        registerAccount(args[0],args[1]);
+                    } catch (InvalidAccount invalidAccount) {
+                        out.println("err invalidAccount");
                         out.flush();
                     }
                     break;
@@ -66,10 +62,10 @@ public class Worker implements Runnable, Interface {
                     try {
                         authenticate(args[0],args[1]);
                     } catch (InvalidUsername invalidUsername) {
-                        out.println(invalidUsername);
+                        out.println("err invalidUsername");
                         out.flush();
                     } catch (PasswordException e) {
-                        out.println("Erro password");
+                        out.println("err password");
                         out.flush();
                     }
                     idCliente = args[0];
@@ -81,10 +77,8 @@ public class Worker implements Runnable, Interface {
                     args = readParts[1].split("\\s+");
                     try {
                         updateEstimate(Integer.parseInt(args[0]));
-                    } catch (InvalidNumCases invalidNumCases) {
-                        invalidNumCases.printStackTrace();
                     } catch (InvalidAccount invalidAccount) {
-                        invalidAccount.printStackTrace();
+                        out.println();
                     }
                     break;
                 case "rm":
@@ -126,8 +120,8 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void registerAccount(String id, String pass1, String pass2) throws InvalidUsernameServer, PasswordException{
-        accounts.addAccount(id,pass1);
+    public void registerAccount(String id, String passwd) throws InvalidAccount {
+        accounts.addAccount(id,passwd);
     }
 
     @Override
@@ -141,7 +135,7 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void updateEstimate(int cases) throws InvalidNumCases, InvalidAccount {
+    public void updateEstimate(int cases) throws InvalidAccount {
         estimate.update(idCliente,cases);
     }
 

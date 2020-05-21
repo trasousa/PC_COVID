@@ -19,6 +19,7 @@ public class Estimate {
         update = lockCasos.newCondition();
         this.accounts = accounts;
     }
+
     public float getEstimate(String id) throws InterruptedException {
         float estimateNow;
         lockCasos.lock();

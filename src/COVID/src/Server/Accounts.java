@@ -1,6 +1,8 @@
 package COVID.src.Server;
 
+import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.PasswordExceptions.MismatchPassException;
+import COVID.src.Server.Exceptions.InvalidAccountServer;
 import COVID.src.Server.Exceptions.InvalidUsernameServer;
 
 import java.util.HashMap;
@@ -15,11 +17,11 @@ public class Accounts {
         lockAccounts = new ReentrantLock();
     }
 
-    public void addAccount(String id, String passwd) throws InvalidUsernameServer {
+    public void addAccount(String id, String passwd) throws InvalidAccount {
         lockAccounts.lock();
         if(accounts.containsKey(id)){
             lockAccounts.unlock();
-            throw new InvalidUsernameServer(id);
+            throw new InvalidAccountServer(id);
         }
         else{
             accounts.put(id,new Account(passwd ,0));
