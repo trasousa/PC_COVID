@@ -52,7 +52,7 @@ public class CoronitaServer implements Interface {
     }
 
     @Override
-    public void authenticate(String Username, String password) throws InvalidAccount {
+    public int authenticate(String Username, String password) throws InvalidAccount {
         outServer.println("lg " + Username + " " + password);
         outServer.flush();
         answer = this.bag.getLetter();
