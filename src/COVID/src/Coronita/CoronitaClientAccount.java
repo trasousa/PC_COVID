@@ -4,7 +4,7 @@ package COVID.src.Coronita;
 import COVID.src.Exceptions.*;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.PasswordExceptions.InvalidPasswordException;
-import COVID.src.Exceptions.PasswordExceptions.MismatchPassException;
+import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 
 import java.io.IOException;
 
@@ -38,7 +38,7 @@ public class CoronitaClientAccount {
      public  void removeAccount (String Username, String password) throws InvalidAccount {
          this.coronita.removeAccount(Username,password);
      }
-     public void updateEstimate (String cases) throws InvalidNumCases, AccountException{
+     public void updateEstimate (String cases) throws InvalidNumCases{
          int number = this.isValidNum(cases);
          this.coronita.updateEstimate(number);
      }
@@ -46,7 +46,7 @@ public class CoronitaClientAccount {
 
     public int isValidNum(String cases) throws  InvalidNumCases{
         int number = Integer.parseInt(cases);
-        if(!(number >=0 && number <100))
+        if(!(number >=0 && number <= 150))
             throw new InvalidNumCases("Number of cases is not valid");
         else {return number;}
     }

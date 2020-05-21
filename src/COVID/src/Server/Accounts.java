@@ -1,7 +1,8 @@
 package COVID.src.Server;
 
+import COVID.src.Exceptions.AccountException;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
-import COVID.src.Exceptions.PasswordExceptions.MismatchPassException;
+import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 import COVID.src.Server.Exceptions.InvalidAccountServer;
 import COVID.src.Server.Exceptions.InvalidUsernameServer;
 
@@ -17,7 +18,7 @@ public class Accounts {
         lockAccounts = new ReentrantLock();
     }
 
-    public void addAccount(String id, String passwd) throws InvalidAccount {
+    public void addAccount(String id, String passwd) throws InvalidAccount{
         lockAccounts.lock();
         if(accounts.containsKey(id)){
             lockAccounts.unlock();
@@ -29,7 +30,7 @@ public class Accounts {
         lockAccounts.unlock();
     }
 
-    public void checkPasswd(String id, String passwd) throws InvalidUsernameServer, MismatchPassException {
+    public void checkPasswd(String id, String passwd) throws AccountException {
         lockAccounts.lock();
         if (accounts.containsKey(id)){
             Account account = accounts.get(id);
@@ -49,7 +50,7 @@ public class Accounts {
         }
     }
 
-    public void removeAccount(String id, String passwd) throws MismatchPassException, InvalidUsernameServer {
+    public void removeAccount(String id, String passwd) throws AccountException{
         lockAccounts.lock();
         if(accounts.containsKey(id)){
             if(accounts.get(id).getPasswd().equals(passwd)){
@@ -63,7 +64,7 @@ public class Accounts {
 
         else {
             lockAccounts.unlock();
-            throw new InvalidUsernameServer(id);
+            throw new InvalidAccountServer(id);
         }
     }
     public float updateCases(String id, int cases){

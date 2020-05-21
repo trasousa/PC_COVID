@@ -1,5 +1,6 @@
 package COVID.src.Coronita;
 
+import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class CoronitaServer implements Interface {
         throws IOException{
             this.socket = new Socket(host, port);
             this.outServer = new PrintWriter(socket.getOutputStream());
-            this.dealer = new Middleman(host ,port, socket);
+            this.dealer = new Middleman(socket);
             this.bag = new Bag();
         }
 
@@ -42,17 +43,21 @@ public class CoronitaServer implements Interface {
     }
 
     @Override
-    public void authenticate(String Username, String password) {
+    public void authenticate(String Username, String password) throws InvalidAccount{
         outServer.println("lg " + Username+ " " + password);
         outServer.flush();
         answer = this.bag.getLetter();
+        //ver se é preciso atirar
     }
 
     @Override
-    public void removeAccount(String Username, String password) {
+    public void removeAccount(String Username, String password) throws InvalidAccount{
         outServer.println("rm " + Username+ " " + password);
         outServer.flush();
         answer = this.bag.getLetter();
+        if(answer[0].equals("err")){
+            // if answer[1] e fazer throw de Exception de acordo
+        }
     }
 
     @Override
@@ -61,13 +66,13 @@ public class CoronitaServer implements Interface {
         outServer.flush();
         answer = this.bag.getLetter();
     }
+
     @Override
-    public void checkUsername(String Username) {
+    public void checkUsername(String Username) throws InvalidUsername{
         outServer.println("ck " + Username);
         outServer.flush();
         answer = this.bag.getLetter();
     }
-
 }
 
 

@@ -117,17 +117,17 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void authenticate(String id, String passwd) throws InvalidUsername, PasswordException{
+    public void authenticate(String id, String passwd) throws InvalidAccount{
         accounts.checkPasswd(id,passwd);
     }
 
     @Override
-    public void removeAccount(String id, String passwd) throws InvalidUsername, InvalidAccount, PasswordException {
+    public void removeAccount(String id, String passwd) throws InvalidAccount{
         accounts.removeAccount(id,passwd);
     }
 
     @Override
-    public void updateEstimate(int cases) throws InvalidAccount {
+    public void updateEstimate(int cases){
         estimate.update(idCliente,cases);
     }
 

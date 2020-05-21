@@ -14,7 +14,7 @@ public class Middleman implements Runnable{
     Boolean flag;
     Bag bag;
 
-    public Middleman(String host, int port, Socket socket) throws IOException {
+    public Middleman(Socket socket) throws IOException {
         this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         flag = true;
     }
