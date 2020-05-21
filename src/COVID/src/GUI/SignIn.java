@@ -1,11 +1,21 @@
 package COVID.src.GUI;
 
+import COVID.src.Coronita.CoronitaClientAccount;
+import COVID.src.Exceptions.AccountException;
+import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
+import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
+import COVID.src.Exceptions.PasswordException;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Random;
 
-public class SignIn extends JFrame {
+public class SignIn extends JFrame{
 
     private static JLabel NameLabel;
     private static JTextField NameText;
@@ -17,13 +27,21 @@ public class SignIn extends JFrame {
     private static JPasswordField PassText2;
     private static JLabel success;
     private static JButton button;
+    private CoronitaClientAccount coronita;
 
 
-    public SignIn(){
+    public SignIn() {
+
+        try {
+            this.coronita = new CoronitaClientAccount();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
-        frame.setSize(350,200);
+        frame.setSize(350, 200);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("NICE_COVID_SERVER");
         frame.add(panel);
@@ -33,16 +51,16 @@ public class SignIn extends JFrame {
         NameLabel.setBounds(10, 20, 80, 25);
         panel.add(NameLabel);
 
-        NameText = new JTextField ();
-        NameText.setBounds(100, 20 ,165,25);
+        NameText = new JTextField();
+        NameText.setBounds(100, 20, 165, 25);
         panel.add(NameText);
 
         UserLabel = new JLabel("User");
         UserLabel.setBounds(10, 50, 80, 25);
         panel.add(UserLabel);
 
-        UserText = new JTextField ();
-        UserText.setBounds(100, 50 ,165,25);
+        UserText = new JTextField();
+        UserText.setBounds(100, 50, 165, 25);
         panel.add(UserText);
 
         PasswordLabel = new JLabel("Password");
@@ -50,7 +68,7 @@ public class SignIn extends JFrame {
         panel.add(PasswordLabel);
 
         PassText = new JPasswordField();
-        PassText.setBounds(100, 80 ,165,25);
+        PassText.setBounds(100, 80, 165, 25);
         panel.add(PassText);
 
         PasswordLabel2 = new JLabel("Confirm Password");
@@ -58,38 +76,55 @@ public class SignIn extends JFrame {
         panel.add(PasswordLabel2);
 
         PassText2 = new JPasswordField();
-        PassText2.setBounds(100, 100 ,165,25);
+        PassText2.setBounds(100, 100, 165, 25);
         panel.add(PassText2);
 
         success = new JLabel("");
-        success.setBounds(10,110,300,25);
+        success.setBounds(10, 110, 300, 25);
         panel.add(success);
 
         button = new JButton("Signin");
-        button.setBounds(10, 60 ,80, 25);
+        button.setBounds(10, 60, 80, 25);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String user = UserText.getText();
-                char[] pass1 = PassText.getPassword();
-                char[] pass2 = PassText2.getPassword();
-
-                if(pass1.equals(pass2)){
-                    frame.dispose();
-                    System.out.println("nice");
-                    App app = (new App());
+                System.out.println(user);
+                try {
+                    coronita.chekUsername(user);
+                } catch (InvalidUsername invalidUsername) {
+                    JOptionPane.showMessageDialog(null,"Invalid Username", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    System.out.println("Invalid Username");
+                    byte[] array = new byte[3];
+                    new Random().nextBytes(array);
+                    String suggestion = new String(array, Charset.forName("UTF-8"));
+                    UserText.setText(user + suggestion);
                 }
+                char[] pass1 = PassText.getPassword();
+                String password = String.valueOf(pass1);
+                char[] pass2 = PassText2.getPassword();
+                String password2 = String.valueOf(pass2);
+                try {
+                    coronita.registerAccount(user, password, password2);
+                    frame.dispose();
+                    App app = (new App());
+                    System.out.println("Successfully Registered");
+                } catch (AccountException e) {
+                    JOptionPane.showMessageDialog(null,"Mismatch Password", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    System.out.println("Mismatch Password");
+                    PassText.setText("");
+                    PassText2.setText("");
 
-                else{
-                    System.out.println(pass1);
-                    System.out.println(pass2);
-                    System.out.println("try again");
+                } catch (PasswordException ActionEvent) {
+                    JOptionPane.showMessageDialog(null,"Invalid Password", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    System.out.println("Invalid Password");
+                    PassText.setText("");
+                    PassText2.setText("");
                 }
             }
         });
-        panel.add(button);
 
+        panel.add(button);
         frame.setVisible(true);
     }
-
 }

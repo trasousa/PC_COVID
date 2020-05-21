@@ -67,7 +67,10 @@ public class LogIn extends JFrame {
                 try {
                     coronita.chekUsername(user);
                 } catch (InvalidUsername invalidUsername) {
-                    invalidUsername.printStackTrace();
+                    JOptionPane.showMessageDialog(null,"Invalid Username", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    System.out.println("Invalid Username");
+                    UserText.setText("");
+                    frame.dispose();
                 }
                 char[] pass = PassText.getPassword();
                 System.out.println(pass);
@@ -78,13 +81,10 @@ public class LogIn extends JFrame {
                     frame.dispose();
                     System.out.println(a);
                     App app = (new App());
-                   // else{
-                   //
-                    //    SignIn sign = (new SignIn());
-                  //  }
-                } catch (InvalidAccount invalidAccount) {
-                    System.out.println("Fodeu!");
-                    frame.dispose();
+                } catch (InvalidAccount e) {
+                    JOptionPane.showMessageDialog(null,"Invalid Account", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    System.out.println("Invalid Account");
+                    PassText.setText("");
                 }
             }
         });
