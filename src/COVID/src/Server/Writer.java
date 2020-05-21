@@ -37,7 +37,7 @@ public class Writer implements Runnable{
         while(flag){
             try {
                 float newEstimate = estimate.getEstimate(idCliente);
-                out.println("Numero de casos " + newEstimate);
+                out.println("est " + newEstimate);
                 out.flush();
             } catch (InterruptedException e) {
                 e.printStackTrace();

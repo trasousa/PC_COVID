@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class Middleman {
+public class Middleman{
 
     private Socket socket;
     private BufferedReader inServer;
