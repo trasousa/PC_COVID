@@ -16,7 +16,7 @@ public class CoronitaClientAccount {
     String host;
     int port;
 
-    public CoronitaClientAccount(String s, int i) throws IOException {
+    public CoronitaClientAccount() throws IOException {
         host = "127.0.0.1";
         port = 60833;
         coronita = new CoronitaServer(host,port);

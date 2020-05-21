@@ -20,12 +20,14 @@ public class CoronitaServer implements Interface {
         throws IOException{
             this.socket = new Socket(host, port);
             this.outServer = new PrintWriter(socket.getOutputStream());
-            this.dealer = new Middleman(socket);
-            this.bag = new Bag();
+        this.bag = new Bag();
+            this.dealer = new Middleman(socket,bag);
+            dealer.start();
         }
 
     public void close()
             throws IOException {
+        dealer.stop();
         socket.shutdownOutput();
         socket.shutdownInput();
         socket.close();
@@ -58,11 +60,7 @@ public class CoronitaServer implements Interface {
         outServer.flush();
         answer = this.bag.getLetter();
         if (answer[0].equals("err")) {
-            a = -1;
             if (answer[1].equals("InvalidAccount")) throw new InvalidAccount("InvalidAccount");
-        }
-        else{
-            //
         }
         return a;
     }

@@ -14,8 +14,9 @@ public class Middleman implements Runnable{
     Boolean flag;
     Bag bag;
 
-    public Middleman(Socket socket) throws IOException {
+    public Middleman(Socket socket,Bag bag) throws IOException {
         this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.bag = bag;
         flag = true;
     }
     public void start(){
@@ -36,7 +37,7 @@ public class Middleman implements Runnable{
     @Override
     public void run() {
         String stamp = null;
-        int number;
+        float number;
         while (flag){
             try {
                 stamp= inServer.readLine();
@@ -45,13 +46,11 @@ public class Middleman implements Runnable{
             }
             String[] letter = stamp.split("\\s+");
             if(letter[0].equals("est")){
-                number = Integer.parseInt(letter[1]);
+                number = Float.parseFloat(letter[1]);
                 //cena do GUI
             }
             else bag.putLetter(letter);
-
         }
-        }
-
+    }
 }
 

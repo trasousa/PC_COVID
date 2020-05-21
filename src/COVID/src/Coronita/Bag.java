@@ -18,7 +18,7 @@ public class Bag {
 
     public String[] getLetter() {
         this.lockBag.lock();
-        while(updated = false){
+        while(updated == false){
             try {
                 update.await();
             } catch (InterruptedException e) {

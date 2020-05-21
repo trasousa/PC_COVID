@@ -49,7 +49,7 @@ public class App extends JFrame {
         button2.setBounds(10, 100 ,80, 25);
         button2.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            public void actionPerformed(ActionEvent actionEvent){
             }
         });
         panel.add(button2);
