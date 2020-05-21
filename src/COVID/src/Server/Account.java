@@ -1,7 +1,5 @@
 package COVID.src.Server;
 
-import COVID.src.abstractAccount;
-
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Account extends abstractAccount {

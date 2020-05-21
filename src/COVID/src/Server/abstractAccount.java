@@ -1,4 +1,4 @@
-package COVID.src;
+package COVID.src.Server;
 
 import java.util.concurrent.locks.ReentrantLock;
 
