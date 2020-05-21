@@ -61,9 +61,6 @@ public class CoronitaServer implements Interface {
             a = -1;
             if (answer[1].equals("InvalidAccount")) throw new InvalidAccount("InvalidAccount");
         }
-        else{
-            //
-        }
         return a;
     }
     @Override

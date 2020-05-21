@@ -50,6 +50,7 @@ public class App extends JFrame {
         button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+
             }
         });
         panel.add(button2);
