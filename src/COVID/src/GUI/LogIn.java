@@ -2,6 +2,7 @@ package COVID.src.GUI;
 
 import COVID.src.Coronita.CoronitaClientAccount;
 import COVID.src.Coronita.CoronitaServer;
+import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 
 import javax.swing.*;
@@ -53,6 +54,7 @@ public class LogIn extends JFrame {
         button = new JButton("Login");
         button.setBounds(10, 80 ,80, 25);
         button.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String user = UserText.getText();
@@ -62,21 +64,26 @@ public class LogIn extends JFrame {
                     invalidUsername.printStackTrace();
                 }
                 char[] pass = PassText.getPassword();
-                if(coronita.authenticate()){
-                    frame.dispose();
-                    System.out.println("nice");
-                    App app = (new App());
+                String password = String.valueOf(pass);
 
-                }
-
-                else{
-                    frame.dispose();
-                    SignIn sign = (new SignIn());
+                try {
+                    int a = coronita.authenticate(user,password);
+                    if(a >= 0){
+                        frame.dispose();
+                        System.out.println(coronita.authenticate(user,password));
+                        App app = (new App());
+                    }
+                    else{
+                        frame.dispose();
+                        SignIn sign = (new SignIn());
+                    }
+                } catch (InvalidAccount invalidAccount) {
+                    invalidAccount.printStackTrace();
                 }
             }
         });
-        panel.add(button);
 
+        panel.add(button);
         frame.setVisible(true);
     }
     public static void main(String[] args){

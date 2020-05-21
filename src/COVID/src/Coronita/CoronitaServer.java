@@ -53,16 +53,18 @@ public class CoronitaServer implements Interface {
 
     @Override
     public int authenticate(String Username, String password) throws InvalidAccount {
+        int a = 0;
         outServer.println("lg " + Username + " " + password);
         outServer.flush();
         answer = this.bag.getLetter();
         if (answer[0].equals("err")) {
+            a = -1;
             if (answer[1].equals("InvalidAccount")) throw new InvalidAccount("InvalidAccount");
         }
         else{
             //
         }
-
+        return a;
     }
     @Override
     public void removeAccount (String Username, String password) throws AccountException {

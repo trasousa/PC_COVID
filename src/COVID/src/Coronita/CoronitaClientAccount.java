@@ -33,9 +33,10 @@ public class CoronitaClientAccount {
             } else throw new MismatchPassException("Password do not match");
         }
 
-    public void authenticate (String Username, String password) throws InvalidAccount {
-        this.coronita.authenticate(Username,password);
-        }
+    public int authenticate (String Username, String password) throws InvalidAccount {
+        int a = this.coronita.authenticate(Username,password);
+        return a;
+    }
      public  void removeAccount (String Username, String password) throws AccountException {
          this.coronita.removeAccount(Username,password);
      }
