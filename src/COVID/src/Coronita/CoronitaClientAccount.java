@@ -3,6 +3,7 @@ package COVID.src.Coronita;
 
 import COVID.src.Exceptions.*;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
+import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.PasswordExceptions.InvalidPasswordException;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 
@@ -21,7 +22,7 @@ public class CoronitaClientAccount {
         coronita = new CoronitaServer(host,port);
     }
 
-    public void chekUsername (String Username){
+    public void chekUsername (String Username) throws InvalidUsername {
         this.coronita.checkUsername(Username);
     }
 
@@ -35,7 +36,7 @@ public class CoronitaClientAccount {
     public void authenticate (String Username, String password) throws InvalidAccount {
         this.coronita.authenticate(Username,password);
         }
-     public  void removeAccount (String Username, String password) throws InvalidAccount {
+     public  void removeAccount (String Username, String password) throws AccountException {
          this.coronita.removeAccount(Username,password);
      }
      public void updateEstimate (String cases) throws InvalidNumCases{

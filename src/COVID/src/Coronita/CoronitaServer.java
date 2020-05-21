@@ -1,5 +1,6 @@
 package COVID.src.Coronita;
 
+import COVID.src.Exceptions.AccountException;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 
@@ -51,32 +52,36 @@ public class CoronitaServer implements Interface {
     }
 
     @Override
-    public void authenticate(String Username, String password) throws InvalidAccount{
-        outServer.println("lg " + Username+ " " + password);
+    public void authenticate(String Username, String password) throws InvalidAccount {
+        outServer.println("lg " + Username + " " + password);
         outServer.flush();
         answer = this.bag.getLetter();
-        if(answer[0].equals("err")){
-            if(answer[1].equals("InvalidAccount")) throw new InvalidAccount("InvalidAccount");
-    }
+        if (answer[0].equals("err")) {
+            if (answer[1].equals("InvalidAccount")) throw new InvalidAccount("InvalidAccount");
+        }
+        else{
+            //
+        }
 
+    }
     @Override
-    public void removeAccount(String Username, String password) throws InvalidAccount{
-        outServer.println("rm " + Username+ " " + password);
+    public void removeAccount (String Username, String password) throws AccountException {
+        outServer.println("rm " + Username + " " + password);
         outServer.flush();
         answer = this.bag.getLetter();
-        if(answer[0].equals("err")){
-            // if answer[1] e fazer throw de Exception de acordo
+        if (answer[0].equals("err")) {
+            if (answer[1].equals("InvalidAccount")) throw new InvalidAccount("InvalidAccount");
         }
     }
 
     @Override
-    public void updateEstimate(int cases){
+    public void updateEstimate ( int cases){
         outServer.println("up " + cases);
         outServer.flush();
         answer = this.bag.getLetter();
     }
 
-
 }
+
 
 

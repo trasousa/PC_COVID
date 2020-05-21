@@ -1,5 +1,9 @@
 package COVID.src.GUI;
 
+import COVID.src.Coronita.CoronitaClientAccount;
+import COVID.src.Coronita.CoronitaServer;
+import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +17,7 @@ public class LogIn extends JFrame {
         private static JPasswordField PassText;
         private static JLabel success;
         private static JButton button;
-
+        private CoronitaClientAccount coronita;
 
     public LogIn(){
 
@@ -52,8 +56,13 @@ public class LogIn extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String user = UserText.getText();
+                try {
+                    coronita.chekUsername(user);
+                } catch (InvalidUsername invalidUsername) {
+                    invalidUsername.printStackTrace();
+                }
                 char[] pass = PassText.getPassword();
-                if(user.equals("Tomas")){
+                if(coronita.authenticate()){
                     frame.dispose();
                     System.out.println("nice");
                     App app = (new App());
