@@ -44,19 +44,8 @@ public class App extends JFrame {
             }
         });
         panel.add(button1);
+        panel.add(button2);
 
-        button2 = new JButton("Consultar total de casos reportados");
-        button2.setBounds(10, 100, 80, 25);
-        button2.addActionListener(new ActionListener() {
-            @Override
-
-            public void actionPerformed(ActionEvent actionEvent) {
-
-                panel.add(button2);
-
-                frame.setVisible(true);
-            }
-        });
-
+        frame.setVisible(true);
     }
 }

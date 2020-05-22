@@ -23,6 +23,7 @@ public class CoronitaClientAccount {
     }
 
     public void chekUsername (String Username) throws InvalidUsername {
+        System.out.println(Username);
         this.coronita.checkUsername(Username);
     }
 
@@ -60,9 +61,9 @@ public class CoronitaClientAccount {
     public static class PasswordVlidator {
         public static void isValid(String password) throws InvalidPasswordException {
                 // for checking if password length is between 8 and 15
-                if (!((password.length() >= 8)
-                        && (password.length() <= 15))) {
-                    // Password length should be between 8 to 15 characters
+                if (!((password.length() >= 3)
+                        && (password.length() <= 10))) {
+                    // Password length should be between 3 to 10 characters
                     throw new InvalidPasswordException("Password length should be" + " between 8 to 15 characters");
                 }
                 if (password.contains(" ")) {
@@ -85,57 +86,10 @@ public class CoronitaClientAccount {
                                 + " at least one digit(0-9)");
                     }
                 }
-                // for special characters
-                if (!(password.contains("@") || password.contains("#")
-                        || password.contains("!") || password.contains("~")
-                        || password.contains("$") || password.contains("%")
-                        || password.contains("^") || password.contains("&")
-                        || password.contains("*") || password.contains("(")
-                        || password.contains(")") || password.contains("-")
-                        || password.contains("+") || password.contains("/")
-                        || password.contains(":") || password.contains(".")
-                        || password.contains(", ") || password.contains("<")
-                        || password.contains(">") || password.contains("?")
-                        || password.contains("|"))) {
-                    // Password should contain at least one special character ( @, #, %, &, !, $ )
-                    throw new InvalidPasswordException ("Password length should be" + " between 8 to 15 characters");
-                }
-                if (true) {
-                    int count = 0;
-                    // checking capital letters
-                    for (int i = 65; i <= 90; i++) {
-                        // type casting
-                        char c = (char) i;
-                        String str1 = Character.toString(c);
-                        if (password.contains(str1)) {
-                            count = 1;
-                        }
-                    }
-                    if (count == 0) {
-                        // Password should contain at least one uppercase letter(A-Z)
-                        throw new InvalidPasswordException ("Password should contain at" + " least one uppercase letter(A-Z)");
-                    }
-                }
-                if (true) {
-                    int count = 0;
-                    // checking small letters
-                    for (int i = 90; i <= 122; i++) {
-                        // type casting
-                        char c = (char) i;
-                        String str1 = Character.toString(c);
-                        if (password.contains(str1)) {
-                            count = 1;
-                        }
-                    }
-                    if (count == 0) {
-                        // Password should contain at least one lowercase letter(a-z)
-                        throw new InvalidPasswordException ("Password should contain at"
-                                + " least one lowercase letter(a-z)");
-                    }
-                }
-            }
         }
     }
+}
+
 
 
 

@@ -5,6 +5,7 @@ import COVID.src.Coronita.CoronitaServer;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 
+import javax.security.auth.login.AccountException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,6 +20,7 @@ public class LogIn extends JFrame {
         private static JPasswordField PassText;
         private static JLabel success;
         private static JButton button;
+        private static JButton button2;
         private CoronitaClientAccount coronita;
 
     public LogIn(){
@@ -63,7 +65,6 @@ public class LogIn extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String user = UserText.getText();
-                System.out.println(user);
                 try {
                     coronita.chekUsername(user);
                 } catch (InvalidUsername invalidUsername) {
@@ -73,14 +74,14 @@ public class LogIn extends JFrame {
                     frame.dispose();
                 }
                 char[] pass = PassText.getPassword();
-                System.out.println(pass);
                 String password = String.valueOf(pass);
 
                 try {
                     int a = coronita.authenticate(user,password);
                     frame.dispose();
+                    App app = new App();
                     System.out.println(a);
-                    App app = (new App());
+
                 } catch (InvalidAccount e) {
                     JOptionPane.showMessageDialog(null,"Invalid Account", "WARNING", JOptionPane.WARNING_MESSAGE);
                     System.out.println("Invalid Account");
@@ -89,6 +90,16 @@ public class LogIn extends JFrame {
             }
         });
         panel.add(button);
+        button2 = new JButton("Sing up");
+        button2.setBounds(100, 80 ,80, 25);
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                frame.dispose();
+                SignIn sign = new SignIn();
+            }
+        });
+        panel.add(button2);
         frame.setVisible(true);
     }
     public static void main(String[] args){
