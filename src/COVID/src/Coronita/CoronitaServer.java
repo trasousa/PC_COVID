@@ -20,7 +20,7 @@ public class CoronitaServer implements Interface {
         throws IOException{
             this.socket = new Socket(host, port);
             this.outServer = new PrintWriter(socket.getOutputStream());
-        this.bag = new Bag();
+            this.bag = new Bag();
             this.dealer = new Middleman(socket,bag);
             dealer.start();
         }
