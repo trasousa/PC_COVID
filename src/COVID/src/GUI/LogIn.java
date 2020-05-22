@@ -4,6 +4,7 @@ import COVID.src.Coronita.CoronitaClientAccount;
 import COVID.src.Coronita.CoronitaServer;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
+import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 
 import javax.security.auth.login.AccountException;
 import javax.swing.*;
@@ -65,27 +66,23 @@ public class LogIn extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String user = UserText.getText();
-                try {
-                    coronita.chekUsername(user);
-                } catch (InvalidUsername invalidUsername) {
-                    JOptionPane.showMessageDialog(null,"Invalid Username", "WARNING", JOptionPane.WARNING_MESSAGE);
-                    System.out.println("Invalid Username");
-                    UserText.setText("");
-                    frame.dispose();
-                }
                 char[] pass = PassText.getPassword();
                 String password = String.valueOf(pass);
-
                 try {
-                    int a = coronita.authenticate(user,password);
+                    int a = coronita.authenticate(user, password);
                     frame.dispose();
                     App app = new App();
                     System.out.println(a);
-
                 } catch (InvalidAccount e) {
-                    JOptionPane.showMessageDialog(null,"Invalid Account", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Invalid Account", "WARNING", JOptionPane.WARNING_MESSAGE);
                     System.out.println("Invalid Account");
+                    UserText.setText("");
                     PassText.setText("");
+                } catch (MismatchPassException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid Password", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    System.out.println("Invalid Password");
+                    PassText.setText("");
+                    frame.dispose();
                 }
             }
         });

@@ -72,7 +72,7 @@ public class SignIn extends JFrame{
         PassText2.setBounds(100, 100, 165, 25);
         panel.add(PassText2);
 
-        button = new JButton("Sign up");
+        button = new JButton("Sign in");
         button.setBounds(10, 140, 80, 25);
         button.addActionListener(new ActionListener() {
             @Override

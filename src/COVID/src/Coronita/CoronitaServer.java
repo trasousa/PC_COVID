@@ -3,6 +3,7 @@ package COVID.src.Coronita;
 import COVID.src.Exceptions.AccountException;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
+import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -54,13 +55,14 @@ public class CoronitaServer implements Interface {
     }
 
     @Override
-    public int authenticate(String Username, String password) throws InvalidAccount {
+    public int authenticate(String Username, String password) throws InvalidAccount, MismatchPassException{
         int a = 0;
         outServer.println("lg " + Username + " " + password);
         outServer.flush();
         answer = this.bag.getLetter();
         if (answer[0].equals("err")) {
             if (answer[1].equals("InvalidAccount")) throw new InvalidAccount("InvalidAccount");
+            if (answer[1].equals("password")) throw new MismatchPassException("Incorrect Password");
         }
         return a;
     }
