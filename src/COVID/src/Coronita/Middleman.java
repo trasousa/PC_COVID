@@ -15,7 +15,7 @@ public class Middleman implements Runnable{
     Bag bag;
 
     public Middleman(Socket socket,Bag bag) throws IOException {
-        this.inServer = new BufferedReader(new InputStreamReader(System.in));
+        this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.bag = bag;
         flag = true;
     }

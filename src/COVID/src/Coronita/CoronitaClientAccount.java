@@ -23,7 +23,6 @@ public class CoronitaClientAccount {
     }
 
     public void chekUsername (String Username) throws InvalidUsername {
-        System.out.println(Username);
         this.coronita.checkUsername(Username);
     }
 
