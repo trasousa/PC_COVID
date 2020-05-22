@@ -59,14 +59,14 @@ public class Worker implements Runnable, Interface {
                     args = readParts[1].split("\\s+");
                     try {
                         cases = authenticate(args[0],args[1]);
+                        idCliente = args[0];
+                        out.println("ack " + cases);
+                        writer.start(idCliente);
                     } catch (InvalidAccount e) {
                         out.println("err InvalidAccount");
                     } catch (MismatchPassException e) {
                         out.println("err password");
                     }
-                    idCliente = args[0];
-                    out.println("ack " + cases);
-                    writer.start(idCliente);
                     break;
                 case "up":
                     args = readParts[1].split("\\s+");
