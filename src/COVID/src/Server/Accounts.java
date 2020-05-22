@@ -20,7 +20,7 @@ public class Accounts {
 
     public void checkUsername(String id) throws InvalidUsernameServer{
         lockAccounts.lock();
-        if(accounts.containsKey(id)){
+        if(!(accounts.containsKey(id))){
             ;
         }
         else
