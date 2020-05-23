@@ -1,9 +1,7 @@
 package COVID.src.Coronita;
 
-import COVID.src.Exceptions.*;
+import COVID.src.Exceptions.AccountException;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
-
-import java.io.IOException;
 
 public interface Interface {
 

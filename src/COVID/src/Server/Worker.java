@@ -1,11 +1,9 @@
 package COVID.src.Server;
 
-import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Coronita.Interface;
-import COVID.src.Exceptions.*;
+import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
-import COVID.src.Server.Exceptions.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,7 +41,7 @@ public class Worker implements Runnable, Interface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while(!(read.equals("quit")) && read != null){
+        while(read != null && !(read.equals("quit"))){
             String[] readParts = read.split("\\s+",2);
             String command = readParts[0];
             System.out.println(command);
