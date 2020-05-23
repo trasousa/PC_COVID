@@ -88,6 +88,7 @@ public class Accounts {
                     a.lockAccount();
                 });
         lockAccounts.unlock();
+        //sakd
         float newEstimate = 0;
         for (Map.Entry<String, Account> entry : accounts.entrySet()) {
             Account account = entry.getValue();
