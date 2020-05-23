@@ -15,7 +15,6 @@ public class App extends JFrame {
 
 
     public App() {
-
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         frame.setSize(350, 200);
