@@ -18,13 +18,16 @@ public class Accounts {
         lockAccounts = new ReentrantLock();
     }
 
-    public void checkUsername(String id) throws InvalidUsernameServer{
+    public void checkUsername(String id) throws InvalidUsernameServer {
         lockAccounts.lock();
-        if(!(accounts.containsKey(id))){
+        if (!(accounts.containsKey(id))) {
             ;
         }
-        else
+        else{
+            lockAccounts.unlock();
             throw new InvalidUsernameServer(id);
+        }
+        lockAccounts.unlock();
     }
     public void addAccount(String id, String passwd){
         lockAccounts.lock();
@@ -60,6 +63,7 @@ public class Accounts {
         if(accounts.containsKey(id)){
             if(accounts.get(id).getPasswd().equals(passwd)){
                 accounts.remove(id);
+                lockAccounts.unlock();
             }
             else {
                 lockAccounts.unlock();
@@ -88,7 +92,7 @@ public class Accounts {
         for (Map.Entry<String, Account> entry : accounts.entrySet()) {
             Account account = entry.getValue();
             newEstimate += ((float) account.getCases())/150.0;
-            //account.unlockAccount();
+            account.unlockAccount();
         }
         newEstimate /= (accounts.size());
         return newEstimate;

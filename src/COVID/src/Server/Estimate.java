@@ -8,17 +8,16 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Estimate {
     float estimate;
+    int reporters;
     HashSet<String> updated;
     ReentrantLock lockCasos;
     Condition update;
-    Accounts accounts;
 
     public Estimate(Accounts accounts){
         estimate = 0;
         updated = new HashSet<String>();
         lockCasos = new ReentrantLock();
         update = lockCasos.newCondition();
-        this.accounts = accounts;
     }
 
     public float getEstimate(String id) throws InterruptedException {
