@@ -81,7 +81,6 @@ public class CoronitaServer implements Interface {
     public void updateEstimate (int cases){
         outServer.println("up " + cases);
         outServer.flush();
-        answer = this.bag.getLetter();
     }
 
 }

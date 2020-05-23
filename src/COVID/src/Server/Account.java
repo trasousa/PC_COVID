@@ -14,7 +14,6 @@ public class Account {
         lock = new ReentrantLock();
     }
 
-
     public String getPasswd() { return passwd; }
 
     public int getCases() {
