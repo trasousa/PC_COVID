@@ -76,6 +76,7 @@ public class Accounts {
             throw new InvalidAccountServer(id);
         }
     }
+
     public float updateCases(String id, int cases){
         System.out.println("Entra aqui!");
         lockAccounts.lock();
@@ -96,5 +97,14 @@ public class Accounts {
         }
         newEstimate /= (accounts.size());
         return newEstimate;
+    }
+
+    public void setCountry(String id, String country){
+        lockAccounts.lock();
+        Account account = accounts.get(id);
+        account.lockAccount();
+        lockAccounts.unlock();
+        account.setCountry(country);
+        account.unlockAccount();
     }
 }

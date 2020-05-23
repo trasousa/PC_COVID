@@ -74,6 +74,7 @@ public class Worker implements Runnable, Interface {
                     args = readParts[1].split("\\s+");
                     try {
                         removeAccount(args[0],args[1]);
+                        out.println("ack rm");
                     } catch (InvalidAccount invalidAccount) {
                         out.println("err InvalidAccount");
                     } catch (MismatchPassException mismatchPass){
@@ -90,6 +91,9 @@ public class Worker implements Runnable, Interface {
                         out.println("err InvalidUsername");
                     }
                     break;
+                case "vw":
+                    String country = readParts[1];
+                    //change ct
                 default:
                     System.out.println("E?");
                     break;
@@ -138,5 +142,8 @@ public class Worker implements Runnable, Interface {
     @Override
     public void checkUsername(String id) throws InvalidUsername{
         accounts.checkUsername(id);
+    }
+    public void setCountry(String country){
+        accounts.setCountry(idCliente,country);
     }
 }

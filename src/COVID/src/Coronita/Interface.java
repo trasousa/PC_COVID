@@ -13,5 +13,6 @@ public interface Interface {
         public void updateEstimate(int cases);
         public void checkUsername(String Username)
                 throws InvalidUsername;
+        public void setCountry(String country);
 }
 

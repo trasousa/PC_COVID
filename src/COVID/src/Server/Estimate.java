@@ -13,13 +13,18 @@ public class Estimate {
     ReentrantLock lockCasos;
     Condition update;
 
-    public Estimate(Accounts accounts){
+    public Estimate(){
         estimate = 0;
         updated = new HashSet<String>();
         lockCasos = new ReentrantLock();
         update = lockCasos.newCondition();
     }
-
+    public void lockEstimate(){
+        lockCasos.lock();
+    }
+    public void unlockEstimate(){
+        lockCasos.unlock();
+    }
     public float getEstimate(String id) throws InterruptedException {
         float estimateNow;
         lockCasos.lock();
