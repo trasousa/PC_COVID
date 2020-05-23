@@ -86,7 +86,7 @@ public class Worker implements Runnable, Interface {
                     String username = readParts[1];
                     try {
                         checkUsername(username);
-                        out.println("ck " + username);
+                        out.println("ack " + username);
                         System.out.println(username);
                     } catch (InvalidUsername invalidUsername) {
                         out.println("err InvalidUsername");
