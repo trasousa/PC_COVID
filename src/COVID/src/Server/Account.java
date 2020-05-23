@@ -8,7 +8,7 @@ public class Account {
     String country;
     int cases;
 
-    public Account(String passw, String country){
+    public Account(String passw, int cases){
         this.passwd = passw;
         this.cases = 0;
         lock = new ReentrantLock();
