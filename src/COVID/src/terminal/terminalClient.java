@@ -1,20 +1,20 @@
 package COVID.src.terminal;
 
 import COVID.src.Coronita.CoronitaServer;
-import COVID.src.Exceptions.AccountException;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
-import COVID.src.Server.Account;
 
-import java.io.*;
+import java.io.Console;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class terminalClient{
 
     public static void main(String args[]) throws IOException {
         String host = "127.0.0.1";
         int port = 60833;
-        CoronitaServer stub = new CoronitaServer(host,port);
+        CoronitaServer stub = new CoronitaServer(host,port,null);
         Console con = System.console();
         PrintWriter out = con.writer();
 
@@ -45,6 +45,8 @@ public class terminalClient{
                     stub.authenticate(username,new String(passwd));
                 } catch(InvalidAccount ia) {
                   out.println("A conta não existe");
+                } catch (MismatchPassException e) {
+                    e.printStackTrace();
                 }
         }
     }

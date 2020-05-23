@@ -1,14 +1,10 @@
 package COVID.src.GUI;
 
 import COVID.src.Coronita.CoronitaClientAccount;
-import COVID.src.Coronita.CoronitaServer;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
-import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 
-import javax.security.auth.login.AccountException;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -17,6 +13,7 @@ public class LogIn extends JFrame {
 
         private static JLabel UserLabel;
         private static JTextField UserText;
+        private static JTextField EstimateText;
         private static JLabel PasswordLabel;
         private static JPasswordField PassText;
         private static JLabel success;
@@ -26,7 +23,8 @@ public class LogIn extends JFrame {
 
     public LogIn(){
         try {
-            this.coronita = new CoronitaClientAccount();
+            this.EstimateText = new JTextField("Global estimated case");
+            this.coronita = new CoronitaClientAccount(EstimateText);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,7 +69,7 @@ public class LogIn extends JFrame {
                 try {
                     int a = coronita.authenticate(user, password);
                     frame.dispose();
-                    App app = new App();
+                    App app = new App(user,a, EstimateText,coronita);
                     System.out.println(a);
                 } catch (InvalidAccount e) {
                     JOptionPane.showMessageDialog(null, "Invalid Account", "WARNING", JOptionPane.WARNING_MESSAGE);
@@ -93,7 +91,7 @@ public class LogIn extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 frame.dispose();
-                SignIn sign = new SignIn();
+                SignIn sign = new SignIn(EstimateText);
             }
         });
         panel.add(button2);

@@ -7,6 +7,7 @@ import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.PasswordExceptions.InvalidPasswordException;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 
+import javax.swing.*;
 import java.io.IOException;
 
 
@@ -15,11 +16,13 @@ public class CoronitaClientAccount {
     CoronitaServer coronita;
     String host;
     int port;
+    private static JTextField estimatetext;
 
-    public CoronitaClientAccount() throws IOException {
+    public CoronitaClientAccount(JTextField estimate) throws IOException {
+        this.estimatetext = estimate;
         host = "127.0.0.1";
         port = 60833;
-        coronita = new CoronitaServer(host,port);
+        coronita = new CoronitaServer(host,port,estimatetext);
     }
 
     public void chekUsername (String Username) throws InvalidUsername {

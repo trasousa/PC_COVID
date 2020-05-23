@@ -2,13 +2,10 @@ package COVID.src.GUI;
 
 import COVID.src.Coronita.CoronitaClientAccount;
 import COVID.src.Exceptions.AccountException;
-import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.PasswordException;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -19,6 +16,7 @@ public class SignIn extends JFrame{
 
     private static JLabel NameLabel;
     private static JTextField NameText;
+    private static JTextField Estimate;
     private static JLabel UserLabel;
     private static JTextField UserText;
     private static JLabel PasswordLabel;
@@ -30,10 +28,10 @@ public class SignIn extends JFrame{
     private CoronitaClientAccount coronita;
 
 
-    public SignIn() {
-
+    public SignIn(JTextField Estimate) {
+        this.Estimate = Estimate;
         try {
-            this.coronita = new CoronitaClientAccount();
+            this.coronita = new CoronitaClientAccount(Estimate);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,8 +92,9 @@ public class SignIn extends JFrame{
                 String password2 = String.valueOf(pass2);
                 try {
                     coronita.registerAccount(user, password, password2);
+                    coronita.authenticate(user,password);
                     frame.dispose();
-                    App app = (new App());
+                    App app = new App(user,0, Estimate,coronita);
                     System.out.println("Successfully Registered");
                 } catch (AccountException e) {
                     JOptionPane.showMessageDialog(null,"Mismatch Password", "WARNING", JOptionPane.WARNING_MESSAGE);

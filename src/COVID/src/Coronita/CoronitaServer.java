@@ -5,6 +5,7 @@ import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -17,12 +18,12 @@ public class CoronitaServer implements Interface {
     private PrintWriter outServer;
 
 
-    public  CoronitaServer(String host, int port)
+    public  CoronitaServer(String host, int port, JTextField estimate)
         throws IOException{
             this.socket = new Socket(host, port);
             this.outServer = new PrintWriter(socket.getOutputStream());
             this.bag = new Bag();
-            this.dealer = new Middleman(socket,bag);
+            this.dealer = new Middleman(socket,bag,estimate);
             dealer.start();
         }
 
@@ -77,7 +78,7 @@ public class CoronitaServer implements Interface {
     }
 
     @Override
-    public void updateEstimate ( int cases){
+    public void updateEstimate (int cases){
         outServer.println("up " + cases);
         outServer.flush();
         answer = this.bag.getLetter();
