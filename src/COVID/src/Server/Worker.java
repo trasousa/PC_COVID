@@ -117,7 +117,7 @@ public class Worker implements Runnable, Interface {
         }
 
         try {
-            writer.stop();
+            kill_writer();
             client.shutdownInput();
             client.shutdownOutput();
             client.close();
