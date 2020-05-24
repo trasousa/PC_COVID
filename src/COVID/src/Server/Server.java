@@ -16,7 +16,7 @@ public class Server {
 
     public static void main(String[] args) {
         Accounts accounts = new Accounts();
-        Estimate estimate = new Estimate(accounts);
+        Estimate estimate = new Estimate();
         ServerSocket sSock = null;
         try {
             sSock = new ServerSocket( 	60833);

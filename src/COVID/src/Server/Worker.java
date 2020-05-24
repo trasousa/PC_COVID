@@ -71,7 +71,7 @@ public class Worker implements Runnable, Interface {
                     updateEstimate(Integer.parseInt(args[0]));
                     break;
                 case "lgo":
-
+                    logout();
                     break;
                 case "rm":
                     args = readParts[1].split("\\s+");
@@ -150,6 +150,6 @@ public class Worker implements Runnable, Interface {
         accounts.setCountry(idCliente,country);
     }
     public void logout(){
-
+        writer.stop();
     }
 }
