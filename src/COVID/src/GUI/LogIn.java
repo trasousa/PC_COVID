@@ -114,8 +114,8 @@ public class LogIn extends JFrame {
                 char[] pass = PassText.getPassword();
                 String password = String.valueOf(pass);
                 try {
-                    int a = coronita.authenticate(user, password);
-                    coronita.setCountry(s);
+                    coronita.authenticate(user, password);
+                    int a =  coronita.setCountry(s);
                     frame.dispose();
                     App app = new App(user,a, EstimateGlobal, EstimateCountry, coronita);
                     System.out.println(a);

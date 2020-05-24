@@ -38,9 +38,9 @@ public class CoronitaClientAccount {
             } else throw new MismatchPassException("Password do not match");
         }
 
-    public int authenticate (String Username, String password) throws InvalidAccount, MismatchPassException {
-        int a = this.coronita.authenticate(Username,password);
-        return a;
+    public void authenticate (String Username, String password) throws InvalidAccount, MismatchPassException {
+        this.coronita.authenticate(Username,password);
+
     }
      public  void removeAccount (String Username, String password) throws AccountException {
          this.coronita.removeAccount(Username,password);
@@ -50,7 +50,6 @@ public class CoronitaClientAccount {
          this.coronita.updateEstimate(number);
      }
 
-
     public int isValidNum(String cases) throws  InvalidNumCases{
         int number = Integer.parseInt(cases);
         if(!(number >=0 && number <= 150))
@@ -58,8 +57,9 @@ public class CoronitaClientAccount {
         else {return number;}
     }
 
-    public void setCountry(String country){
-        this.coronita.setCountry(country);
+    public int setCountry(String country){
+        int a = this.coronita.setCountry(country);
+        return a;
     }
     public void logout(){
         this.coronita.logout();

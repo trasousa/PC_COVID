@@ -82,17 +82,22 @@ public class CoronitaServer implements Interface {
     }
 
     @Override
-    public void setCountry(String country){
+    public int setCountry(String country){
+        int a = 0;
         outServer.println("vw" + country);
         outServer.flush();
-
-    };
+        answer = this.bag.getLetter();
+        if (answer[0].equals("ack")) {
+            a = Integer.parseInt(answer[1]);
+        }
+    return a;
+    }
     @Override
     public void logout(){
         outServer.println("lgo");
         outServer.flush();
         answer = this.bag.getLetter();
-    };
+    }
 
 }
 

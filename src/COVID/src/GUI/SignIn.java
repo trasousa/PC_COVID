@@ -128,16 +128,6 @@ public class SignIn extends JFrame{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String user = UserText.getText();
-                try {
-                    coronita.chekUsername(user);
-                } catch (InvalidUsername invalidUsername) {
-                    JOptionPane.showMessageDialog(null,"Invalid Username", "WARNING", JOptionPane.WARNING_MESSAGE);
-                    System.out.println("Invalid Username");
-                    byte[] array = new byte[3];
-                    new Random().nextBytes(array);
-                    String suggestion = new String(array, Charset.forName("UTF-8"));
-                    UserText.setText(user + suggestion);
-                }
                 char[] pass1 = PassText.getPassword();
                 String password = String.valueOf(pass1);
                 char[] pass2 = PassText2.getPassword();
@@ -146,9 +136,9 @@ public class SignIn extends JFrame{
                     coronita.chekUsername(user);
                     coronita.registerAccount(user, password, password2);
                     coronita.authenticate(user,password);
-                    coronita.setCountry(s);
+                    int a = coronita.setCountry(s);
                     frame.dispose();
-                    App app = new App(user,0, EstimateGlobal,EstimateCountry,coronita);
+                    App app = new App(user,a, EstimateGlobal,EstimateCountry,coronita);
                     System.out.println("Successfully Registered");
                 } catch (MismatchPassException e) {
                     JOptionPane.showMessageDialog(null,"Mismatch Password", "WARNING", JOptionPane.WARNING_MESSAGE);
