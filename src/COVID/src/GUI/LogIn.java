@@ -40,16 +40,20 @@ public class LogIn extends JFrame {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         frame.setSize(350,200);
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                int i=JOptionPane.showConfirmDialog(null, "Are you sure?");
-                if(i==0){
-                    System.exit(0);//cierra aplicacion
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",    JOptionPane.YES_NO_OPTION);
+                if(i== JOptionPane.YES_OPTION){
+                    System.exit(0);
                     try {
                         coronita.close();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
+                }
+                else if (i== JOptionPane.NO_OPTION){
+                    System.out.println("es um mono");
                 }
             }
         });
@@ -79,23 +83,23 @@ public class LogIn extends JFrame {
 
         String countryList[] = {"Portugal \uD83C\uDDF5\uD83C\uDDF9","Spain \uD83C\uDDEA\uD83C\uDDE6","Italy \uD83C\uDDEE\uD83C\uDDF9","China \uD83C\uDDE8\uD83C\uDDF3"};
         country = new JComboBox(countryList);
-        country.setBounds(140,100,150,25);
+        country.setBounds(120,100,150,25);
         country.setFont(new Font("OpenSymbol", Font.ITALIC, 12));
         country.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Object selction = country.getItemAt(country.getSelectedIndex());
                 if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
-                    s =("PT");
+                    s =("pt");
                 }
                 if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
-                    s = ("ES");
+                    s = ("es");
                 }
                 if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
-                    s =("IT");
+                    s =("it");
                 }
                 if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
-                    s = ("CN");
+                    s = ("cn");
                 }
             }
         });

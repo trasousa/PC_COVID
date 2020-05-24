@@ -56,8 +56,7 @@ public class CoronitaServer implements Interface {
     }
 
     @Override
-    public int authenticate(String Username, String password) throws InvalidAccount, MismatchPassException{
-        int a = 0;
+    public void authenticate(String Username, String password) throws InvalidAccount, MismatchPassException{
         outServer.println("lgi " + Username + " " + password);
         outServer.flush();
         answer = this.bag.getLetter();
@@ -65,7 +64,6 @@ public class CoronitaServer implements Interface {
             if (answer[1].equals("InvalidAccount")) throw new InvalidAccount("InvalidAccount");
             if (answer[1].equals("password")) throw new MismatchPassException("Incorrect Password");
         }
-        return a;
     }
     @Override
     public void removeAccount (String Username, String password) throws AccountException {

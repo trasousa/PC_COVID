@@ -10,13 +10,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 
-/* import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.xy.DefaultXYDataset;
-import org.jfree.data.xy.XYDataset;
-*/
 
 public class App extends JFrame {
     private static JLabel est;
@@ -38,16 +31,20 @@ public class App extends JFrame {
         JMenuBar mb = new JMenuBar();
 
         frame.setSize(600, 300);
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                int i=JOptionPane.showConfirmDialog(null, "Are you sure?");
-                if(i==0){
-                    System.exit(0);//cierra aplicacion
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",    JOptionPane.YES_NO_OPTION);
+                if(i== JOptionPane.YES_OPTION){
+                    System.exit(0);
                     try {
                         coronita.close();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
+                }
+                else if (i== JOptionPane.NO_OPTION){
+                    System.out.println("es um mono");
                 }
             }
         });
@@ -66,10 +63,11 @@ public class App extends JFrame {
         JMenuItem m12 = new JMenuItem("REMOVE ACCOUNT");
         m12.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                JTextPane confpass = new JTextPane();
-                JTextPane.getDefaultLocale();
+                JPasswordField confpass = new JPasswordField();
+                JPasswordField.getDefaultLocale();
                 JOptionPane.showMessageDialog(null, confpass);
-                String passconf = confpass.getText();
+                char[] p = confpass.getPassword();
+                String passconf = String.valueOf(p);
                 try {
                     coronita.removeAccount(Username,passconf);
                     frame.dispose();
@@ -87,13 +85,13 @@ public class App extends JFrame {
 
         JMenu m2 = new JMenu("COUNTRY");
         JMenuItem m21 = new JMenuItem("PORTUGAL \uD83C\uDDF5\uD83C\uDDF9");
-        m21.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("PT");}});
+        m21.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("pt");}});
         JMenuItem m22 = new JMenuItem("SPAIN \uD83C\uDDEA\uD83C\uDDE6");
-        m22.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("ES");}});
+        m22.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("es");}});
         JMenuItem m23 = new JMenuItem("ITALY \uD83C\uDDEE\uD83C\uDDF9");
-        m23.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("IT"); }});
+        m23.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("it"); }});
         JMenuItem m24 = new JMenuItem("CHINA \uD83C\uDDE8\uD83C\uDDF3");
-        m24.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("CN"); }});
+        m24.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("cn"); }});
         m2.add(m21);
         m2.add(m22);
         m2.add(m23);
@@ -108,18 +106,18 @@ public class App extends JFrame {
         this.EstimateGlobal = EstimateGlobal;
         this.EstimateGlobal.setEditable(false);
         this.EstimateGlobal.setBackground(Color.GRAY);
-        this.EstimateGlobal.setBounds(20, 40, 250,40 );
+        this.EstimateGlobal.setBounds(30, 45, 80,40 );
         panel.add(this.EstimateGlobal);
 
 
-        this.EstimateCountry = EstimateGlobal;
+        this.EstimateCountry = EstimateCountry;
         this.EstimateCountry.setEditable(false);
         this.EstimateCountry.setBackground(Color.GRAY);
-        this.EstimateCountry.setBounds(80, 40, 250,40 );
+        this.EstimateCountry.setBounds(150, 45, 80,40 );
         panel.add(this.EstimateCountry);
 
         Cases = new JLabel("Number of known reported cases : " + cases);
-        Cases.setBounds(20, 80, 300, 25);
+        Cases.setBounds(20, 90, 300, 25);
         panel.add(Cases);
 
         dialog2 = new JLabel("Keep the number of cases updated");
@@ -147,21 +145,7 @@ public class App extends JFrame {
             }
         });
         panel.add(button1);
-/*
-        DefaultXYDataset ds = new DefaultXYDataset();
-        double[][] data = { {0.1, 0.2, 0.3}, {1, 2, 3} };
-        ds.addSeries("series1", data);
-        XYDataset ds = createDataset();
-        JFreeChart chart = ChartFactory.createXYLineChart("Test Chart",
-                "x", "y", ds, PlotOrientation.VERTICAL, true, true,
-                false);
 
-        ChartPanel cp = new ChartPanel(chart);
-
-        frame.getContentPane().add(cp);
-
-
-*/
         frame.getContentPane().add(BorderLayout.NORTH, mb);
         frame.setVisible(true);
     }

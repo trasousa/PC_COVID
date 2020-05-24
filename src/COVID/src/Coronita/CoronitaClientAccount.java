@@ -31,7 +31,7 @@ public class CoronitaClientAccount {
         this.coronita.checkUsername(Username);
     }
 
-    public void registerAccount(String Username, String pass1, String pass2) throws AccountException, PasswordException{
+    public void registerAccount(String Username, String pass1, String pass2) throws InvalidPasswordException, MismatchPassException{
         PasswordVlidator.isValid(pass1);
         if (pass1.equals(pass2)) {
                 this.coronita.registerAccount(Username, pass1);
