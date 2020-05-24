@@ -90,16 +90,16 @@ public class LogIn extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 Object selction = country.getItemAt(country.getSelectedIndex());
                 if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
-                    s =("PT");
+                    s =("pt");
                 }
                 if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
-                    s = ("ES");
+                    s = ("es");
                 }
                 if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
-                    s =("IT");
+                    s =("it");
                 }
                 if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
-                    s = ("CN");
+                    s = ("cn");
                 }
             }
         });

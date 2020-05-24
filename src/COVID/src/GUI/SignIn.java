@@ -1,8 +1,9 @@
 package COVID.src.GUI;
 
 import COVID.src.Coronita.CoronitaClientAccount;
-import COVID.src.Exceptions.AccountException;
+import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
+import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 import COVID.src.Exceptions.PasswordException;
 
 import javax.swing.*;
@@ -105,16 +106,16 @@ public class SignIn extends JFrame{
             public void actionPerformed(ActionEvent actionEvent) {
                 Object selction = country.getItemAt(country.getSelectedIndex());
                 if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
-                    s =("PT");
+                    s =("pt");
                 }
                 if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
-                    s = ("ES");
+                    s = ("es");
                 }
                 if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
-                    s =("IT");
+                    s =("it");
                 }
                 if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
-                    s = ("CN");
+                    s = ("cn");
                 }
             }
         });
@@ -142,23 +143,32 @@ public class SignIn extends JFrame{
                 char[] pass2 = PassText2.getPassword();
                 String password2 = String.valueOf(pass2);
                 try {
+                    coronita.chekUsername(user);
                     coronita.registerAccount(user, password, password2);
                     coronita.authenticate(user,password);
                     coronita.setCountry(s);
                     frame.dispose();
                     App app = new App(user,0, EstimateGlobal,EstimateCountry,coronita);
                     System.out.println("Successfully Registered");
-                } catch (AccountException e) {
+                } catch (MismatchPassException e) {
                     JOptionPane.showMessageDialog(null,"Mismatch Password", "WARNING", JOptionPane.WARNING_MESSAGE);
                     System.out.println("Mismatch Password");
                     PassText.setText("");
                     PassText2.setText("");
-
                 } catch (PasswordException ActionEvent) {
                     JOptionPane.showMessageDialog(null,"Invalid Password", "WARNING", JOptionPane.WARNING_MESSAGE);
                     System.out.println("Invalid Password");
                     PassText.setText("");
                     PassText2.setText("");
+                } catch (InvalidUsername invalidUsername) {
+                    JOptionPane.showMessageDialog(null,"Invalid Username", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    System.out.println("Invalid Username");
+                    byte[] array = new byte[3];
+                    new Random().nextBytes(array);
+                    String suggestion = new String(array, Charset.forName("UTF-8"));
+                    UserText.setText(user + suggestion);
+                }catch (InvalidAccount e) {
+                    System.out.println("Invalid Acount");
                 }
             }
         });
