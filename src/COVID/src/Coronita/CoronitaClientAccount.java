@@ -16,13 +16,15 @@ public class CoronitaClientAccount {
     CoronitaServer coronita;
     String host;
     int port;
-    private static JTextField estimatetext;
+    private static JTextField estimateglobal;
+    private static JTextField estimatecountry;
 
-    public CoronitaClientAccount(JTextField estimate) throws IOException {
-        this.estimatetext = estimate;
+    public CoronitaClientAccount(JTextField estimateglobal, JTextField estimatecountry) throws IOException {
+        this.estimateglobal = estimateglobal;
+        this.estimatecountry = estimatecountry;
         host = "127.0.0.1";
         port = 60833;
-        coronita = new CoronitaServer(host,port,estimatetext);
+        coronita = new CoronitaServer(host,port,estimateglobal,estimatecountry);
     }
 
     public void chekUsername (String Username) throws InvalidUsername {
@@ -54,6 +56,13 @@ public class CoronitaClientAccount {
         if(!(number >=0 && number <= 150))
             throw new InvalidNumCases("Number of cases is not valid");
         else {return number;}
+    }
+
+    public void setCountry(String country){
+        this.coronita.setCountry(country);
+    }
+    public void logout(){
+        this.coronita.logout();
     }
 
     public void close() throws IOException {

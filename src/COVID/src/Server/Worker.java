@@ -149,4 +149,7 @@ public class Worker implements Runnable, Interface {
     public void setCountry(String country){
         accounts.setCountry(idCliente,country);
     }
+    public void logout(){
+
+    }
 }

@@ -14,5 +14,6 @@ public interface Interface {
         public void checkUsername(String Username)
                 throws InvalidUsername;
         public void setCountry(String country);
+        public void logout();
 }
 
