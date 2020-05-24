@@ -95,7 +95,7 @@ public class SignIn extends JFrame{
         String countryList[] = {"Portugal \uD83C\uDDF5\uD83C\uDDF9","Spain \uD83C\uDDEA\uD83C\uDDE6","Italy \uD83C\uDDEE\uD83C\uDDF9","China \uD83C\uDDE8\uD83C\uDDF3"};
         country = new JComboBox(countryList);
         country.setFont(new Font("OpenSymbol", Font.ITALIC, 12));
-        country.setBounds(140,140,150,25);
+        country.setBounds(120,140,150,25);
         country.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
