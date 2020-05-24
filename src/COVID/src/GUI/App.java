@@ -18,23 +18,21 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
-  */
+*/
 
 public class App extends JFrame {
-    private static JLabel user;
-    private static JLabel dialog;
+    private static JLabel est;
     private static JLabel dialog2;
     private static JLabel Cases;
     private static JTextField CasesText;
-    private static JTextField EstimateText;
-    private static JLabel success;
+    private static JTextField EstimateGlobal;
+    private static JTextField EstimateCountry;
     private static JButton button1;
     private static JButton button2;
-    private static JComboBox listContries;
     private CoronitaClientAccount coronita;
 
 
-    public App(String Username, int cases, JTextField EstimateText, CoronitaClientAccount coronita) {
+    public App(String Username, int cases, JTextField EstimateGlobal, JTextField EstimateCountry, CoronitaClientAccount coronita) {
 
         this.coronita = coronita;
         JFrame frame = new JFrame();
@@ -46,11 +44,15 @@ public class App extends JFrame {
         frame.setTitle("NICE_COVID_SERVER");
         frame.add(panel);
         panel.setLayout(null);
-        String country[]={"Portugal","Spain","Italy","China"};
 
         JMenu m1 = new JMenu("ACCOUNT: " + Username);
         JMenuItem m11 = new JMenuItem("LOG OUT");
-        m11.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { System.exit(0); }});
+        m11.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                coronita.logout();
+                frame.dispose();
+                LogIn login = new LogIn();
+            }});
         JMenuItem m12 = new JMenuItem("REMOVE ACCOUNT");
         m12.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
@@ -61,7 +63,7 @@ public class App extends JFrame {
                 try {
                     coronita.removeAccount(Username,passconf);
                     frame.dispose();
-                    SignIn sign = new SignIn(EstimateText);
+                    SignIn sign = new SignIn(EstimateGlobal,EstimateCountry);
                 } catch (MismatchPassException e) {
                     JOptionPane.showMessageDialog(null, "Mismatch Password", "WARNING", JOptionPane.QUESTION_MESSAGE);
                 } catch (AccountException e) {
@@ -75,54 +77,36 @@ public class App extends JFrame {
 
         JMenu m2 = new JMenu("COUNTRY");
         JMenuItem m21 = new JMenuItem("PORTUGAL");
-        m21.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { System.out.println("Alheira"); }});
+        m21.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("PT");}});
         JMenuItem m22 = new JMenuItem("SPAIN");
-        m22.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { System.out.println("Olééé"); }});
+        m22.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("ES");}});
         JMenuItem m23 = new JMenuItem("ITALY");
-        m23.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { System.out.println("Pasta"); }});
+        m23.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("IT"); }});
         JMenuItem m24 = new JMenuItem("CHINA");
-        m24.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { System.out.println("5G"); }});
+        m24.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("CN"); }});
         m2.add(m21);
         m2.add(m22);
         m2.add(m23);
         m2.add(m24);
         mb.add(m2);
 
-        dialog = new JLabel("Select country");
-        dialog.setBounds(300,20,200,25);
-        panel.add(dialog);
 
-        listContries =new JComboBox(country);
-        listContries.setBounds(300, 60,90,20);
-        listContries.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                listContries = (JComboBox) event.getSource();
-                Object selected = listContries.getSelectedItem();
-                if(selected.toString().equals("Portugal")){
-                    System.out.println("Alheira");
-                }
-                else if(selected.toString().equals("Spain")){
-                    System.out.println("Olééé");
-                }
-                else if(selected.toString().equals("Italy")){
-                    System.out.println("Pasta");
-                }
-                else if(selected.toString().equals("China \uD83C\uDDE8")){
-                    System.out.println("5G");
-                }
-            }
-        });
-        panel.add(listContries);
+        est = new JLabel("Estimatives: ");
+        est.setBounds(20, 20 ,80, 25);
+        panel.add(est);
 
-        user = new JLabel("Your estimate");
-        user.setBounds(20, 20 ,80, 25);
-        panel.add(user);
+        this.EstimateGlobal = EstimateGlobal;
+        this.EstimateGlobal.setEditable(false);
+        this.EstimateGlobal.setBackground(Color.GRAY);
+        this.EstimateGlobal.setBounds(20, 40, 250,40 );
+        panel.add(this.EstimateGlobal);
 
-        this.EstimateText = EstimateText;
-        this.EstimateText.setEditable(false);
-        this.EstimateText.setBackground(Color.GRAY);
-        this.EstimateText.setBounds(20, 40, 250,40 );
-        panel.add(this.EstimateText);
+
+        this.EstimateCountry = EstimateGlobal;
+        this.EstimateCountry.setEditable(false);
+        this.EstimateCountry.setBackground(Color.GRAY);
+        this.EstimateCountry.setBounds(80, 40, 250,40 );
+        panel.add(this.EstimateCountry);
 
         Cases = new JLabel("Number of known reported cases : " + cases);
         Cases.setBounds(20, 80, 300, 25);

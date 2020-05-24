@@ -11,23 +11,32 @@ import java.net.Socket;
 public class Middleman implements Runnable{
 
     private BufferedReader inServer;
-    private static JTextField estimateText;
+    private static JTextField estimateglobal;
+    private static JTextField estimatecountry;
     Thread dealer;
     Boolean flag;
     Bag bag;
     String APP;
-    Runnable updateEstimate;
+    Runnable updateEstimateG;
+    Runnable updateEstimateC;
 
-    public Middleman(Socket socket, Bag bag, JTextField estimateText) throws IOException {
-        this.estimateText = estimateText;
+    public Middleman(Socket socket, Bag bag, JTextField estimateglobal, JTextField estimatecountry) throws IOException {
+        this.estimateglobal = estimateglobal;
+        this.estimatecountry = estimatecountry;
         this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.bag = bag;
         this.APP = null;
         flag = true;
-        updateEstimate = new Runnable() {
+        updateEstimateG = new Runnable() {
             @Override
             public void run() {
-                estimateText.setText("Global estimated case " + APP);
+                estimateglobal.setText("Global" + APP);
+            }
+        };
+        updateEstimateC = new Runnable() {
+            @Override
+            public void run() {
+                estimatecountry.setText("Country" + APP);
             }
         };
     }
@@ -59,7 +68,17 @@ public class Middleman implements Runnable{
             if(letter[0].equals("est")){
                 APP = letter[1];
                 try {
-                    SwingUtilities.invokeAndWait(updateEstimate);
+                    SwingUtilities.invokeAndWait(updateEstimateG);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if(letter[1].equals("cest")){
+                APP = letter[1];
+                try {
+                    SwingUtilities.invokeAndWait(updateEstimateC);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {

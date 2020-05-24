@@ -18,12 +18,12 @@ public class CoronitaServer implements Interface {
     private PrintWriter outServer;
 
 
-    public  CoronitaServer(String host, int port, JTextField estimate)
+    public  CoronitaServer(String host, int port, JTextField estimateglobal, JTextField estimatecountry)
         throws IOException{
             this.socket = new Socket(host, port);
             this.outServer = new PrintWriter(socket.getOutputStream());
             this.bag = new Bag();
-            this.dealer = new Middleman(socket,bag,estimate);
+            this.dealer = new Middleman(socket,bag,estimateglobal,estimatecountry);
             dealer.start();
         }
 
@@ -58,7 +58,7 @@ public class CoronitaServer implements Interface {
     @Override
     public int authenticate(String Username, String password) throws InvalidAccount, MismatchPassException{
         int a = 0;
-        outServer.println("lg " + Username + " " + password);
+        outServer.println("lgi " + Username + " " + password);
         outServer.flush();
         answer = this.bag.getLetter();
         if (answer[0].equals("err")) {
@@ -82,6 +82,19 @@ public class CoronitaServer implements Interface {
         outServer.println("up " + cases);
         outServer.flush();
     }
+
+    @Override
+    public void setCountry(String country){
+        outServer.println("vw" + country);
+        outServer.flush();
+
+    };
+    @Override
+    public void logout(){
+        outServer.println("lgo");
+        outServer.flush();
+        answer = this.bag.getLetter();
+    };
 
 }
 
