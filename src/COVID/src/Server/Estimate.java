@@ -10,38 +10,44 @@ public class Estimate {
     float estimate;
     int reporters;
     HashSet<String> updated;
-    ReentrantLock lockCasos;
+    ReentrantLock lock;
     Condition update;
 
     public Estimate(){
         estimate = 0;
         updated = new HashSet<String>();
-        lockCasos = new ReentrantLock();
-        update = lockCasos.newCondition();
+        lock = new ReentrantLock();
+        update = lock.newCondition();
     }
     public void lockEstimate(){
-        lockCasos.lock();
+        lock.lock();
     }
     public void unlockEstimate(){
-        lockCasos.unlock();
+        lock.unlock();
     }
     public float getEstimate(String id) throws InterruptedException {
         float estimateNow;
-        lockCasos.lock();
+        lockEstimate();
         while(updated.contains(id)){
             update.await();
         }
         updated.add(id);
         estimateNow = estimate;
-        lockCasos.unlock();
+        unlockEstimate();
         return estimateNow;
     }
 
     public void update(float newEstimate){
-        lockCasos.lock();
+        lockEstimate();
         estimate = newEstimate;
         updated.clear();
         update.signalAll();
-        lockCasos.unlock();
+        unlockEstimate();
+    }
+
+    public void trigger(){
+        lockEstimate();
+        update.signalAll();
+        unlockEstimate();
     }
 }

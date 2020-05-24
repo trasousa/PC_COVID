@@ -16,10 +16,11 @@ public class Worker implements Runnable, Interface {
     BufferedReader in;
     SafePrint out;
     String idCliente;
-    Estimate estimate;
+    Estimates estimates;
+    Estimate currentEstimate;
     Accounts accounts;
     Writer writer;
-    public Worker(Socket client, Estimate estimate, Accounts accounts){
+    public Worker(Socket client, Estimates estimatess, Accounts accounts){
         try {
             this.client = client;
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -27,13 +28,13 @@ public class Worker implements Runnable, Interface {
         } catch (IOException e){
             e.printStackTrace();
         }
-        this.estimate = estimate;
+        this.estimates = estimates;
         this.accounts = accounts;
-        writer = new Writer(out,estimate);
+        writer = new Writer(out);
     }
 
     @Override
-    public void run() {
+    public void run(){
         System.out.println("Começou");
         String read = null;
         try {
@@ -56,13 +57,17 @@ public class Worker implements Runnable, Interface {
                     int cases = 0;
                     args = readParts[1].split("\\s+");
                     try {
-                        cases = authenticate(args[0],args[1]);
-                        idCliente = args[0];
+                        String username = args[0];
+                        String password = args[1];
+                        String country = args[2];
+                        cases = authenticate(username,password);
+                        idCliente = username;
                         out.println("ack " + cases);
-                        writer.start(idCliente);
+                        currentEstimate = estimates.getEstimate(country);
+                        writer.start(idCliente,currentEstimate);
                     } catch (InvalidAccount e){
                         out.println("err InvalidAccount");
-                    } catch (MismatchPassException e) {
+                    } catch (MismatchPassException e){
                         out.println("err password");
                     }
                     break;
@@ -72,6 +77,7 @@ public class Worker implements Runnable, Interface {
                     break;
                 case "lgo":
                     logout();
+                    out.println("ack lgo");
                     break;
                 case "rm":
                     args = readParts[1].split("\\s+");
@@ -83,6 +89,7 @@ public class Worker implements Runnable, Interface {
                     } catch (MismatchPassException mismatchPass){
                         out.println(("err password"));
                     }
+                    kill_writer();
                     break;
                 case "ck":
                     String username = readParts[1];
@@ -96,12 +103,13 @@ public class Worker implements Runnable, Interface {
                     break;
                 case "vw":
                     String country = readParts[1];
-                    //change ct
+                    kill_writer();
                 default:
-                    System.out.println("E?");
+                    System.out.println("Unknown command");
                     break;
             }
-            try {
+
+            try{
                 read = in.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -116,6 +124,10 @@ public class Worker implements Runnable, Interface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void kill_writer(){
+
     }
 
     @Override
@@ -139,7 +151,7 @@ public class Worker implements Runnable, Interface {
     public void updateEstimate(int cases){
         float newEstimate;
         newEstimate = accounts.updateCases(idCliente,cases);
-        estimate.update(newEstimate);
+        currentEstimate.update(newEstimate);
     }
 
     @Override
@@ -150,6 +162,6 @@ public class Worker implements Runnable, Interface {
         accounts.setCountry(idCliente,country);
     }
     public void logout(){
-        writer.stop();
+        kill_writer();
     }
 }

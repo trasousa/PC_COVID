@@ -16,7 +16,7 @@ public class Server {
 
     public static void main(String[] args) {
         Accounts accounts = new Accounts();
-        Estimate estimate = new Estimate();
+        Estimates estimates = new Estimates();
         ServerSocket sSock = null;
         try {
             sSock = new ServerSocket( 	60833);
@@ -26,7 +26,7 @@ public class Server {
         while(true){
             try {
                 Socket cliente = sSock.accept();
-                Thread worker = new Thread(new Worker(cliente,estimate,accounts));
+                Thread worker = new Thread(new Worker(cliente,estimates,accounts));
                 worker.start();
                 System.out.println("Chegou!");
             } catch (IOException e) {
