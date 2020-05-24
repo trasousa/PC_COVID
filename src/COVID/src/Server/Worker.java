@@ -127,7 +127,9 @@ public class Worker implements Runnable, Interface {
     }
 
     private void kill_writer(){
-
+        writer.stop();
+        currentEstimate.trigger();
+        writer.join();
     }
 
     @Override
