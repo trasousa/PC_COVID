@@ -1,6 +1,5 @@
-package COVID.src.Server;
+package COVID.src.Server.DataStructures;
 
-import COVID.src.Exceptions.AccountException;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 import COVID.src.Server.Exceptions.InvalidAccountServer;
@@ -12,75 +11,82 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Accounts {
     HashMap<String,Account> accounts;
-    ReentrantLock lockAccounts;
+    ReentrantLock lock;
+
     public Accounts(){
         accounts = new HashMap<String, Account>();
-        lockAccounts = new ReentrantLock();
-        accounts.put("admin",new Account("admin1",0));
+        lock = new ReentrantLock();
+        accounts.put("admin",new Account("admin1"));
+    }
+
+    public void lockAccounts(){
+        lock.lock();
+    }
+
+    public void unlockAccounts(){
+        lock.unlock();
     }
 
     public void checkUsername(String id) throws InvalidUsernameServer {
-        lockAccounts.lock();
+        lockAccounts();
         if (!(accounts.containsKey(id))) {
             ;
         }
         else{
-            lockAccounts.unlock();
+            unlockAccounts();
             throw new InvalidUsernameServer(id);
         }
-        lockAccounts.unlock();
+        unlockAccounts();
     }
     public void addAccount(String id, String passwd){
-        lockAccounts.lock();
-        accounts.put(id,new Account(passwd ,0));
-        lockAccounts.unlock();
+        lockAccounts();
+        accounts.put(id,new Account(passwd));
+        unlockAccounts();
     }
 
-    public int checkPasswd(String id, String passwd) throws InvalidAccount,MismatchPassException {
-        int cases;
-        lockAccounts.lock();
+    public void checkPasswd(String id, String passwd) throws InvalidAccount,MismatchPassException {
+        lockAccounts();
         if (accounts.containsKey(id)){
             Account account = accounts.get(id);
             account.lockAccount();
-            lockAccounts.unlock();
+            unlockAccounts();
             if(account.getPasswd().equals(passwd)){
-                cases = account.getCases();
-                account.unlockAccount();
+                ;
             }
             else {
                 account.unlockAccount();
                 throw new MismatchPassException("Wrong password");
             }
-            return cases;
         }
+
         else {
-            lockAccounts.unlock();
+            unlockAccounts();
             throw new InvalidAccountServer(id);
         }
+
     }
 
     public void removeAccount(String id, String passwd) throws MismatchPassException,InvalidAccountServer{
-        lockAccounts.lock();
+        lockAccounts();
         if(accounts.containsKey(id)){
             if(accounts.get(id).getPasswd().equals(passwd)){
                 accounts.remove(id);
-                lockAccounts.unlock();
+                unlockAccounts();
             }
             else {
-                lockAccounts.unlock();
+                unlockAccounts();
                 throw new MismatchPassException("Wrong password");
             }
         }
 
         else {
-            lockAccounts.unlock();
+            unlockAccounts();
             throw new InvalidAccountServer(id);
         }
     }
 
     public float updateCases(String id, int cases){
-        System.out.println("Entra aqui!");
-        lockAccounts.lock();
+        lockAccounts();
         Account updater = accounts.get(id);
         updater.lockAccount();
         updater.setCases(cases);
@@ -89,7 +95,7 @@ public class Accounts {
                 (s,a) -> {
                     a.lockAccount();
                 });
-        lockAccounts.unlock();
+        unlockAccounts();
         float newEstimate = 0;
         for (Map.Entry<String, Account> entry : accounts.entrySet()) {
             Account account = entry.getValue();
@@ -100,12 +106,15 @@ public class Accounts {
         return newEstimate;
     }
 
-    public void setCountry(String id, String country){
-        lockAccounts.lock();
+    public int setCountry(String id, String country){
+        int cases;
+        lockAccounts();
         Account account = accounts.get(id);
         account.lockAccount();
-        lockAccounts.unlock();
+        unlockAccounts();
         account.setCountry(country);
+        cases = account.getCases();
         account.unlockAccount();
+        return cases;
     }
 }

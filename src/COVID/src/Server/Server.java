@@ -1,5 +1,8 @@
 package COVID.src.Server;
 
+import COVID.src.Server.DataStructures.Accounts;
+import COVID.src.Server.DataStructures.Estimates;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

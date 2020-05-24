@@ -4,6 +4,10 @@ import COVID.src.Coronita.Interface;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
+import COVID.src.Server.DataStructures.Accounts;
+import COVID.src.Server.DataStructures.Estimate;
+import COVID.src.Server.DataStructures.Estimates;
+import COVID.src.Server.DataStructures.SafePrint;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,7 +46,7 @@ public class Worker implements Runnable, Interface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while(read != null){
+        while(read != null && !(read.equals("quit"))){
             String[] readParts = read.split("\\s+",2);
             String command = readParts[0];
             System.out.println(command);
@@ -62,6 +66,7 @@ public class Worker implements Runnable, Interface {
                         out.println("err InvalidUsername");
                     }
                     break;
+
                 case "cr":
                     args = readParts[1].split("\\s+");
                     username = args[0];
@@ -69,35 +74,42 @@ public class Worker implements Runnable, Interface {
                     registerAccount(username,password);
                     out.println("ack cr");
                     break;
+
                 case "lgi":
-                    int cases = 0;
                     args = readParts[1].split("\\s+");
                     try {
                         username = args[0];
                         password = args[1];
-                        cases = authenticate(username,password);
+                        authenticate(username,password);
                         idCliente = username;
-                        out.println("ack " + cases);
+                        out.println("ack lgi");
                     } catch (InvalidAccount e){
                         out.println("err InvalidAccount");
                     } catch (MismatchPassException e){
                         out.println("err password");
                     }
                     break;
+
+                case "vw":
+                    int cases;
+                    country = readParts[1];
+                    kill_writer();
+                    cases = accounts.setCountry(idCliente,country);
+                    currentEstimate = estimates.getEstimate(country);
+                    out.println("ack " + cases);
+                    writer.start(idCliente,currentEstimate);
+                    break;
+
                 case "up":
                     args = readParts[1].split("\\s+");
                     updateEstimate(Integer.parseInt(args[0]));
                     break;
-                case "vw":
-                    country = readParts[1];
-                    kill_writer();
-                    currentEstimate = estimates.getEstimate(country);
-                    writer.start(idCliente,currentEstimate);
-                    break;
+
                 case "lgo":
                     logout();
                     out.println("ack lgo");
                     break;
+
                 case "rm":
                     args = readParts[1].split("\\s+");
                     try {
@@ -110,6 +122,7 @@ public class Worker implements Runnable, Interface {
                     }
                     kill_writer();
                     break;
+
                 default:
                     out.println("Unknown command");
                     break;
@@ -146,10 +159,9 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public int authenticate(String id, String passwd) throws InvalidAccount,MismatchPassException{
+    public void authenticate(String id, String passwd) throws InvalidAccount,MismatchPassException{
         int cases;
-        cases = accounts.checkPasswd(id,passwd);
-        return cases;
+        accounts.checkPasswd(id,passwd);
     }
 
     @Override
@@ -168,9 +180,15 @@ public class Worker implements Runnable, Interface {
     public void checkUsername(String id) throws InvalidUsername{
         accounts.checkUsername(id);
     }
-    public void setCountry(String country){
-        accounts.setCountry(idCliente,country);
+
+    @Override
+    public int setCountry(String country){
+        int cases;
+        cases = accounts.setCountry(idCliente,country);
+        return cases;
     }
+
+    @Override
     public void logout(){
         kill_writer();
     }

@@ -1,6 +1,7 @@
 package COVID.src.Server;
 
-import java.io.PrintWriter;
+import COVID.src.Server.DataStructures.Estimate;
+import COVID.src.Server.DataStructures.SafePrint;
 
 public class Writer implements Runnable{
     Thread writer;

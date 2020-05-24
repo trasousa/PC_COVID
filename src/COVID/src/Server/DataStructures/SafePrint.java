@@ -1,4 +1,4 @@
-package COVID.src.Server;
+package COVID.src.Server.DataStructures;
 
 import java.io.PrintWriter;
 
