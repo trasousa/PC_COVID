@@ -8,28 +8,30 @@ public class Writer implements Runnable{
     SafePrint out;
     Estimate estimate;
     String idCliente;
-    public Writer(SafePrint out, Estimate estimate){
+    public Writer(SafePrint out){
         this.out= out;
-        this.estimate = estimate;
         flag = true;
     }
 
-    public void start(String idCliente){
+    public void start(String idCliente,Estimate estimate){
         this.idCliente = idCliente;
+        this.estimate = estimate;
         writer = new Thread(this);
         writer.start();
     }
 
-    public Thread stop(){
-        if(writer != null) {
+    public void stop(){
+        if(writer != null){
             flag = false;
-            try {
-                writer.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
-        return null;
+    }
+
+    public void join(){
+        try {
+            writer.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
