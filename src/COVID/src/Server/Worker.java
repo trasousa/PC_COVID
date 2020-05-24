@@ -52,7 +52,7 @@ public class Worker implements Runnable, Interface {
                     registerAccount(args[0],args[1]);
                     out.println("ack cr");
                     break;
-                case "lg":
+                case "lgi":
                     int cases = 0;
                     args = readParts[1].split("\\s+");
                     try {
@@ -60,7 +60,7 @@ public class Worker implements Runnable, Interface {
                         idCliente = args[0];
                         out.println("ack " + cases);
                         writer.start(idCliente);
-                    } catch (InvalidAccount e) {
+                    } catch (InvalidAccount e){
                         out.println("err InvalidAccount");
                     } catch (MismatchPassException e) {
                         out.println("err password");
@@ -69,6 +69,9 @@ public class Worker implements Runnable, Interface {
                 case "up":
                     args = readParts[1].split("\\s+");
                     updateEstimate(Integer.parseInt(args[0]));
+                    break;
+                case "lgo":
+
                     break;
                 case "rm":
                     args = readParts[1].split("\\s+");
