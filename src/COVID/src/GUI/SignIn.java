@@ -6,10 +6,11 @@ import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.PasswordException;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Random;
@@ -26,9 +27,8 @@ public class SignIn extends JFrame{
     private static JPasswordField PassText;
     private static JLabel PasswordLabel2;
     private static JPasswordField PassText2;
-    private static JLabel CountryLable;
-    private JList<String> countryList;
-    private JScrollPane country;
+    private static JLabel CountryLabel;
+    private static JComboBox country;
     private String s;
     private static JButton button;
     private CoronitaClientAccount coronita;
@@ -45,9 +45,20 @@ public class SignIn extends JFrame{
 
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
-        DefaultListModel<String> listCountries = new DefaultListModel<>();
         frame.setSize(350, 400 );
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure?");
+                if(i==0){
+                    System.exit(0);//cierra aplicacion
+                    try {
+                        coronita.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
         frame.setTitle("NICE_COVID_SERVER");
         frame.add(panel);
         panel.setLayout(null);
@@ -69,7 +80,7 @@ public class SignIn extends JFrame{
         PassText.setBounds(100, 60, 165, 25);
         panel.add(PassText);
 
-        PasswordLabel2 = new JLabel("Confirm Password");
+        PasswordLabel2 = new JLabel("Conf. Password");
         PasswordLabel2.setBounds(10, 100, 80, 25);
         panel.add(PasswordLabel2);
 
@@ -77,40 +88,37 @@ public class SignIn extends JFrame{
         PassText2.setBounds(100, 100, 165, 25);
         panel.add(PassText2);
 
-        CountryLable = new JLabel("Confirm Password");
-        CountryLable.setBounds(10, 140, 80, 25);
-        panel.add(CountryLable);
+        CountryLabel = new JLabel("Select Country");
+        CountryLabel.setBounds(10, 140, 120, 25);
+        panel.add(CountryLabel);
 
-        listCountries.addElement("Portugal");listCountries.addElement("Spain");listCountries.addElement("Italy");listCountries.addElement("China");
-        countryList = new JList<>(listCountries);
-        country = new JScrollPane(countryList);
-        country.setBounds(100,140,100,25);
-        countryList.addListSelectionListener(new ListSelectionListener() {
+        String countryList[] = {"Portugal \uD83C\uDDF5\uD83C\uDDF9","Spain \uD83C\uDDEA\uD83C\uDDE6","Italy \uD83C\uDDEE\uD83C\uDDF9","China \uD83C\uDDE8\uD83C\uDDF3"};
+        country = new JComboBox(countryList);
+        country.setFont(new Font("OpenSymbol", Font.ITALIC, 12));
+        country.setBounds(140,140,150,25);
+        country.addActionListener(new ActionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-
-                if(countryList.getSelectedIndex()!=-1){
-                    if(countryList.getSelectedValue().equals("Portugal")){
-                        s = "PT";
-                    }
-                    if(countryList.getSelectedValue().equals("Spain")){
-                        s = "ES";
-                    }
-                    if(countryList.getSelectedValue().equals("Italy")){
-                        s = "IT";
-                    }
-                    if(countryList.getSelectedValue().equals("China")){
-                        s = "CN";
-                    }
-
+            public void actionPerformed(ActionEvent actionEvent) {
+                Object selction = country.getItemAt(country.getSelectedIndex());
+                if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
+                    s =("PT");
                 }
-                else s = "PT";
+                if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
+                    s = ("ES");
+                }
+                if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
+                    s =("IT");
+                }
+                if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
+                    s = ("CN");
+                }
             }
         });
         panel.add(country);
 
+
         button = new JButton("Sign in");
-        button.setBounds(10, 140, 80, 25);
+        button.setBounds(100, 200, 80, 40);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {

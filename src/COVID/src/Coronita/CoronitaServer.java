@@ -29,8 +29,8 @@ public class CoronitaServer implements Interface {
 
     public void close()
             throws IOException {
-        dealer.stop();
         socket.shutdownOutput();
+        dealer.join();
         socket.shutdownInput();
         socket.close();
     }

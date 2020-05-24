@@ -7,10 +7,8 @@ import COVID.src.Exceptions.InvalidNumCases;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.io.IOException;
 
 /* import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -40,7 +38,19 @@ public class App extends JFrame {
         JMenuBar mb = new JMenuBar();
 
         frame.setSize(600, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure?");
+                if(i==0){
+                    System.exit(0);//cierra aplicacion
+                    try {
+                        coronita.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
         frame.setTitle("NICE_COVID_SERVER");
         frame.add(panel);
         panel.setLayout(null);
@@ -76,13 +86,13 @@ public class App extends JFrame {
         mb.add(m1);
 
         JMenu m2 = new JMenu("COUNTRY");
-        JMenuItem m21 = new JMenuItem("PORTUGAL");
+        JMenuItem m21 = new JMenuItem("PORTUGAL \uD83C\uDDF5\uD83C\uDDF9");
         m21.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("PT");}});
-        JMenuItem m22 = new JMenuItem("SPAIN");
+        JMenuItem m22 = new JMenuItem("SPAIN \uD83C\uDDEA\uD83C\uDDE6");
         m22.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("ES");}});
-        JMenuItem m23 = new JMenuItem("ITALY");
+        JMenuItem m23 = new JMenuItem("ITALY \uD83C\uDDEE\uD83C\uDDF9");
         m23.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("IT"); }});
-        JMenuItem m24 = new JMenuItem("CHINA");
+        JMenuItem m24 = new JMenuItem("CHINA \uD83C\uDDE8\uD83C\uDDF3");
         m24.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent ev) { coronita.setCountry("CN"); }});
         m2.add(m21);
         m2.add(m22);
