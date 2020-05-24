@@ -46,16 +46,20 @@ public class SignIn extends JFrame{
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         frame.setSize(350, 400 );
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                int i=JOptionPane.showConfirmDialog(null, "Are you sure?");
-                if(i==0){
-                    System.exit(0);//cierra aplicacion
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",    JOptionPane.YES_NO_OPTION);
+                if(i== JOptionPane.YES_OPTION){
+                    System.exit(0);
                     try {
                         coronita.close();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
+                }
+                else if (i== JOptionPane.NO_OPTION){
+                    System.out.println("es um mono");
                 }
             }
         });

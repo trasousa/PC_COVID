@@ -38,16 +38,20 @@ public class App extends JFrame {
         JMenuBar mb = new JMenuBar();
 
         frame.setSize(600, 300);
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                int i=JOptionPane.showConfirmDialog(null, "Are you sure?");
-                if(i==0){
-                    System.exit(0);//cierra aplicacion
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",    JOptionPane.YES_NO_OPTION);
+                if(i== JOptionPane.YES_OPTION){
+                    System.exit(0);
                     try {
                         coronita.close();
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
+                }
+                else if (i== JOptionPane.NO_OPTION){
+                    System.out.println("es um mono");
                 }
             }
         });
@@ -66,10 +70,11 @@ public class App extends JFrame {
         JMenuItem m12 = new JMenuItem("REMOVE ACCOUNT");
         m12.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                JTextPane confpass = new JTextPane();
-                JTextPane.getDefaultLocale();
+                JPasswordField confpass = new JPasswordField();
+                JPasswordField.getDefaultLocale();
                 JOptionPane.showMessageDialog(null, confpass);
-                String passconf = confpass.getText();
+                char[] p = confpass.getPassword();
+                String passconf = String.valueOf(p);
                 try {
                     coronita.removeAccount(Username,passconf);
                     frame.dispose();
@@ -108,14 +113,14 @@ public class App extends JFrame {
         this.EstimateGlobal = EstimateGlobal;
         this.EstimateGlobal.setEditable(false);
         this.EstimateGlobal.setBackground(Color.GRAY);
-        this.EstimateGlobal.setBounds(20, 40, 250,40 );
+        this.EstimateGlobal.setBounds(20, 45, 80,40 );
         panel.add(this.EstimateGlobal);
 
 
-        this.EstimateCountry = EstimateGlobal;
+        this.EstimateCountry = EstimateCountry;
         this.EstimateCountry.setEditable(false);
         this.EstimateCountry.setBackground(Color.GRAY);
-        this.EstimateCountry.setBounds(80, 40, 250,40 );
+        this.EstimateCountry.setBounds(150, 40, 80,40 );
         panel.add(this.EstimateCountry);
 
         Cases = new JLabel("Number of known reported cases : " + cases);
