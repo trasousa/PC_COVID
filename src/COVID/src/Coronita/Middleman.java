@@ -14,7 +14,6 @@ public class Middleman implements Runnable{
     private static JTextField estimateglobal;
     private static JTextField estimatecountry;
     Thread dealer;
-    Boolean flag;
     Bag bag;
     String APP;
     Runnable updateEstimateG;
@@ -26,7 +25,6 @@ public class Middleman implements Runnable{
         this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.bag = bag;
         this.APP = null;
-        flag = true;
         updateEstimateG = new Runnable() {
             @Override
             public void run() {
@@ -45,20 +43,18 @@ public class Middleman implements Runnable{
         dealer.start();
 
     }
-    public void stop(){
-        if(dealer !=null){
-            flag = false;
-            try {
-                dealer.join();
-            } catch (InterruptedException e) {
+    public void join(){
+        try {
+            dealer.join();
+        } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
         }
+
     }
     @Override
     public void run() {
-        String stamp = null;
-        while (flag){
+        String stamp = "";
+        while (stamp!=null){
             try {
                 stamp= inServer.readLine();
             } catch (IOException e) {
