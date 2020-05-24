@@ -42,29 +42,42 @@ public class Worker implements Runnable, Interface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while(read != null && !(read.equals("quit"))){
+        while(read != null){
             String[] readParts = read.split("\\s+",2);
             String command = readParts[0];
             System.out.println(command);
             String[] args;
+
+            String username;
+            String password;
+            String country;
             switch (command){
+                case "ck":
+                    username = readParts[1];
+                    try {
+                        checkUsername(username);
+                        out.println("ack " + username);
+                        System.out.println(username);
+                    } catch (InvalidUsername invalidUsername) {
+                        out.println("err InvalidUsername");
+                    }
+                    break;
                 case "cr":
                     args = readParts[1].split("\\s+");
-                    registerAccount(args[0],args[1]);
+                    username = args[0];
+                    password = args[1];
+                    registerAccount(username,password);
                     out.println("ack cr");
                     break;
                 case "lgi":
                     int cases = 0;
                     args = readParts[1].split("\\s+");
                     try {
-                        String username = args[0];
-                        String password = args[1];
-                        String country = args[2];
+                        username = args[0];
+                        password = args[1];
                         cases = authenticate(username,password);
                         idCliente = username;
                         out.println("ack " + cases);
-                        currentEstimate = estimates.getEstimate(country);
-                        writer.start(idCliente,currentEstimate);
                     } catch (InvalidAccount e){
                         out.println("err InvalidAccount");
                     } catch (MismatchPassException e){
@@ -74,6 +87,12 @@ public class Worker implements Runnable, Interface {
                 case "up":
                     args = readParts[1].split("\\s+");
                     updateEstimate(Integer.parseInt(args[0]));
+                    break;
+                case "vw":
+                    country = readParts[1];
+                    kill_writer();
+                    currentEstimate = estimates.getEstimate(country);
+                    writer.start(idCliente,currentEstimate);
                     break;
                 case "lgo":
                     logout();
@@ -91,21 +110,8 @@ public class Worker implements Runnable, Interface {
                     }
                     kill_writer();
                     break;
-                case "ck":
-                    String username = readParts[1];
-                    try {
-                        checkUsername(username);
-                        out.println("ack " + username);
-                        System.out.println(username);
-                    } catch (InvalidUsername invalidUsername) {
-                        out.println("err InvalidUsername");
-                    }
-                    break;
-                case "vw":
-                    String country = readParts[1];
-                    kill_writer();
                 default:
-                    System.out.println("Unknown command");
+                    out.println("Unknown command");
                     break;
             }
 
@@ -117,7 +123,7 @@ public class Worker implements Runnable, Interface {
         }
 
         try {
-            writer.stop();
+            kill_writer();
             client.shutdownInput();
             client.shutdownOutput();
             client.close();
@@ -127,9 +133,11 @@ public class Worker implements Runnable, Interface {
     }
 
     private void kill_writer(){
-        writer.stop();
-        currentEstimate.trigger();
-        writer.join();
+        if(currentEstimate != null){
+            writer.stop();
+            currentEstimate.trigger();
+            writer.join();
+        }
     }
 
     @Override

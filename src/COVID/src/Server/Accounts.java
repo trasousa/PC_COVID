@@ -16,6 +16,7 @@ public class Accounts {
     public Accounts(){
         accounts = new HashMap<String, Account>();
         lockAccounts = new ReentrantLock();
+        accounts.put("admin",new Account("admin1",0));
     }
 
     public void checkUsername(String id) throws InvalidUsernameServer {
