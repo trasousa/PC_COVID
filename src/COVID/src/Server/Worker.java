@@ -24,7 +24,7 @@ public class Worker implements Runnable, Interface {
     Estimate currentEstimate;
     Accounts accounts;
     Writer writer;
-    public Worker(Socket client, Estimates estimatess, Accounts accounts){
+    public Worker(Socket client, Estimates estimates, Accounts accounts){
         try {
             this.client = client;
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -113,14 +113,16 @@ public class Worker implements Runnable, Interface {
                 case "rm":
                     args = readParts[1].split("\\s+");
                     try {
-                        removeAccount(args[0],args[1]);
+                        username = args[0];
+                        password = args[1];
+                        removeAccount(username,password);
                         out.println("ack rm");
+                        kill_writer();
                     } catch (InvalidAccount invalidAccount) {
                         out.println("err InvalidAccount");
                     } catch (MismatchPassException mismatchPass){
                         out.println(("err password"));
                     }
-                    kill_writer();
                     break;
 
                 default:
