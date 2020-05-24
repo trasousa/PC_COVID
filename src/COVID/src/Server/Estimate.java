@@ -47,6 +47,7 @@ public class Estimate {
 
     public void trigger(){
         lockEstimate();
+        updated.clear();
         update.signalAll();
         unlockEstimate();
     }
