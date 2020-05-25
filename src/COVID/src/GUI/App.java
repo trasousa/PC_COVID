@@ -10,7 +10,6 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -36,7 +35,7 @@ public class App extends JFrame {
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         JMenuBar mb = new JMenuBar();
-        final JFXPanel panel2 = new JFXPanel();
+        JFXPanel panel2 = new JFXPanel();
         frame.setSize(600, 300);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
@@ -55,10 +54,11 @@ public class App extends JFrame {
             }
         });
         frame.setTitle("NICE_COVID_SERVER");
-        panel.setSize(300,300);
+        panel.setSize(200,300);
         panel2.setSize(300,300);
         frame.getContentPane().add(BorderLayout.NORTH, mb);
         frame.add(panel,BorderLayout.WEST);
+        frame.getContentPane().add(panel2,BorderLayout.EAST);
         panel.setLayout(null);
         panel2.setLayout(null);
 
@@ -202,9 +202,8 @@ public class App extends JFrame {
         //Creating a Group object
         Group root = new Group(pieChart);
         //Adding scene to the stage
-        scene = new Scene(root,300,300);
+        scene = new Scene(root,300,30);
         panel2.setScene(scene);
-        frame.getContentPane().add(panel2,BorderLayout.WEST);
         frame.setVisible(true);
     }
 }
