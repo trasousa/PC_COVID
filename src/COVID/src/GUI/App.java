@@ -57,8 +57,10 @@ public class App extends JFrame {
         frame.setTitle("NICE_COVID_SERVER");
         panel.setSize(300,300);
         panel2.setSize(300,300);
-        frame.add(panel);
+        frame.getContentPane().add(BorderLayout.NORTH, mb);
+        frame.add(panel,BorderLayout.WEST);
         panel.setLayout(null);
+        panel2.setLayout(null);
 
         JMenu m1 = new JMenu("ACCOUNT: " + Username);
         JMenuItem m11 = new JMenuItem("LOG OUT");
@@ -201,9 +203,8 @@ public class App extends JFrame {
         Group root = new Group(pieChart);
         //Adding scene to the stage
         scene = new Scene(root,300,300);
-        frame.getContentPane().add(BorderLayout.NORTH, mb);
         panel2.setScene(scene);
-        frame.add(panel2);
+        frame.getContentPane().add(panel2,BorderLayout.WEST);
         frame.setVisible(true);
     }
 }
