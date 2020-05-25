@@ -38,6 +38,7 @@ public class Accounts {
         }
         unlockAccounts();
     }
+
     public void addAccount(String id, String passwd){
         lockAccounts();
         accounts.put(id,new Account(passwd));
@@ -85,24 +86,39 @@ public class Accounts {
         }
     }
 
-    public float updateCases(String id, int cases){
+    public boolean hasReport(String id,String country){
+        Account account;
+        boolean hasReport;
         lockAccounts();
-        Account updater = accounts.get(id);
-        updater.lockAccount();
-        updater.setCases(cases);
-        updater.unlockAccount();
-        accounts.forEach(
-                (s,a) -> {
-                    a.lockAccount();
-                });
+        account = accounts.get(id);
+        account.lockAccount();
         unlockAccounts();
-        float newEstimate = 0;
-        for (Map.Entry<String, Account> entry : accounts.entrySet()) {
-            Account account = entry.getValue();
-            newEstimate += ((float) account.getCases())/150.0;
-            account.unlockAccount();
-        }
-        newEstimate /= (accounts.size());
+        hasReport = (account.hasReport(country));
+        account.unlockAccount();
+        return hasReport;
+    }
+
+    public float updateCases(String id, int cases){
+        float newEstimate;
+        int diffCases;
+        lockAccounts();
+        Account account = accounts.get(id);
+        account.lockAccount();
+        unlockAccounts();
+        diffCases = account.setCases(cases);
+        account.unlockAccount();
+        newEstimate = ((float) diffCases)/150;
+        //accounts.forEach(
+        //        (s,a) -> {
+        //            a.lockAccount();
+        //        });
+        //unlockAccounts();
+        //float newEstimate = 0;
+        //for (Map.Entry<String, Account> entry : accounts.entrySet()) {
+        //    Account account = entry.getValue();
+        //    newEstimate += ((float) account.getCases())/150.0;
+        //    account.unlockAccount();
+        //}
         return newEstimate;
     }
 

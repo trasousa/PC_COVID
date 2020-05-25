@@ -3,7 +3,7 @@ package COVID.src.Server.DataStructures;
 import java.util.HashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Account {
+public class Account{
     ReentrantLock lock;
     String passwd;
     String currentCountry;
@@ -18,7 +18,7 @@ public class Account {
         HashMap<String,Integer> cases = new HashMap<String, Integer>();
         String[] countries = {"pt","es","cn","it"};
         for(String country : countries){
-            cases.put(country,0);
+            cases.put(country,-1);
         }
         return cases;
     }
@@ -28,8 +28,20 @@ public class Account {
         this.passwd = passwd;
     }
 
-    public void setCases(int cases){
-        this.cases.replace(currentCountry,cases);
+    public int setCases(int cases){
+        int caseDiff;
+        int oldCases;
+        oldCases = this.cases.get(currentCountry);
+        caseDiff = cases - oldCases;
+        if(oldCases == -1){
+            caseDiff--;
+        }
+        this.cases.put(currentCountry,cases);
+        return caseDiff;
+    }
+
+    public boolean hasReport(String country){
+        return (cases.get(country) != -1);
     }
 
     public int getCases(){
@@ -41,7 +53,7 @@ public class Account {
         return currentCountry;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(String country){
         this.currentCountry = country;
     }
 

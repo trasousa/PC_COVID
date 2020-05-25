@@ -21,7 +21,7 @@ public class Worker implements Runnable, Interface {
     SafePrint out;
     String idCliente;
     Estimates estimates;
-    Estimate currentEstimate;
+    String currentCountry;
     Accounts accounts;
     Writer writer;
     public Worker(Socket client, Estimates estimates, Accounts accounts){
@@ -34,7 +34,7 @@ public class Worker implements Runnable, Interface {
         }
         this.estimates = estimates;
         this.accounts = accounts;
-        writer = new Writer(out);
+        writer = new Writer(out,estimates);
     }
 
     @Override
@@ -46,15 +46,16 @@ public class Worker implements Runnable, Interface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        String username;
+        String password;
+        String country;
         while(read != null && !(read.equals("quit"))){
             String[] readParts = read.split("\\s+",2);
             String command = readParts[0];
             System.out.println(command);
             String[] args;
 
-            String username;
-            String password;
-            String country;
             switch (command){
                 case "ck":
                     username = readParts[1];
@@ -92,19 +93,21 @@ public class Worker implements Runnable, Interface {
 
                 case "vw":
                     int cases;
-                    country = readParts[1];
                     kill_writer();
-                    cases = accounts.setCountry(idCliente,country);
-                    currentEstimate = estimates.getEstimate(country);
+                    currentCountry = readParts[1];
+                    cases = accounts.setCountry(idCliente,currentCountry);
                     out.println("ack " + cases);
-                    writer.start(idCliente,currentEstimate);
+                    writer.start(idCliente,currentCountry);
                     break;
 
                 case "up":
+                    if (!(accounts.hasReport(idCliente,currentCountry))){
+                        estimates.addCountryReport(currentCountry);
+                    }
                     args = readParts[1].split("\\s+");
-                    updateEstimate(Integer.parseInt(args[0]));
+                    cases = Integer.parseInt(args[0]);
+                    updateEstimate(cases);
                     break;
-
                 case "lgo":
                     logout();
                     out.println("ack lgo");
@@ -148,9 +151,9 @@ public class Worker implements Runnable, Interface {
     }
 
     private void kill_writer(){
-        if(currentEstimate != null){
+        if(currentCountry != null){
             writer.stop();
-            currentEstimate.trigger();
+            estimates.trigger(idCliente,currentCountry);
             writer.join();
         }
     }
@@ -175,7 +178,7 @@ public class Worker implements Runnable, Interface {
     public void updateEstimate(int cases){
         float newEstimate;
         newEstimate = accounts.updateCases(idCliente,cases);
-        currentEstimate.update(newEstimate);
+        estimates.update(currentCountry,newEstimate);
     }
 
     @Override
