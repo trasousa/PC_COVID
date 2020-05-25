@@ -142,8 +142,9 @@ public class Worker implements Runnable, Interface {
 
         try {
             kill_writer();
-            client.shutdownInput();
             client.shutdownOutput();
+            client.shutdownInput();
+            System.out.println("bye bye");
             client.close();
         } catch (IOException e) {
             e.printStackTrace();
