@@ -167,7 +167,6 @@ public class Worker implements Runnable, Interface {
 
     @Override
     public void authenticate(String id, String passwd) throws InvalidAccount,MismatchPassException{
-        int cases;
         accounts.checkPasswd(id,passwd);
     }
 
