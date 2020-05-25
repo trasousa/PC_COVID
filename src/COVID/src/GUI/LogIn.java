@@ -26,9 +26,11 @@ public class LogIn extends JFrame {
         private static JButton button2;
         private CoronitaClientAccount coronita;
         private String s;
+        private String b;
         private Object selectedItem;
 
     public LogIn(){
+
         try {
             this.EstimateGlobal = new JTextField("Global");
             this.EstimateCountry = new JTextField("Country");
@@ -91,15 +93,19 @@ public class LogIn extends JFrame {
                 Object selction = country.getItemAt(country.getSelectedIndex());
                 if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
                     s =("pt");
+                    String b = "Portugal";
                 }
                 if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
                     s = ("es");
+                    String b = "Spain";
                 }
                 if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
                     s =("it");
+                    String b = "Italy";
                 }
                 if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
                     s = ("cn");
+                    String b = "China";
                 }
             }
         });
@@ -117,7 +123,7 @@ public class LogIn extends JFrame {
                     coronita.authenticate(user, password);
                     int a =  coronita.setCountry(s);
                     frame.dispose();
-                    App app = new App(user,a, EstimateGlobal, EstimateCountry, coronita);
+                    App app = new App(user,a, EstimateGlobal, EstimateCountry, coronita, b);
                     System.out.println(a);
                 } catch (InvalidAccount e) {
                     JOptionPane.showMessageDialog(null, "Invalid Account", "WARNING", JOptionPane.WARNING_MESSAGE);
