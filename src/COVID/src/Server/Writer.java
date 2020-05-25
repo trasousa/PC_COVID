@@ -15,10 +15,10 @@ public class Writer implements Runnable{
     public Writer(SafePrint out,Estimates estimates){
         this.out= out;
         this.estimates = estimates;
-        flag = true;
     }
 
     public void start(String idCliente,String country){
+        flag = true;
         this.idCliente = idCliente;
         this.country = country;
         writer = new Thread(this);
