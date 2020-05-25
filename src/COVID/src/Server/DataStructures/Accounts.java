@@ -52,7 +52,7 @@ public class Accounts {
             account.lockAccount();
             unlockAccounts();
             if(account.getPasswd().equals(passwd)){
-                ;
+                account.unlockAccount();
             }
             else {
                 account.unlockAccount();
