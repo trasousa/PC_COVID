@@ -3,6 +3,8 @@ package COVID.src.GUI;
 import COVID.src.Coronita.CoronitaClientAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +21,7 @@ public class LogIn extends JFrame {
         private static JTextField EstimateGlobal;
         private static JTextField EstimateCountry;
         private static JLabel PasswordLabel;
+        private static Scene scene;
         private static JPasswordField PassText;
         private static JLabel CountryLabel;
         private static JComboBox country;
@@ -28,13 +31,16 @@ public class LogIn extends JFrame {
         private String s;
         private String b;
         private Object selectedItem;
+        private Group root;
 
     public LogIn(){
 
         try {
             this.EstimateGlobal = new JTextField("Global ");
             this.EstimateCountry = new JTextField("Country ");
-            this.coronita = new CoronitaClientAccount(EstimateGlobal,EstimateCountry);
+            this.root = new Group();
+            this.scene = new Scene(root , 200,300);
+            this.coronita = new CoronitaClientAccount(EstimateGlobal,EstimateCountry,scene);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,7 +132,7 @@ public class LogIn extends JFrame {
                     coronita.authenticate(user, password);
                     int a =  coronita.setCountry(s);
                     frame.dispose();
-                    App app = new App(user,a, EstimateGlobal, EstimateCountry, coronita, b);
+                    App app = new App(user,a, EstimateGlobal, EstimateCountry, coronita, b,scene);
                     System.out.println(a);
                 } catch (InvalidAccount e) {
                     JOptionPane.showMessageDialog(null, "Invalid Account", "WARNING", JOptionPane.WARNING_MESSAGE);
@@ -147,7 +153,7 @@ public class LogIn extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 frame.dispose();
-                SignIn sign = new SignIn(EstimateGlobal,EstimateCountry);
+                SignIn sign = new SignIn(EstimateGlobal,EstimateCountry,scene);
             }
         });
         panel.add(button2);

@@ -5,6 +5,8 @@ import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 import COVID.src.Exceptions.PasswordException;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +24,7 @@ public class SignIn extends JFrame{
     private static JTextField NameText;
     private static JTextField EstimateGlobal;
     private static JTextField EstimateCountry;
+    private static Scene scene;
     private static JLabel UserLabel;
     private static JTextField UserText;
     private static JLabel PasswordLabel;
@@ -36,11 +39,12 @@ public class SignIn extends JFrame{
     private CoronitaClientAccount coronita;
 
 
-    public SignIn(JTextField EstimateGlobal, JTextField EstimateCountry) {
+    public SignIn(JTextField EstimateGlobal, JTextField EstimateCountry, Scene scene) {
         this.EstimateGlobal = EstimateGlobal;
         this.EstimateCountry = EstimateCountry;
+        this.scene = scene;
         try {
-            this.coronita = new CoronitaClientAccount(EstimateGlobal,EstimateCountry);
+            this.coronita = new CoronitaClientAccount(EstimateGlobal,EstimateCountry,scene);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -145,7 +149,7 @@ public class SignIn extends JFrame{
                     coronita.authenticate(user,password);
                     int a = coronita.setCountry(s);
                     frame.dispose();
-                    App app = new App(user,a, EstimateGlobal,EstimateCountry, coronita,b);
+                    App app = new App(user,a, EstimateGlobal,EstimateCountry, coronita,b,scene);
                     System.out.println("Successfully Registered");
                 } catch (MismatchPassException e) {
                     JOptionPane.showMessageDialog(null,"Mismatch Password", "WARNING", JOptionPane.WARNING_MESSAGE);

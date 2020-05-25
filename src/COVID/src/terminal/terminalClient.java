@@ -14,7 +14,7 @@ public class terminalClient{
     public static void main(String args[]) throws IOException {
         String host = "127.0.0.1";
         int port = 60833;
-        CoronitaServer stub = new CoronitaServer(host,port,null,null);
+        CoronitaServer stub = new CoronitaServer(host,port,null,null,null);
         Console con = System.console();
         PrintWriter out = con.writer();
 
