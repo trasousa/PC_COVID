@@ -10,6 +10,7 @@ public class Estimates{
     public Estimates(){
         globalEstimate = new Estimate();
         estimates = initEstimates();
+        lock = new ReentrantLock();
     }
 
     private HashMap<String,Estimate> initEstimates(){
