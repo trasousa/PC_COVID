@@ -8,13 +8,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Estimate {
     float estimate;
-    int reporters;
+    int reports;
     HashSet<String> updated;
     ReentrantLock lock;
     Condition update;
 
     public Estimate(){
         estimate = 0;
+        reports = 0;
         updated = new HashSet<String>();
         lock = new ReentrantLock();
         update = lock.newCondition();
@@ -25,12 +26,12 @@ public class Estimate {
     public void unlockEstimate(){
         lock.unlock();
     }
-    public float getEstimate(String id) throws InterruptedException {
+
+    public void addReport(){ this.reports++;}
+
+    public float getEstimate(String id){
         float estimateNow;
         lockEstimate();
-        while(updated.contains(id)){
-            update.await();
-        }
         updated.add(id);
         estimateNow = estimate;
         unlockEstimate();
@@ -39,16 +40,21 @@ public class Estimate {
 
     public void update(float newEstimate){
         lockEstimate();
-        estimate = newEstimate;
+        estimate += newEstimate/reports;
         updated.clear();
         update.signalAll();
         unlockEstimate();
     }
 
-    public void trigger(){
+    public boolean isUpdated(String id){
         lockEstimate();
-        updated.clear();
-        update.signalAll();
+        boolean isUpdated;
+        isUpdated = updated.contains(id);
         unlockEstimate();
+        return isUpdated;
+    }
+
+    public void remove(String id){
+        updated.remove(id);
     }
 }

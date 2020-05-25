@@ -1,22 +1,26 @@
 package COVID.src.Server;
 
 import COVID.src.Server.DataStructures.Estimate;
+import COVID.src.Server.DataStructures.Estimates;
+import COVID.src.Server.DataStructures.Pair;
 import COVID.src.Server.DataStructures.SafePrint;
 
 public class Writer implements Runnable{
     Thread writer;
+    Estimates estimates;
     boolean flag;
     SafePrint out;
-    Estimate estimate;
+    String country;
     String idCliente;
-    public Writer(SafePrint out){
+    public Writer(SafePrint out,Estimates estimates){
         this.out= out;
+        this.estimates = estimates;
         flag = true;
     }
 
-    public void start(String idCliente,Estimate estimate){
+    public void start(String idCliente,String country){
         this.idCliente = idCliente;
-        this.estimate = estimate;
+        this.country = country;
         writer = new Thread(this);
         writer.start();
     }
@@ -38,12 +42,15 @@ public class Writer implements Runnable{
     @Override
     public void run() {
         while(flag){
-            try {
-                float newEstimate = estimate.getEstimate(idCliente);
-                out.println("est " + newEstimate);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            estimates.waitUpdate(idCliente);
+            if(flag) {
+                Pair<Float, Float> newEstimate = estimates.getEstimate(idCliente, country);
+                out.println("est " + newEstimate.getFst());
+                if (newEstimate.getSnd() != -1) {
+                    out.println("cest " + newEstimate.getSnd());
+                }
             }
         }
+
     }
 }
