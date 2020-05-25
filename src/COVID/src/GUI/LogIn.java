@@ -32,8 +32,8 @@ public class LogIn extends JFrame {
     public LogIn(){
 
         try {
-            this.EstimateGlobal = new JTextField("Global");
-            this.EstimateCountry = new JTextField("Country");
+            this.EstimateGlobal = new JTextField("Global ");
+            this.EstimateCountry = new JTextField("Country ");
             this.coronita = new CoronitaClientAccount(EstimateGlobal,EstimateCountry);
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,27 +87,30 @@ public class LogIn extends JFrame {
         country = new JComboBox(countryList);
         country.setBounds(120,100,150,25);
         country.setFont(new Font("OpenSymbol", Font.ITALIC, 12));
+        s = ("pt");
+        b = ("Portugal");
         country.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Object selction = country.getItemAt(country.getSelectedIndex());
                 if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
                     s =("pt");
-                    String b = "Portugal";
+                    b = "Portugal";
                 }
                 if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
                     s = ("es");
-                    String b = "Spain";
+                    b = "Spain";
                 }
                 if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
                     s =("it");
-                    String b = "Italy";
+                     b = "Italy";
                 }
                 if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
                     s = ("cn");
-                    String b = "China";
+                    b = "China";
                 }
             }
+
         });
         panel.add(country);
 
@@ -134,7 +137,6 @@ public class LogIn extends JFrame {
                     JOptionPane.showMessageDialog(null, "Invalid Password", "WARNING", JOptionPane.WARNING_MESSAGE);
                     System.out.println("Invalid Password");
                     PassText.setText("");
-                    frame.dispose();
                 }
             }
         });

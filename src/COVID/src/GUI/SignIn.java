@@ -102,25 +102,27 @@ public class SignIn extends JFrame{
         country = new JComboBox(countryList);
         country.setFont(new Font("OpenSymbol", Font.ITALIC, 12));
         country.setBounds(120,140,150,25);
+        s = "pt";
+        b = "Portugal";
         country.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Object selction = country.getItemAt(country.getSelectedIndex());
                 if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
                     s =("pt");
-                    String b = "Portugal";
+                    b = "Portugal";
                 }
                 if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
                     s = ("es");
-                    String b = "Spain";
+                    b = "Spain";
                 }
                 if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
                     s =("it");
-                    String b = "Italy";
+                    b = "Italy";
                 }
                 if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
                     s = ("cn");
-                    String b = "China";
+                    b = "China";
                 }
             }
         });

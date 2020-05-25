@@ -10,6 +10,8 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -54,11 +56,12 @@ public class App extends JFrame {
             }
         });
         frame.setTitle("NICE_COVID_SERVER");
-        panel.setSize(200,300);
-        panel2.setSize(300,300);
+        panel.setSize(200, 300);
+        panel2.setSize(200, 300);
         frame.getContentPane().add(BorderLayout.NORTH, mb);
-        frame.add(panel,BorderLayout.WEST);
-        frame.getContentPane().add(panel2,BorderLayout.EAST);
+        frame.add(panel);
+        frame.add(panel2, BorderLayout.EAST);
+
         panel.setLayout(null);
         panel2.setLayout(null);
 
@@ -182,28 +185,32 @@ public class App extends JFrame {
         });
         panel.add(button1);
 
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Iphone 5S", 13),
-                new PieChart.Data("Samsung Grand", 25),
-                new PieChart.Data("MOTO G", 10),
-                new PieChart.Data("Nokia Lumia", 22));
-        //Creating a Pie chart
-        PieChart pieChart = new PieChart(pieChartData);
-        //Setting the title of the Pie chart
-        pieChart.setTitle("Mobile Sales");
-        //setting the direction to arrange the data
-        pieChart.setClockwise(true);
-        //Setting the length of the label line
-        pieChart.setLabelLineLength(50);
-        //Setting the labels of the pie chart visible
-        pieChart.setLabelsVisible(true);
-        //Setting the start angle of the pie chart
-        pieChart.setStartAngle(180);
-        //Creating a Group object
-        Group root = new Group(pieChart);
-        //Adding scene to the stage
-        scene = new Scene(root,300,30);
+            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                    new PieChart.Data("Iphone 5S", 13),
+                    new PieChart.Data("Samsung Grand", 25),
+                    new PieChart.Data("MOTO G", 10),
+                    new PieChart.Data("Nokia Lumia", 22));
+            //Creating a Pie chart
+            PieChart pieChart = new PieChart(pieChartData);
+            //Setting the title of the Pie chart
+            pieChart.setTitle("Mobile Sales");
+            //setting the direction to arrange the data
+            pieChart.setClockwise(true);
+            //Setting the length of the label line
+            pieChart.setLabelLineLength(50);
+            //Setting the labels of the pie chart visible
+            pieChart.setLabelsVisible(true);
+            //Setting the start angle of the pie chart
+            pieChart.setStartAngle(180);
+            //Creating a Group object
+            Group root = new Group(pieChart);
+            //Adding scene to the stage
+            scene = new Scene(root, 200, 300);
+
         panel2.setScene(scene);
+
         frame.setVisible(true);
     }
 }
+
+

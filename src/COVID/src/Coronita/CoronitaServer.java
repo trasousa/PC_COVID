@@ -84,7 +84,7 @@ public class CoronitaServer implements Interface {
     @Override
     public int setCountry(String country){
         int a = 0;
-        outServer.println("vw" + country);
+        outServer.println("vw " + country);
         outServer.flush();
         answer = this.bag.getLetter();
         if (answer[0].equals("ack")) {

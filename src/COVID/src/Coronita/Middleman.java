@@ -15,7 +15,8 @@ public class Middleman implements Runnable{
     private static JTextField estimatecountry;
     Thread dealer;
     Bag bag;
-    String APP;
+    String APPG;
+    String APPC;
     Runnable updateEstimateG;
     Runnable updateEstimateC;
 
@@ -24,17 +25,18 @@ public class Middleman implements Runnable{
         this.estimatecountry = estimatecountry;
         this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.bag = bag;
-        this.APP = null;
+        this.APPG = null;
+        this.APPC = null;
         updateEstimateG = new Runnable() {
             @Override
             public void run() {
-                estimateglobal.setText("Global" + APP);
+                estimateglobal.setText("Global " + APPG);
             }
         };
         updateEstimateC = new Runnable() {
             @Override
             public void run() {
-                estimatecountry.setText("Country" + APP);
+                estimatecountry.setText("Country " + APPC);
             }
         };
     }
@@ -62,7 +64,7 @@ public class Middleman implements Runnable{
             }
             String[] letter = stamp.split("\\s+");
             if(letter[0].equals("est")){
-                APP = letter[1];
+                APPG = letter[1];
                 try {
                     SwingUtilities.invokeAndWait(updateEstimateG);
                 } catch (InterruptedException e) {
@@ -71,8 +73,8 @@ public class Middleman implements Runnable{
                     e.printStackTrace();
                 }
             }
-            else if(letter[1].equals("cest")){
-                APP = letter[1];
+            else if(letter[0].equals("cest")){
+                APPC = letter[1];
                 try {
                     SwingUtilities.invokeAndWait(updateEstimateC);
                 } catch (InterruptedException e) {
