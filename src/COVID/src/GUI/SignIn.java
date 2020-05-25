@@ -31,6 +31,7 @@ public class SignIn extends JFrame{
     private static JLabel CountryLabel;
     private static JComboBox country;
     private String s;
+    private String b;
     private static JButton button;
     private CoronitaClientAccount coronita;
 
@@ -107,15 +108,19 @@ public class SignIn extends JFrame{
                 Object selction = country.getItemAt(country.getSelectedIndex());
                 if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
                     s =("pt");
+                    String b = "Portugal";
                 }
                 if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
                     s = ("es");
+                    String b = "Spain";
                 }
                 if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
                     s =("it");
+                    String b = "Italy";
                 }
                 if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
                     s = ("cn");
+                    String b = "China";
                 }
             }
         });
@@ -138,7 +143,7 @@ public class SignIn extends JFrame{
                     coronita.authenticate(user,password);
                     int a = coronita.setCountry(s);
                     frame.dispose();
-                    App app = new App(user,a, EstimateGlobal,EstimateCountry,coronita);
+                    App app = new App(user,a, EstimateGlobal,EstimateCountry, coronita,b);
                     System.out.println("Successfully Registered");
                 } catch (MismatchPassException e) {
                     JOptionPane.showMessageDialog(null,"Mismatch Password", "WARNING", JOptionPane.WARNING_MESSAGE);
