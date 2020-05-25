@@ -89,6 +89,7 @@ public class Worker implements Runnable, Interface {
                     } catch (MismatchPassException e){
                         out.println("err password");
                     }
+                    System.out.println("finish!");
                     break;
 
                 case "vw":
