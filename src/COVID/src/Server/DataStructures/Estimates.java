@@ -67,15 +67,20 @@ public class Estimates{
         return new Pair<Float,Float>(globalUpdate,countryUpdate);
     }
 
-    public void addCountryReport(String country){
+    public void firstUpdate(String country,float newEstimate){
         Estimate estimate;
         lockEstimates();
         this.reports++;
         estimate = estimates.get(country);
         estimate.lockEstimate();
-        unlockEstimates();
+        //unlockEstimates();
         estimate.addReport();
+        estimate.update(newEstimate);
         estimate.unlockEstimate();
+        globalEstimate += ((newEstimate-globalEstimate)/reports);
+        updated.clear();
+        update.signalAll();
+        unlockEstimates();
     }
 
     public void update(String country, float newEstimate){

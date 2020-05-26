@@ -24,7 +24,6 @@ public class Writer implements Runnable{
         writer = new Thread(this);
         writer.start();
     }
-
     public void stop(){
         if(writer != null){
             flag = false;

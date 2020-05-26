@@ -102,9 +102,6 @@ public class Worker implements Runnable, Interface {
                     break;
 
                 case "up":
-                    if (!(accounts.hasReport(idCliente,currentCountry))){
-                        estimates.addCountryReport(currentCountry);
-                    }
                     args = readParts[1].split("\\s+");
                     cases = Integer.parseInt(args[0]);
                     updateEstimate(cases);
@@ -178,8 +175,14 @@ public class Worker implements Runnable, Interface {
     @Override
     public void updateEstimate(int cases){
         float newEstimate;
-        newEstimate = accounts.updateCases(idCliente,cases);
-        estimates.update(currentCountry,newEstimate);
+        if (accounts.hasReport(idCliente,currentCountry)){
+            newEstimate = accounts.updateCases(idCliente,cases);
+            estimates.update(currentCountry,newEstimate);
+        }
+        else{
+            newEstimate = accounts.updateCases(idCliente,cases);
+            estimates.firstUpdate(currentCountry,newEstimate);
+        }
     }
 
     @Override
