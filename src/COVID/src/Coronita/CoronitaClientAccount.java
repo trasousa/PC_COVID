@@ -1,11 +1,13 @@
 package COVID.src.Coronita;
 
 
-import COVID.src.Exceptions.*;
+import COVID.src.Exceptions.AccountException;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
-import COVID.src.Exceptions.PasswordExceptions.InvalidPasswordException;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
+import COVID.src.Exceptions.InvalidNumCases;
+import COVID.src.Exceptions.PasswordExceptions.InvalidPasswordException;
+import javafx.scene.Scene;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -19,12 +21,12 @@ public class CoronitaClientAccount {
     private static JTextField estimateglobal;
     private static JTextField estimatecountry;
 
-    public CoronitaClientAccount(JTextField estimateglobal, JTextField estimatecountry) throws IOException {
+    public CoronitaClientAccount(JTextField estimateglobal, JTextField estimatecountry, Scene scene) throws IOException {
         this.estimateglobal = estimateglobal;
         this.estimatecountry = estimatecountry;
         host = "127.0.0.1";
         port = 60833;
-        coronita = new CoronitaServer(host,port,estimateglobal,estimatecountry);
+        coronita = new CoronitaServer(host,port,estimateglobal,estimatecountry,scene);
     }
 
     public void chekUsername (String Username) throws InvalidUsername {

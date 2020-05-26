@@ -5,6 +5,7 @@ import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 import COVID.src.Exceptions.PasswordException;
+import javafx.scene.Scene;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,7 @@ public class SignIn extends JFrame{
     private static JTextField NameText;
     private static JTextField EstimateGlobal;
     private static JTextField EstimateCountry;
+    private static Scene scene;
     private static JLabel UserLabel;
     private static JTextField UserText;
     private static JLabel PasswordLabel;
@@ -36,15 +38,11 @@ public class SignIn extends JFrame{
     private CoronitaClientAccount coronita;
 
 
-    public SignIn(JTextField EstimateGlobal, JTextField EstimateCountry) {
+    public SignIn(JTextField EstimateGlobal, JTextField EstimateCountry, Scene scene, CoronitaClientAccount coronita) {
         this.EstimateGlobal = EstimateGlobal;
         this.EstimateCountry = EstimateCountry;
-        try {
-            this.coronita = new CoronitaClientAccount(EstimateGlobal,EstimateCountry);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        this.scene = scene;
+        this.coronita = coronita;
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         frame.setSize(350, 400 );
@@ -102,25 +100,27 @@ public class SignIn extends JFrame{
         country = new JComboBox(countryList);
         country.setFont(new Font("OpenSymbol", Font.ITALIC, 12));
         country.setBounds(120,140,150,25);
+        s = "pt";
+        b = "Portugal";
         country.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Object selction = country.getItemAt(country.getSelectedIndex());
                 if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
                     s =("pt");
-                    String b = "Portugal";
+                    b = "Portugal";
                 }
                 if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
                     s = ("es");
-                    String b = "Spain";
+                    b = "Spain";
                 }
                 if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
                     s =("it");
-                    String b = "Italy";
+                    b = "Italy";
                 }
                 if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
                     s = ("cn");
-                    String b = "China";
+                    b = "China";
                 }
             }
         });
@@ -143,7 +143,7 @@ public class SignIn extends JFrame{
                     coronita.authenticate(user,password);
                     int a = coronita.setCountry(s);
                     frame.dispose();
-                    App app = new App(user,a, EstimateGlobal,EstimateCountry, coronita,b);
+                    App app = new App(user,a, EstimateGlobal,EstimateCountry, coronita,b,scene);
                     System.out.println("Successfully Registered");
                 } catch (MismatchPassException e) {
                     JOptionPane.showMessageDialog(null,"Mismatch Password", "WARNING", JOptionPane.WARNING_MESSAGE);

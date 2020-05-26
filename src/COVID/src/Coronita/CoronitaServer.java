@@ -4,6 +4,7 @@ import COVID.src.Exceptions.AccountException;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
+import javafx.scene.Scene;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -18,12 +19,12 @@ public class CoronitaServer implements Interface {
     private PrintWriter outServer;
 
 
-    public  CoronitaServer(String host, int port, JTextField estimateglobal, JTextField estimatecountry)
+    public  CoronitaServer(String host, int port, JTextField estimateglobal, JTextField estimatecountry, Scene scene)
         throws IOException{
             this.socket = new Socket(host, port);
             this.outServer = new PrintWriter(socket.getOutputStream());
             this.bag = new Bag();
-            this.dealer = new Middleman(socket,bag,estimateglobal,estimatecountry);
+            this.dealer = new Middleman(socket,bag,estimateglobal,estimatecountry, scene);
             dealer.start();
         }
 
@@ -84,7 +85,7 @@ public class CoronitaServer implements Interface {
     @Override
     public int setCountry(String country){
         int a = 0;
-        outServer.println("vw" + country);
+        outServer.println("vw " + country);
         outServer.flush();
         answer = this.bag.getLetter();
         if (answer[0].equals("ack")) {

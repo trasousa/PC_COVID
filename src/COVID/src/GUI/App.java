@@ -4,12 +4,8 @@ import COVID.src.Coronita.CoronitaClientAccount;
 import COVID.src.Exceptions.AccountException;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 import COVID.src.Exceptions.InvalidNumCases;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,17 +23,21 @@ public class App extends JFrame {
     private static JButton button1;
     private CoronitaClientAccount coronita;
     private String C;
+    public int n;
+    public Integer EG;
+    public Integer EC;
     private Scene scene;
 
 
-    public App(String Username, int cases, JTextField EstimateGlobal, JTextField EstimateCountry, CoronitaClientAccount coronita, String Country) {
+    public App(String Username, int cases, JTextField EstimateGlobal, JTextField EstimateCountry, CoronitaClientAccount coronita, String Country, Scene scene) {
         this.coronita = coronita;
         this.C = Country;
         JFrame frame = new JFrame();
+        JPanel container = new JPanel();
         JPanel panel = new JPanel();
+        JFXPanel panel2 = new JFXPanel();
         JMenuBar mb = new JMenuBar();
-        final JFXPanel panel2 = new JFXPanel();
-        frame.setSize(600, 300);
+        frame.setSize(1000, 500);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -55,12 +55,14 @@ public class App extends JFrame {
             }
         });
         frame.setTitle("NICE_COVID_SERVER");
-        panel.setSize(300,300);
-        panel2.setSize(300,300);
+        //panel.setSize(200, 300);
+        //panel2.setSize(200, 300);
         frame.getContentPane().add(BorderLayout.NORTH, mb);
-        frame.add(panel,BorderLayout.WEST);
+        container.setLayout(new GridLayout(1,2));
         panel.setLayout(null);
         panel2.setLayout(null);
+        container.add(panel);
+        container.add(panel2);
 
         JMenu m1 = new JMenu("ACCOUNT: " + Username);
         JMenuItem m11 = new JMenuItem("LOG OUT");
@@ -82,7 +84,7 @@ public class App extends JFrame {
                 try {
                     coronita.removeAccount(Username, passconf);
                     frame.dispose();
-                    SignIn sign = new SignIn(EstimateGlobal, EstimateCountry);
+                    SignIn sign = new SignIn(EstimateGlobal, EstimateCountry, scene,coronita);
                 } catch (MismatchPassException e) {
                     JOptionPane.showMessageDialog(null, "Mismatch Password", "WARNING", JOptionPane.QUESTION_MESSAGE);
                 } catch (AccountException e) {
@@ -98,29 +100,33 @@ public class App extends JFrame {
         JMenuItem m21 = new JMenuItem("PORTUGAL \uD83C\uDDF5\uD83C\uDDF9");
         m21.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                coronita.setCountry("pt");
-                C = "Portugal";
+                n = coronita.setCountry("pt");
+                m2.setText("COUNTRY: " + "Portugal");
+                setnew(n);
             }
         });
         JMenuItem m22 = new JMenuItem("SPAIN \uD83C\uDDEA\uD83C\uDDE6");
         m22.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                coronita.setCountry("es");
-                C = "Spain";
+                n = coronita.setCountry("es");
+                m2.setText("COUNTRY: " + "Spain");
+                setnew(n);
             }
         });
         JMenuItem m23 = new JMenuItem("ITALY \uD83C\uDDEE\uD83C\uDDF9");
         m23.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                coronita.setCountry("it");
-                C = "Italy";
+                n = coronita.setCountry("it");
+                m2.setText("COUNTRY: " + "Italy");
+                setnew(n);
             }
         });
         JMenuItem m24 = new JMenuItem("CHINA \uD83C\uDDE8\uD83C\uDDF3");
         m24.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                coronita.setCountry("cn");
-                C = "China";
+                n = coronita.setCountry("cn");
+                m2.setText("COUNTRY: " + "China");
+                setnew(n);
             }
         });
         m2.add(m21);
@@ -131,28 +137,31 @@ public class App extends JFrame {
 
 
         est = new JLabel("Estimatives: ");
-        est.setBounds(20, 20, 80, 25);
+        est.setBounds(20, 40, 130, 30);
+        est.setFont(new Font("OpenSymbol", Font.BOLD, 14));
         panel.add(est);
 
         this.EstimateGlobal = EstimateGlobal;
         this.EstimateGlobal.setEditable(false);
-        this.EstimateGlobal.setBackground(Color.GRAY);
-        this.EstimateGlobal.setBounds(30, 45, 80, 40);
+        this.EstimateGlobal.setBackground(new Color(228, 102, 56));
+        this.EstimateGlobal.setBounds(240, 100, 200, 40);
         panel.add(this.EstimateGlobal);
 
 
         this.EstimateCountry = EstimateCountry;
         this.EstimateCountry.setEditable(false);
-        this.EstimateCountry.setBackground(Color.GRAY);
-        this.EstimateCountry.setBounds(150, 45, 80, 40);
+        this.EstimateCountry.setBackground(new Color(235, 161, 43));
+        this.EstimateCountry.setBounds(40, 100, 200, 40);
         panel.add(this.EstimateCountry);
 
-        Cases = new JLabel("Number of known reported cases : " + cases);
-        Cases.setBounds(20, 90, 300, 25);
+        Cases = new JLabel("Last number of known reported cases : " + cases);
+        Cases.setBounds(40, 160, 350, 30);
+        Cases.setFont(new Font("OpenSymbol", Font.BOLD, 14));
         panel.add(Cases);
 
         dialog2 = new JLabel("Keep the number of cases updated");
-        dialog2.setBounds(20, 120, 300, 25);
+        dialog2.setBounds(40, 220, 300, 30);
+        dialog2.setFont(new Font("OpenSymbol", Font.BOLD, 14));
         panel.add(dialog2);
 
         CasesText = new JTextField("Insert number", 40);
@@ -162,49 +171,38 @@ public class App extends JFrame {
                 CasesText.setText("");
             }
         });
-        CasesText.setBounds(120, 160, 140, 25);
+        CasesText.setBounds(300, 220, 160, 30);
         panel.add(CasesText);
 
-        button1 = new JButton("Update");
+        button1 = new JButton("UPDATE");
         button1.setBackground(Color.GRAY);
-        button1.setBounds(20, 160, 80, 40);
+        button1.setBounds(195, 310, 100, 100);
+        button1.setBackground(Color.GRAY);
+        button1.setFont(new Font("OpenSymbol", Font.BOLD, 14));;
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String a = CasesText.getText();
-                try {
-                    coronita.updateEstimate(a);
-                } catch (InvalidNumCases invalidNumCases) {
-                    JOptionPane.showMessageDialog(null, "Invalid Number", "WARNING", JOptionPane.QUESTION_MESSAGE);
-                    CasesText.setText("Insert number");
+                    if(!(a.equals("") || a.equals("Insert number") || !(a.matches("\\d+")))) {
+                        try {
+                            coronita.updateEstimate(a);
+                            Cases.setText("Number of known reported cases : " + a);
+                        } catch (InvalidNumCases invalidNumCases) {
+                            JOptionPane.showMessageDialog(null, "Invalid Number", "WARNING", JOptionPane.QUESTION_MESSAGE);
+                            CasesText.setText("Insert number");
+                        }
                 }
+                else CasesText.setText("Invalid input");
             }
         });
         panel.add(button1);
-
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Iphone 5S", 13),
-                new PieChart.Data("Samsung Grand", 25),
-                new PieChart.Data("MOTO G", 10),
-                new PieChart.Data("Nokia Lumia", 22));
-        //Creating a Pie chart
-        PieChart pieChart = new PieChart(pieChartData);
-        //Setting the title of the Pie chart
-        pieChart.setTitle("Mobile Sales");
-        //setting the direction to arrange the data
-        pieChart.setClockwise(true);
-        //Setting the length of the label line
-        pieChart.setLabelLineLength(50);
-        //Setting the labels of the pie chart visible
-        pieChart.setLabelsVisible(true);
-        //Setting the start angle of the pie chart
-        pieChart.setStartAngle(180);
-        //Creating a Group object
-        Group root = new Group(pieChart);
-        //Adding scene to the stage
-        scene = new Scene(root,300,300);
         panel2.setScene(scene);
-        frame.getContentPane().add(panel2,BorderLayout.WEST);
+        frame.add(container);
         frame.setVisible(true);
     }
+    public void setnew (int n){
+        Cases.setText("Number of known reported cases : " + n);
+    }
 }
+
+

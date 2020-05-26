@@ -3,6 +3,8 @@ package COVID.src.GUI;
 import COVID.src.Coronita.CoronitaClientAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +21,7 @@ public class LogIn extends JFrame {
         private static JTextField EstimateGlobal;
         private static JTextField EstimateCountry;
         private static JLabel PasswordLabel;
+        private static Scene scene;
         private static JPasswordField PassText;
         private static JLabel CountryLabel;
         private static JComboBox country;
@@ -28,13 +31,16 @@ public class LogIn extends JFrame {
         private String s;
         private String b;
         private Object selectedItem;
+        private Group root;
 
     public LogIn(){
 
         try {
-            this.EstimateGlobal = new JTextField("Global");
-            this.EstimateCountry = new JTextField("Country");
-            this.coronita = new CoronitaClientAccount(EstimateGlobal,EstimateCountry);
+            this.EstimateGlobal = new JTextField("Global ");
+            this.EstimateCountry = new JTextField("Country ");
+            this.root = new Group();
+            this.scene = new Scene(root , 200,300);
+            this.coronita = new CoronitaClientAccount(EstimateGlobal,EstimateCountry,scene);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,7 +61,7 @@ public class LogIn extends JFrame {
                     }
                 }
                 else if (i== JOptionPane.NO_OPTION){
-                    System.out.println("es um mono");
+                    System.out.println("quit");
                 }
             }
         });
@@ -87,27 +93,30 @@ public class LogIn extends JFrame {
         country = new JComboBox(countryList);
         country.setBounds(120,100,150,25);
         country.setFont(new Font("OpenSymbol", Font.ITALIC, 12));
+        s = ("pt");
+        b = ("Portugal");
         country.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Object selction = country.getItemAt(country.getSelectedIndex());
                 if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
                     s =("pt");
-                    String b = "Portugal";
+                    b = "Portugal";
                 }
                 if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
                     s = ("es");
-                    String b = "Spain";
+                    b = "Spain";
                 }
                 if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
                     s =("it");
-                    String b = "Italy";
+                     b = "Italy";
                 }
                 if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
                     s = ("cn");
-                    String b = "China";
+                    b = "China";
                 }
             }
+
         });
         panel.add(country);
 
@@ -123,7 +132,7 @@ public class LogIn extends JFrame {
                     coronita.authenticate(user, password);
                     int a =  coronita.setCountry(s);
                     frame.dispose();
-                    App app = new App(user,a, EstimateGlobal, EstimateCountry, coronita, b);
+                    App app = new App(user,a, EstimateGlobal, EstimateCountry, coronita, b,scene);
                     System.out.println(a);
                 } catch (InvalidAccount e) {
                     JOptionPane.showMessageDialog(null, "Invalid Account", "WARNING", JOptionPane.WARNING_MESSAGE);
@@ -134,7 +143,6 @@ public class LogIn extends JFrame {
                     JOptionPane.showMessageDialog(null, "Invalid Password", "WARNING", JOptionPane.WARNING_MESSAGE);
                     System.out.println("Invalid Password");
                     PassText.setText("");
-                    frame.dispose();
                 }
             }
         });
@@ -145,7 +153,7 @@ public class LogIn extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 frame.dispose();
-                SignIn sign = new SignIn(EstimateGlobal,EstimateCountry);
+                SignIn sign = new SignIn(EstimateGlobal,EstimateCountry,scene,coronita);
             }
         });
         panel.add(button2);
