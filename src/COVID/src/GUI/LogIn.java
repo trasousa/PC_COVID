@@ -61,7 +61,7 @@ public class LogIn extends JFrame {
                     }
                 }
                 else if (i== JOptionPane.NO_OPTION){
-                    System.out.println("es um mono");
+                    System.out.println("quit");
                 }
             }
         });
@@ -153,7 +153,7 @@ public class LogIn extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 frame.dispose();
-                SignIn sign = new SignIn(EstimateGlobal,EstimateCountry,scene);
+                SignIn sign = new SignIn(EstimateGlobal,EstimateCountry,scene,coronita);
             }
         });
         panel.add(button2);

@@ -106,13 +106,17 @@ public class Middleman implements Runnable {
         }
     }
 
-    public void chart() throws InvocationTargetException, InterruptedException {
+    public void chart() throws InterruptedException{
         PieeChart piechart;
         ag = Float.parseFloat(APPG);
         ac = Float.parseFloat(APPC);
         piechart = new PieeChart(ag, ac);
         root = piechart.getRoot();
-        SwingUtilities.invokeAndWait(updatePie);
+        try {
+            SwingUtilities.invokeAndWait(updatePie);
+        } catch (InvocationTargetException e) {
+            System.out.println("cena que nao sei!!!!");
+        }
     }
 }
 

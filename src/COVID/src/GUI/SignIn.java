@@ -5,7 +5,6 @@ import COVID.src.Exceptions.AccountExceptions.InvalidAccount;
 import COVID.src.Exceptions.AccountExceptions.InvalidUsername;
 import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 import COVID.src.Exceptions.PasswordException;
-import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 
 import javax.swing.*;
@@ -39,16 +38,11 @@ public class SignIn extends JFrame{
     private CoronitaClientAccount coronita;
 
 
-    public SignIn(JTextField EstimateGlobal, JTextField EstimateCountry, Scene scene) {
+    public SignIn(JTextField EstimateGlobal, JTextField EstimateCountry, Scene scene, CoronitaClientAccount coronita) {
         this.EstimateGlobal = EstimateGlobal;
         this.EstimateCountry = EstimateCountry;
         this.scene = scene;
-        try {
-            this.coronita = new CoronitaClientAccount(EstimateGlobal,EstimateCountry,scene);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        this.coronita = coronita;
         JFrame frame = new JFrame();
         JPanel panel = new JPanel();
         frame.setSize(350, 400 );

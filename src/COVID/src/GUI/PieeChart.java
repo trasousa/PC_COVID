@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.chart.PieChart;
 
-
 public class PieeChart{
     Group root;
     float eg;
@@ -16,11 +15,13 @@ public class PieeChart{
         this.eg = eg;
     }
 
-    public Group getRoot(){
-        float ratio = (ec/eg)*100;
+    public Group getRoot() {
+        float pop = 100000;
+        float cg = eg*pop;
+        float cc = ec*(pop/4);
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-        new PieChart.Data( "pila",100-ratio),
-        new PieChart.Data("Country slice", ratio));
+        new PieChart.Data( "Other contries",cg-cc),
+        new PieChart.Data("Country slice", cc));
         //Creating a Pie chart
         PieChart pieChart = new PieChart(pieChartData);
         //Setting the title of the Pie chart
