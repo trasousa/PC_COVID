@@ -24,6 +24,8 @@ public class Worker implements Runnable, Interface {
     String currentCountry;
     Accounts accounts;
     Writer writer;
+    int readFails;
+
     public Worker(Socket client, Estimates estimates, Accounts accounts){
         try {
             this.client = client;
@@ -39,12 +41,13 @@ public class Worker implements Runnable, Interface {
 
     @Override
     public void run(){
-        System.out.println("Começou");
         String read = null;
         try {
             read = in.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Server failed to read from input stream!");
+            read = "";
+            readFails++;
         }
 
         String username;
@@ -89,7 +92,6 @@ public class Worker implements Runnable, Interface {
                     } catch (MismatchPassException e){
                         out.println("err password");
                     }
-                    System.out.println("finish!");
                     break;
 
                 case "vw":
@@ -97,6 +99,7 @@ public class Worker implements Runnable, Interface {
                     kill_writer();
                     currentCountry = readParts[1];
                     cases = accounts.setCountry(idCliente,currentCountry);
+                    if(cases == -1) cases = 0; //serve apenas para enviar 0 casos reportados, quando ainda não reportou
                     out.println("ack " + cases);
                     writer.start(idCliente,currentCountry);
                     break;
@@ -133,8 +136,18 @@ public class Worker implements Runnable, Interface {
 
             try{
                 read = in.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
+                readFails = 0;
+            } catch (IOException e){
+                System.out.println("Failed to read from input stream.");
+                if(readFails<5){
+                    readFails++;
+                    read = "";
+                }
+
+                else{
+                    read = null;
+                    System.out.println(readFails + " consecutive failures when reading from socket input stream, shutting down connection");
+                }
             }
         }
 
@@ -142,7 +155,7 @@ public class Worker implements Runnable, Interface {
             kill_writer();
             client.shutdownOutput();
             client.shutdownInput();
-            System.out.println("bye bye");
+            System.out.println("Connection terminated.\nAddress: " + client.getInetAddress());
             client.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -11,14 +11,12 @@ public class Estimate {
     int reports;
     HashSet<String> updated;
     ReentrantLock lock;
-    Condition update;
 
     public Estimate(){
         estimate = 0;
         reports = 0;
         updated = new HashSet<String>();
         lock = new ReentrantLock();
-        update = lock.newCondition();
     }
     public void lockEstimate(){
         lock.lock();
@@ -26,8 +24,6 @@ public class Estimate {
     public void unlockEstimate(){
         lock.unlock();
     }
-
-    public void addReport(){ this.reports++;}
 
     public float getEstimate(String id){
         float estimateNow;
@@ -38,12 +34,29 @@ public class Estimate {
         return estimateNow;
     }
 
-    public void update(float newEstimate){
+    public float firstUpdate(float newEstimate){
+        float oldEstimate;
+        float estimateDiff;
         lockEstimate();
+        reports ++;
+        oldEstimate = estimate;
+        estimate += (newEstimate-estimate)/reports;
+        updated.clear();
+        estimateDiff = estimate-oldEstimate;
+        unlockEstimate();
+        return estimateDiff;
+    }
+
+    public float update(float newEstimate){
+        float oldEstimate;
+        float estimateDiff;
+        lockEstimate();
+        oldEstimate = estimate;
         estimate += newEstimate/reports;
         updated.clear();
-        update.signalAll();
+        estimateDiff = estimate-oldEstimate;
         unlockEstimate();
+        return estimateDiff;
     }
 
     public boolean isUpdated(String id){

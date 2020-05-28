@@ -33,7 +33,7 @@ public class Writer implements Runnable{
     public void join(){
         try {
             writer.join();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e){
             e.printStackTrace();
         }
     }
@@ -50,6 +50,5 @@ public class Writer implements Runnable{
                 }
             }
         }
-
     }
 }

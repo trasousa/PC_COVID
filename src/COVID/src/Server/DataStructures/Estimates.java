@@ -8,13 +8,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Estimates{
     HashMap<String,Estimate> estimates;
     float globalEstimate;
-    int reports;
     HashSet<String> updated;
     ReentrantLock lock;
     Condition update;
     public Estimates(){
         globalEstimate = 0;
-        reports = 0;
         estimates = initEstimates();
         updated = new HashSet<String>();
         lock = new ReentrantLock();
@@ -44,7 +42,7 @@ public class Estimates{
             try {
                 update.await();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("Error while waiting for updates");
             }
         }
         unlockEstimates();
@@ -70,14 +68,14 @@ public class Estimates{
     public void firstUpdate(String country,float newEstimate){
         Estimate estimate;
         lockEstimates();
-        this.reports++;
+        float estimateDiff;
         estimate = estimates.get(country);
         estimate.lockEstimate();
-        //unlockEstimates();
-        estimate.addReport();
-        estimate.update(newEstimate);
+        //fazer o unlock de estimates
+        estimateDiff = estimate.firstUpdate(newEstimate);
+        //voltar a fazer lock??
         estimate.unlockEstimate();
-        globalEstimate += ((newEstimate-globalEstimate)/reports);
+        globalEstimate += (estimateDiff/4);
         updated.clear();
         update.signalAll();
         unlockEstimates();
@@ -85,10 +83,12 @@ public class Estimates{
 
     public void update(String country, float newEstimate){
         Estimate estimate;
+        float estimateDiff;
         lockEstimates();
-        globalEstimate += newEstimate/reports;
         estimate = estimates.get(country);
-        estimate.update(newEstimate);
+        estimate.lockEstimate();
+         estimateDiff = estimate.update(newEstimate);
+        globalEstimate += estimateDiff/4;
         updated.clear();
         update.signalAll();
         unlockEstimates();
