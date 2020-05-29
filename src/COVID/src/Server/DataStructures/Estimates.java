@@ -67,14 +67,14 @@ public class Estimates{
 
     public void firstUpdate(String country,float newEstimate){
         Estimate estimate;
-        lockEstimates();
         float estimateDiff;
+        lockEstimates();
         estimate = estimates.get(country);
         estimate.lockEstimate();
-        //fazer o unlock de estimates
+        unlockEstimates();
         estimateDiff = estimate.firstUpdate(newEstimate);
-        //voltar a fazer lock??
         estimate.unlockEstimate();
+        lockEstimates();
         globalEstimate += (estimateDiff/4);
         updated.clear();
         update.signalAll();
@@ -87,7 +87,10 @@ public class Estimates{
         lockEstimates();
         estimate = estimates.get(country);
         estimate.lockEstimate();
-         estimateDiff = estimate.update(newEstimate);
+        unlockEstimates();
+        estimateDiff = estimate.update(newEstimate);
+        estimate.unlockEstimate();
+        lockEstimates();
         globalEstimate += estimateDiff/4;
         updated.clear();
         update.signalAll();

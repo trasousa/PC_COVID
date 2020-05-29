@@ -100,8 +100,8 @@ public class Worker implements Runnable, Interface {
                     currentCountry = readParts[1];
                     cases = accounts.setCountry(idCliente,currentCountry);
                     if(cases == -1) cases = 0; //serve apenas para enviar 0 casos reportados, quando ainda não reportou
-                    out.println("ack " + cases);
                     writer.start(idCliente,currentCountry);
+                    out.println("ack " + cases);
                     break;
 
                 case "up":
@@ -122,8 +122,6 @@ public class Worker implements Runnable, Interface {
                         removeAccount(username,password);
                         out.println("ack rm");
                         kill_writer();
-                    } catch (InvalidAccount invalidAccount) {
-                        out.println("err InvalidAccount");
                     } catch (MismatchPassException mismatchPass){
                         out.println(("err password"));
                     }
@@ -181,7 +179,7 @@ public class Worker implements Runnable, Interface {
     }
 
     @Override
-    public void removeAccount(String id, String passwd) throws InvalidAccount,MismatchPassException {
+    public void removeAccount(String id, String passwd) throws MismatchPassException {
         accounts.removeAccount(id,passwd);
     }
 

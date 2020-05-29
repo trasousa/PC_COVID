@@ -28,6 +28,11 @@ public class Account{
         this.passwd = passwd;
     }
 
+    public int getCases(){
+        int cases = this.cases.get(currentCountry);
+        return cases;
+    }
+
     public int setCases(int cases){
         int caseDiff;
         int oldCases;
@@ -40,21 +45,17 @@ public class Account{
         return caseDiff;
     }
 
-    public boolean hasReport(String country){
-        return (cases.get(country) != -1);
-    }
-
-    public int getCases(){
-        int cases = this.cases.get(currentCountry);
-        return cases;
-    }
-
     public String getCountry() {
         return currentCountry;
     }
 
     public void setCountry(String country){
         this.currentCountry = country;
+    }
+
+
+    public boolean hasReport(String country){
+        return (cases.get(country) != -1);
     }
 
     public void lockAccount(){

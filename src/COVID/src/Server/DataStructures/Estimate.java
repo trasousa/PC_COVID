@@ -68,6 +68,8 @@ public class Estimate {
     }
 
     public void remove(String id){
+        lockEstimate();
         updated.remove(id);
+        unlockEstimate();
     }
 }

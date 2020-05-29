@@ -67,23 +67,16 @@ public class Accounts {
 
     }
 
-    public void removeAccount(String id, String passwd) throws MismatchPassException,InvalidAccountServer{
+    public int setCountry(String id, String country){
+        int cases;
         lockAccounts();
-        if(accounts.containsKey(id)){
-            if(accounts.get(id).getPasswd().equals(passwd)){
-                accounts.remove(id);
-                unlockAccounts();
-            }
-            else {
-                unlockAccounts();
-                throw new MismatchPassException("Wrong password");
-            }
-        }
-
-        else {
-            unlockAccounts();
-            throw new InvalidAccountServer(id);
-        }
+        Account account = accounts.get(id);
+        account.lockAccount();
+        unlockAccounts();
+        account.setCountry(country);
+        cases = account.getCases();
+        account.unlockAccount();
+        return cases;
     }
 
     public boolean hasReport(String id,String country){
@@ -108,29 +101,19 @@ public class Accounts {
         diffCases = account.setCases(cases);
         account.unlockAccount();
         newEstimate = ((float) diffCases)/150;
-        //accounts.forEach(
-        //        (s,a) -> {
-        //            a.lockAccount();
-        //        });
-        //unlockAccounts();
-        //float newEstimate = 0;
-        //for (Map.Entry<String, Account> entry : accounts.entrySet()) {
-        //    Account account = entry.getValue();
-        //    newEstimate += ((float) account.getCases())/150.0;
-        //    account.unlockAccount();
-        //}
         return newEstimate;
     }
 
-    public int setCountry(String id, String country){
-        int cases;
+    public void removeAccount(String id, String passwd) throws MismatchPassException{
         lockAccounts();
-        Account account = accounts.get(id);
-        account.lockAccount();
-        unlockAccounts();
-        account.setCountry(country);
-        cases = account.getCases();
-        account.unlockAccount();
-        return cases;
+        if(accounts.get(id).getPasswd().equals(passwd)){
+            accounts.remove(id);
+            unlockAccounts();
+        }
+        else {
+            unlockAccounts();
+            throw new MismatchPassException("Wrong password");
+        }
     }
+
 }
