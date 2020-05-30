@@ -28,7 +28,6 @@ public class Middleman implements Runnable {
     Runnable updateEstimateG;
     Runnable updateEstimateC;
     Runnable updatePie;
-    PieeChart piechart;
 
     public Middleman(Socket socket, Bag bag, JTextField estimateglobal, JTextField estimatecountry, Scene scene) throws IOException {
         this.estimateglobal = estimateglobal;
@@ -107,11 +106,12 @@ public class Middleman implements Runnable {
         }
     }
 
-    public void chart() throws InterruptedException {
+    public void chart() throws InterruptedException{
+        PieeChart piechart;
         ag = Float.parseFloat(APPG);
         ac = Float.parseFloat(APPC);
-        piechart = new PieeChart();
-        root = piechart.getRoot(ag,ac);
+        piechart = new PieeChart(ag, ac);
+        root = piechart.getRoot();
         try {
             SwingUtilities.invokeAndWait(updatePie);
         } catch (InvocationTargetException e) {
