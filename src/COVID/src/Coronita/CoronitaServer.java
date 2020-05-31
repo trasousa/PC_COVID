@@ -7,7 +7,9 @@ import COVID.src.Exceptions.AccountExceptions.MismatchPassException;
 import javafx.scene.Scene;
 
 import javax.swing.*;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -16,6 +18,7 @@ public class CoronitaServer implements Interface {
     private Socket socket;
     private Middleman dealer;
     private Bag bag;
+    private BufferedReader inServer;
     private PrintWriter outServer;
 
 
@@ -23,8 +26,9 @@ public class CoronitaServer implements Interface {
         throws IOException{
             this.socket = new Socket(host, port);
             this.outServer = new PrintWriter(socket.getOutputStream());
+            this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bag = new Bag();
-            this.dealer = new Middleman(socket,bag,estimateglobal,estimatecountry, scene);
+            this.dealer = new Middleman(inServer,bag,estimateglobal,estimatecountry, scene);
             dealer.start();
         }
 

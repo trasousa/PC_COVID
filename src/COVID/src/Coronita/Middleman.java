@@ -30,12 +30,12 @@ public class Middleman implements Runnable {
     Runnable updateEstimateC;
     Runnable updatePie;
 
-    public Middleman(Socket socket, Bag bag, JTextField estimateglobal, JTextField estimatecountry, Scene scene) throws IOException {
+    public Middleman(BufferedReader inServer, Bag bag, JTextField estimateglobal, JTextField estimatecountry, Scene scene) throws IOException {
         this.estimateglobal = estimateglobal;
         this.estimatecountry = estimatecountry;
         this.scene = scene;
         this.piechart = new PieeChart();
-        this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.inServer = inServer;
         this.bag = bag;
         this.APPG = "0.0";
         this.APPC = "0.0";
