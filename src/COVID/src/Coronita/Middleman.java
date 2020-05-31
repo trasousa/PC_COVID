@@ -1,6 +1,7 @@
 package COVID.src.Coronita;
 
 import COVID.src.GUI.PieeChart;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 
@@ -18,7 +19,7 @@ public class Middleman implements Runnable {
     private static JTextField estimateglobal;
     private static JTextField estimatecountry;
     private Scene scene;
-    Group root;
+    PieeChart piechart;
     Thread dealer;
     Bag bag;
     String APPG;
@@ -33,6 +34,7 @@ public class Middleman implements Runnable {
         this.estimateglobal = estimateglobal;
         this.estimatecountry = estimatecountry;
         this.scene = scene;
+        this.piechart = new PieeChart();
         this.inServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.bag = bag;
         this.APPG = "0.0";
@@ -52,7 +54,15 @@ public class Middleman implements Runnable {
         updatePie = new Runnable() {
             @Override
             public void run() {
+                float eg;
+                float ec;
+                Group root;
+                eg= Float.parseFloat(APPG);
+                ec = Float.parseFloat(APPC);
+                root = piechart.getRoot(eg,ec);
+                System.out.println("Just called pirchart with " + eg + " and " + ec);
                 scene.setRoot(root);
+                System.out.println("Set the scene to root");
             }
         };
     }
@@ -82,40 +92,23 @@ public class Middleman implements Runnable {
                 e.printStackTrace();
             }
             String[] letter = stamp.split("\\s+");
-            if (letter[0].equals("est")) {
-                APPG = letter[1];
-                try {
-                    chart();
-                    SwingUtilities.invokeAndWait(updateEstimateG);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            } else if (letter[0].equals("cest")) {
-                APPC = letter[1];
-                try {
-                    chart();
-                    SwingUtilities.invokeAndWait(updateEstimateC);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            } else bag.putLetter(letter);
-        }
-    }
 
-    public void chart() throws InterruptedException{
-        PieeChart piechart;
-        ag = Float.parseFloat(APPG);
-        ac = Float.parseFloat(APPC);
-        piechart = new PieeChart(ag, ac);
-        root = piechart.getRoot();
-        try {
-            SwingUtilities.invokeAndWait(updatePie);
-        } catch (InvocationTargetException e) {
-            System.out.println(e.getTargetException());
+            if (letter[0].equals("cest")) {
+                APPC = letter[1];
+                SwingUtilities.invokeLater(updateEstimateC);
+            }
+
+            else if (letter[0].equals("est")) {
+                APPG = letter[1];
+                SwingUtilities.invokeLater(updateEstimateG);
+                try {
+                    Platform.runLater(updatePie);
+                }
+                catch(IllegalStateException e){
+                    System.out.println("Graph loading");
+                }
+            }
+            else bag.putLetter(letter);
         }
     }
 }

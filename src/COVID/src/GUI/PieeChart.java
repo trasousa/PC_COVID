@@ -8,15 +8,11 @@ import javafx.scene.chart.PieChart;
 public class PieeChart{
     Group root;
     PieChart pieChart;
-    float eg;
-    float ec;
 
-    public PieeChart(float eg, float ec){
-        this.ec = ec;
-        this.eg = eg;
+    public PieeChart(){
     }
 
-    public Group getRoot() {
+    public Group getRoot(float eg, float ec) {
         float pop = 100000;
         float cg = eg*pop;
         float cc = ec*(pop/4);
@@ -24,27 +20,20 @@ public class PieeChart{
         new PieChart.Data( "Other contries",cg-cc),
         new PieChart.Data("Country slice", cc));
         //Creating a Pie chart
-        try {
-             pieChart = new PieChart(pieChartData);
+        if (pieChart==null) {
+            pieChart = new PieChart();
+            //Setting the title of the Pie chart
+            pieChart.setTitle("Global Pandemic");
+            //setting the direction to arrange the data
+            pieChart.setClockwise(true);
+            //Setting the length of the label line
+            pieChart.setLabelLineLength(50);
+            //Setting the labels of the pie chart visible
+            pieChart.setLabelsVisible(true);
+            //Setting the start angle of the pie chart
+            pieChart.setStartAngle(180);
         }
-        catch (Throwable e){
-            try {
-                Thread.sleep(200);
-               pieChart = new PieChart(pieChartData);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-        }
-        //Setting the title of the Pie chart
-        pieChart.setTitle("Global Pandemic");
-        //setting the direction to arrange the data
-        pieChart.setClockwise(true);
-        //Setting the length of the label line
-        pieChart.setLabelLineLength(50);
-        //Setting the labels of the pie chart visible
-        pieChart.setLabelsVisible(true);
-        //Setting the start angle of the pie chart
-        pieChart.setStartAngle(180);
+        pieChart.setData(pieChartData);
         //Creating a Group object
         Group root = new Group(pieChart);
         //Adding scene to the stage

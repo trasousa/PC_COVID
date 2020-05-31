@@ -44,10 +44,10 @@ public class Writer implements Runnable{
             estimates.waitUpdate(idCliente);
             if(flag) {
                 Pair<Float, Float> newEstimate = estimates.getEstimate(idCliente, country);
-                out.println("est " + newEstimate.getFst());
                 if (newEstimate.getSnd() != -1) {
                     out.println("cest " + newEstimate.getSnd());
                 }
+                out.println("est " + newEstimate.getFst());
             }
         }
     }
