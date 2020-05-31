@@ -89,29 +89,29 @@ public class LogIn extends JFrame {
         CountryLabel.setBounds(10, 100, 120, 25);
         panel.add(CountryLabel);
 
-        String countryList[] = {"Portugal \uD83C\uDDF5\uD83C\uDDF9","Spain \uD83C\uDDEA\uD83C\uDDE6","Italy \uD83C\uDDEE\uD83C\uDDF9","China \uD83C\uDDE8\uD83C\uDDF3"};
+        String countryList[] = {"Portugal \uD83C\uDF77","Spain \uD83D\uDC83","Italy \uD83C\uDF55","China \uD83E\uDD87"};
         country = new JComboBox(countryList);
         country.setBounds(120,100,150,25);
-        country.setFont(new Font("OpenSymbol", Font.ITALIC, 12));
+        country.setFont(new Font("OpenSymbol", Font.ITALIC, 14));
         s = ("pt");
         b = ("Portugal");
         country.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Object selction = country.getItemAt(country.getSelectedIndex());
-                if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
+                if(selction.equals("Portugal \uD83C\uDF77")){
                     s =("pt");
                     b = "Portugal";
                 }
-                if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
+                if(selction.equals("Spain \uD83D\uDC83")){
                     s = ("es");
                     b = "Spain";
                 }
-                if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
+                if(selction.equals("Italy \uD83C\uDF55")){
                     s =("it");
-                     b = "Italy";
+                    b = "Italy";
                 }
-                if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
+                if(selction.equals("China \uD83E\uDD87")){
                     s = ("cn");
                     b = "China";
                 }

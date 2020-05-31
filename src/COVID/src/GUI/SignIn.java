@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Random;
 
 public class SignIn extends JFrame{
@@ -96,9 +95,9 @@ public class SignIn extends JFrame{
         CountryLabel.setBounds(10, 140, 120, 25);
         panel.add(CountryLabel);
 
-        String countryList[] = {"Portugal \uD83C\uDDF5\uD83C\uDDF9","Spain \uD83C\uDDEA\uD83C\uDDE6","Italy \uD83C\uDDEE\uD83C\uDDF9","China \uD83C\uDDE8\uD83C\uDDF3"};
+        String countryList[] = {"Portugal \uD83C\uDF77","Spain \uD83D\uDC83","Italy \uD83C\uDF55","China \uD83E\uDD87"};
         country = new JComboBox(countryList);
-        country.setFont(new Font("OpenSymbol", Font.ITALIC, 12));
+        country.setFont(new Font("OpenSymbol", Font.ITALIC, 14));
         country.setBounds(120,140,150,25);
         s = "pt";
         b = "Portugal";
@@ -106,19 +105,19 @@ public class SignIn extends JFrame{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Object selction = country.getItemAt(country.getSelectedIndex());
-                if(selction.equals("Portugal \uD83C\uDDF5\uD83C\uDDF9")){
+                if(selction.equals("Portugal \uD83C\uDF77")){
                     s =("pt");
                     b = "Portugal";
                 }
-                if(selction.equals("Spain \uD83C\uDDEA\uD83C\uDDE6")){
+                if(selction.equals("Spain \uD83D\uDC83")){
                     s = ("es");
                     b = "Spain";
                 }
-                if(selction.equals("Italy \uD83C\uDDEE\uD83C\uDDF9")){
+                if(selction.equals("Italy \uD83C\uDF55")){
                     s =("it");
                     b = "Italy";
                 }
-                if(selction.equals("China \uD83C\uDDE8\uD83C\uDDF3")){
+                if(selction.equals("China \uD83E\uDD87")){
                     s = ("cn");
                     b = "China";
                 }
@@ -158,9 +157,8 @@ public class SignIn extends JFrame{
                 } catch (InvalidUsername invalidUsername) {
                     JOptionPane.showMessageDialog(null,"Invalid Username", "WARNING", JOptionPane.WARNING_MESSAGE);
                     System.out.println("Invalid Username");
-                    byte[] array = new byte[3];
-                    new Random().nextBytes(array);
-                    String suggestion = new String(array, Charset.forName("UTF-8"));
+                    Random rand = new Random();
+                    int suggestion = rand.nextInt(1000);
                     UserText.setText(user + suggestion);
                 }catch (InvalidAccount e) {
                     System.out.println("Invalid Acount");

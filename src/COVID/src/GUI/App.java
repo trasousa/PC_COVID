@@ -97,7 +97,7 @@ public class App extends JFrame {
         mb.add(m1);
 
         JMenu m2 = new JMenu("COUNTRY: " + C);
-        JMenuItem m21 = new JMenuItem("PORTUGAL \uD83C\uDDF5\uD83C\uDDF9");
+        JMenuItem m21 = new JMenuItem("PORTUGAL \uD83C\uDF77");
         m21.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 n = coronita.setCountry("pt");
@@ -105,7 +105,7 @@ public class App extends JFrame {
                 setnew(n);
             }
         });
-        JMenuItem m22 = new JMenuItem("SPAIN \uD83C\uDDEA\uD83C\uDDE6");
+        JMenuItem m22 = new JMenuItem("SPAIN \uD83D\uDC83");
         m22.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 n = coronita.setCountry("es");
@@ -113,7 +113,7 @@ public class App extends JFrame {
                 setnew(n);
             }
         });
-        JMenuItem m23 = new JMenuItem("ITALY \uD83C\uDDEE\uD83C\uDDF9");
+        JMenuItem m23 = new JMenuItem("ITALY \uD83C\uDF55");
         m23.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 n = coronita.setCountry("it");
@@ -121,7 +121,7 @@ public class App extends JFrame {
                 setnew(n);
             }
         });
-        JMenuItem m24 = new JMenuItem("CHINA \uD83C\uDDE8\uD83C\uDDF3");
+        JMenuItem m24 = new JMenuItem("CHINA \uD83E\uDD87");
         m24.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 n = coronita.setCountry("cn");

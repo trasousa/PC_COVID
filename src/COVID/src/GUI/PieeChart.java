@@ -7,6 +7,7 @@ import javafx.scene.chart.PieChart;
 
 public class PieeChart{
     Group root;
+    PieChart pieChart;
     float eg;
     float ec;
 
@@ -23,7 +24,17 @@ public class PieeChart{
         new PieChart.Data( "Other contries",cg-cc),
         new PieChart.Data("Country slice", cc));
         //Creating a Pie chart
-        PieChart pieChart = new PieChart(pieChartData);
+        try {
+             pieChart = new PieChart(pieChartData);
+        }
+        catch (Throwable e){
+            try {
+                Thread.sleep(200);
+               pieChart = new PieChart(pieChartData);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
         //Setting the title of the Pie chart
         pieChart.setTitle("Global Pandemic");
         //setting the direction to arrange the data

@@ -52,7 +52,7 @@ public class CoronitaServer implements Interface {
         outServer.flush();
         answer = this.bag.getLetter();
         if(answer[0].equals("ack")){
-            if(answer[1].equals("Sucsses")) ;
+            if(answer[1].equals("Sucsses")) System.out.println("registado");
         }
     }
 

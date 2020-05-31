@@ -115,7 +115,7 @@ public class Middleman implements Runnable {
         try {
             SwingUtilities.invokeAndWait(updatePie);
         } catch (InvocationTargetException e) {
-            System.out.println("cena que nao sei!!!!");
+            System.out.println(e.getTargetException());
         }
     }
 }
