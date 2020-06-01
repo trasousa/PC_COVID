@@ -12,7 +12,7 @@ public class PieeChart{
     public PieeChart(){
     }
 
-    public Group getRoot(float eg, float ec) {
+    public Group getRoot(float eg, float ec){
         float pop = 100000;
         float cg = eg*pop;
         float cc = ec*(pop/4);
@@ -32,6 +32,7 @@ public class PieeChart{
             pieChart.setLabelsVisible(true);
             //Setting the start angle of the pie chart
             pieChart.setStartAngle(180);
+            pieChart.setLegendVisible(false);
         }
         pieChart.setData(pieChartData);
         applyCustomColorSequence(pieChartData, "#E46638", "#EBA12B");
@@ -44,7 +45,6 @@ public class PieeChart{
         int i = 0;
         for (PieChart.Data data : pieChartData) {
             data.getNode().setStyle("-fx-pie-color: " + pieColors[i % pieColors.length] + ";");
-            //data.getNode().setStyle("-fx-label-color: " + pieColors[i % pieColors.length] + ";");
             i++;
         }
     }

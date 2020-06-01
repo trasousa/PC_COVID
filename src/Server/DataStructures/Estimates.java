@@ -70,11 +70,7 @@ public class Estimates{
         float estimateDiff;
         lockEstimates();
         estimate = estimates.get(country);
-        estimate.lockEstimate();
-        unlockEstimates();
         estimateDiff = estimate.firstUpdate(newEstimate);
-        estimate.unlockEstimate();
-        lockEstimates();
         globalEstimate += (estimateDiff/4);
         updated.clear();
         update.signalAll();
@@ -86,11 +82,7 @@ public class Estimates{
         float estimateDiff;
         lockEstimates();
         estimate = estimates.get(country);
-        estimate.lockEstimate();
-        unlockEstimates();
         estimateDiff = estimate.update(newEstimate);
-        estimate.unlockEstimate();
-        lockEstimates();
         globalEstimate += estimateDiff/4;
         updated.clear();
         update.signalAll();

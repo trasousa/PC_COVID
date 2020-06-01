@@ -95,11 +95,9 @@ public class Worker implements Runnable, Interface {
 
                 case "vw":
                     int cases;
-                    kill_writer();
-                    currentCountry = readParts[1];
-                    cases = accounts.setCountry(idCliente,currentCountry);
+                    country = readParts[1];
+                    cases = setCountry(country);
                     if(cases == -1) cases = 0; //serve apenas para enviar 0 casos reportados, quando ainda não reportou
-                    writer.start(idCliente,currentCountry);
                     out.println("ack " + cases);
                     break;
 
@@ -108,6 +106,7 @@ public class Worker implements Runnable, Interface {
                     cases = Integer.parseInt(args[0]);
                     updateEstimate(cases);
                     break;
+
                 case "lgo":
                     logout();
                     out.println("ack lgo");
@@ -203,7 +202,10 @@ public class Worker implements Runnable, Interface {
     @Override
     public int setCountry(String country){
         int cases;
+        kill_writer();
+        currentCountry = country;
         cases = accounts.setCountry(idCliente,country);
+        writer.start(idCliente,currentCountry);
         return cases;
     }
 
